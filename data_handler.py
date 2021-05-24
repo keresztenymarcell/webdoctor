@@ -1,7 +1,7 @@
 import csv
 
-DATA_FILE_PATH_questions = 'sample_data/question.csv'
-DATA_FILE_PATH_answers = 'sample_data/answer.csv'
+DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
+DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
@@ -13,7 +13,7 @@ def open_csvfile(filepath):
         return read_csvfile
 
 
-def sort_questions(filepath, sorting_direction=False, sorting_key='submission_time'):
-    read_csvfile = open_csvfile(filepath)
+def sort_questions(sorting_direction=False, sorting_key='submission_time'):
+    read_csvfile = open_csvfile(DATA_FILE_PATH_QUESTIONS)
     sorted_listofdict = sorted(read_csvfile, key=lambda x: x[sorting_key], reverse=sorting_direction)
     return sorted_listofdict
