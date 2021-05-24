@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Super Sprinter 3000{% endblock %}
+
+{% block content %}
+    <h1>Super Sprinter 3000</h1>
+    <br>
+    <a href="/story">Add new User Story</a><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Story Title</th>
+                <th>User Story</th>
+                <th>Acceptance Criteria</th>
+                <th>Business Value</th>
+                <th>Estimation</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_input in user_stories %}
+                <tr>
+                    <td>{{ user_input.id }}</td>
+                    <td><a href="/story/{{ user_input.id }}">{{ user_input.title }}</a></td>
+                    <td>{{ user_input.user_story | safe }}</td>
+                    <td>{{ user_input.acceptance_criteria | safe}}</td>
+                    <td>{{ user_input.business_value }}</td>
+                    <td>{{ user_input.estimation }}</td>
+                    <td>{{ user_input.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock%}

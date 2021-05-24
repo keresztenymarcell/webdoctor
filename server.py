@@ -1,10 +1,15 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello():
+    return "Hello World!"
+
+
+@app.route("/list")
+def list_page():
     return "Hello World!"
 
 
