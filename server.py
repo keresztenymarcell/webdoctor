@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/list")
 def list_page():
     questions = data_handler.sort_questions(True)
-    return render_template(list.html, header=data_handler.QUESTIONS_HEADER, questions=questions)
+    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, questions=questions)
 
 
 if __name__ == "__main__":
