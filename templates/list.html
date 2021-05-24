@@ -9,25 +9,25 @@
     <table>
         <thead>
             <tr>
-                <th>{{ Id }}</th>
-                <th>Story Title</th>
-                <th>User Story</th>
-                <th>Acceptance Criteria</th>
-                <th>Business Value</th>
-                <th>Estimation</th>
-                <th>Status</th>
+                <th id="id">{{ header[0] }}</th>
+                <th id="submission_time">{{ header[1] }}</th>
+                <th id="view_number">{{ header[2] }}</th>
+                <th id="vote_number">{{ header[3] }}</th>
+                <th id="title">{{ header[4] }}</th>
+                <th id="message">{{ header[5] }}</th>
+                <th id="image">{{ header[6] }}</th>
             </tr>
         </thead>
         <tbody>
-            {% for user_input in user_stories %}
+            {% for question_input in questions %}
                 <tr>
-                    <td>{{ user_input.id }}</td>
-                    <td><a href="/story/{{ user_input.id }}">{{ user_input.title }}</a></td>
-                    <td>{{ user_input.user_story | safe }}</td>
-                    <td>{{ user_input.acceptance_criteria | safe}}</td>
-                    <td>{{ user_input.business_value }}</td>
-                    <td>{{ user_input.estimation }}</td>
-                    <td>{{ user_input.status }}</td>
+                    <td>{{ question_input.id }}</td>
+                    <td>{{ question_input.submission_time }}</td>
+                    <td>{{ question_input.view_number }}</td>
+                    <td>{{ question_input.vote_number }}</td>
+                    <td>{{ question_input.title }}</td>
+                    <td>{{ question_input.message }}</td>
+                    <td><img src="{{ question_input.image }}" width="120" alt="some picture"></td>
                 </tr>
             {% endfor %}
         </tbody>
