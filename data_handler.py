@@ -6,6 +6,9 @@ DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
 
+QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
 
 def open_csvfile(filepath):
     with open(filepath, newline='') as csvfile:
@@ -18,4 +21,4 @@ def sort_questions(sorting_direction=False, sorting_key='submission_time'):
     sorted_listofdict = sorted(read_csvfile, key=lambda x: x[sorting_key], reverse=sorting_direction)
     return sorted_listofdict
 
-# writing back to csv according to id(ascending)? + use header to make order within rows
+# writing back to csv according to id(ascending)? + use QUESTION_KEYS/ANSWER_KEYS to make order within rows
