@@ -14,7 +14,7 @@ def hello():
 @app.route("/list")
 def list_page():
     questions = data_handler.sort_questions(data_handler.DATA_FILE_PATH_questions, True)
-    return "Hello World!"
+    return render_template(list.html, data_handler.QUESTIONS_HEADER, questions)
 
 
 if __name__ == "__main__":
