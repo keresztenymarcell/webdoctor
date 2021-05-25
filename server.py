@@ -2,15 +2,11 @@ from flask import Flask, render_template, request, redirect
 
 import data_handler, connection
 
-
+ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 app = Flask(__name__)
 
 
 @app.route("/")
-def hello():
-    return 'Hello World'
-
-
 @app.route("/list", defaults={'sort_parameters': 'order_by=submission_time&order_direction=desc'})
 @app.route("/list/<sort_parameters>")
 def list_page(sort_parameters):
@@ -29,6 +25,19 @@ def display_question(question_id):
         for question in questions:
             if question["id"] == question_id:
                 return render_template('display_question.html', question=question, answers=answers)
+
+
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id):
+    data_handler.delete_question_by_id(question_id)
+    return redirect("list_page")
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

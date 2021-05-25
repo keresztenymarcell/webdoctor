@@ -5,9 +5,9 @@
 {% block content%}
 
 <form action="questions/{{ question.id }}" method="GET">
-    <label >Question:</label>
-    <h2>{{ question.title }}</h2><br>
-    <label>Message:</label>
+    <h1>Question:</h1>
+    <h3>{{ question.title }}</h3><br>
+    <h1>Detail:</h1>
     <h3>{{ question.message }}</h3><br>
 
 
@@ -15,11 +15,11 @@
         <tbody>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Submission Time</th>
-                <th>Vote Number</th>
-                <th>Message</th>
-                <th>Image</th>
+                <th>Id:</th>
+                <th>Submission Time:</th>
+                <th>Vote Number:</th>
+                <th>Message:</th>
+                <th>Image:</th>
 
             </tr>
 
