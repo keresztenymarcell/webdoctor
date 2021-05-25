@@ -56,6 +56,12 @@ def delete_question(question_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route("/answer/<answer_id>/delete")
+def delete_answer(answer_id):
+    data_handler.delete_answer_by_id(question_id)
+    return
+
+
 
 
 

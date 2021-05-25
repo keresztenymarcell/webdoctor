@@ -19,6 +19,15 @@ def delete_question_by_id(question_id):
 
     connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
 
+
+def delete_answer_by_id(answer_id):
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    for answer in answers:
+        if answer_id == answer["id"]:
+            answers.remove(answer)
+    
+    connection.write_files(connection.open_csvfile(connection.))
+
     # still need to write back to the file
 
 # writing back to csv according to id(ascending)? + use QUESTION_KEYS/ANSWER_KEYS to make order within rows
