@@ -12,6 +12,16 @@ def open_csvfile(filepath):
         read_csvfile = list(csv.DictReader(csvfile))
         return read_csvfile
 
+<<<<<<< HEAD
+
+def write_files(file_path, fieldnames, data_table):
+    csvfile = open(file_path, "w")
+    dict_writer = csv.DictWriter(csvfile, fieldnames)
+    dict_writer.writeheader()
+    dict_writer.writerows(data_table)
+    csvfile.close()
+=======
+
 def read_from_csv(filepath):
     input_file = csv.DictReader(open(filepath))
     database = []
@@ -19,3 +29,4 @@ def read_from_csv(filepath):
         database.append(row)
 
     return database
+>>>>>>> 153da2886ab5dd4f810182875e59b8c7b179e7e7
