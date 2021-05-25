@@ -34,7 +34,7 @@ def edit_question(questions, edited_question, question_id):
     for question_index in range(len(questions)):
         if questions[question_index]["id"] == question_id:
             questions[question_index] = edited_question
-            write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
+            connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
     return None
 
 # writing back to csv according to id(ascending)? + use QUESTION_KEYS/ANSWER_KEYS to make order within rows
