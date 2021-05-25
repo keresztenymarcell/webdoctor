@@ -37,13 +37,14 @@
         <tbody>
             {% for question_input in questions %}
                 <tr>
-                    <td><a href="questions/{{ question_input.id }}">{{ question_input.id }}</a></td>
+                    <td><a href="question/{{ question_input.id }}">{{ question_input.id }}</a></td>
                     <td>{{ question_input.submission_time }}</td>
                     <td>{{ question_input.view_number }}</td>
                     <td>{{ question_input.vote_number }}</td>
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
                     <td><img src="{{ question_input.image }}" width="120" alt="some picture"></td>
+                    <td><a href="question/{{ question_input.id }}/edit">Edit</a></td>
                 </tr>
             {% endfor %}
         </tbody>
