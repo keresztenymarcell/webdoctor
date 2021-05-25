@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import data_handler, connection
+import time
 
 
 app = Flask(__name__)
@@ -39,6 +40,9 @@ def write_questions():
 
         get_data = request.form.to_dict()
         get_data["id"] = str(question_id)
+        get_data["submission_time"] = time.time()
+        get_data["view_number"] = 0
+        get_data["vote_number"] = 0
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)
         return redirect(url_for("display_question", question_id=question_id))
@@ -46,7 +50,18 @@ def write_questions():
     return render_template('question.html')
 
 
+@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
+def edit_question(question_id):
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    if request.method == 'POST':
+        edited_question = request.form.to_dict()
+        data_handler.edit_question(questions, edited_question, question_id)
+        return redirect("/list")
 
+    target_question = data_handler.find_question(questions, question_id)
+    if target_question is None:
+        return redirect("/list")
+    return render_template("question.html", question=target_question)
 
 
 @app.route("/question/<question_id>/delete")

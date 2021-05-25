@@ -44,6 +44,7 @@
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
                     <td><img src="{{ question_input.image }}" width="120" alt="some picture"></td>
+                    <td><a href="questions/{{ question_input.id }}/edit">Edit</a></td>
                 </tr>
             {% endfor %}
         </tbody>
