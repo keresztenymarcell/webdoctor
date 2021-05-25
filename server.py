@@ -20,6 +20,17 @@ def list_page(sort_parameters):
     return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions)
 
 
+@app.route("/questions/<question_id>")
+def display_question(question_id):
+    questions = data_handler.sort_questions(True)
+    answers = connection.read_from_csv("./sample_data/answer.csv")
+
+    if request.method == "GET":
+        for question in questions:
+            if question["id"] == question_id:
+                return render_template('display_question.html', question=question, answers=answers)
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,
