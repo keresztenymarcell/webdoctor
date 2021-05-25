@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head%}{% endblock head %}
+
+{% block body %}
+    <h1>Add question</h1><br>
+    <form action="{{ url_for('write_questions') }}" method="POST">
+        <label for="question-title">Question title:<br></label>
+        <textarea name="question-title"" rows="4" cols="50"> </textarea><br><br>
+        <label for="question-message">Question message:<br></label>
+        <textarea name="question-message" rows="4" cols="50"> </textarea><br><br>
+    </form>
+    <p> <form action="/display-question" method="post">
+     <button type="submit">Display a question</button>
+    </form> </p>
+{% endblock body %}
