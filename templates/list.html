@@ -5,7 +5,7 @@
 {% block content %}
     <h1>List of Questions</h1>
     <br>
-    <form action="/list/<sort_parameters>" method="get">
+    <form action="/list" method="get">
     <label>Sort by:</label><br>
             <select name="order_by">
                 {% for option_index in range(header|length) %}
@@ -48,4 +48,5 @@
             {% endfor %}
         </tbody>
     </table>
+    <p><a href="/add-question">Add questions</a></p>
 {% endblock%}
