@@ -16,7 +16,7 @@ def list_page():
     return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions)
 
 
-@app.route("/questions/<question_id>")
+@app.route("/question/<question_id>")
 def display_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
