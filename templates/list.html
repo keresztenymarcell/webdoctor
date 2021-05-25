@@ -37,7 +37,7 @@
         <tbody>
             {% for question_input in questions %}
                 <tr>
-                    <td>{{ question_input.id }}</td>
+                    <td><a href="questions/{{ question_input.id }}">{{ question_input.id }}</a></td>
                     <td>{{ question_input.submission_time }}</td>
                     <td>{{ question_input.view_number }}</td>
                     <td>{{ question_input.vote_number }}</td>

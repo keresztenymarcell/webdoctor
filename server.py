@@ -22,8 +22,8 @@ def list_page(sort_parameters):
 
 @app.route("/questions/<question_id>")
 def display_question(question_id):
-    questions = data_handler.sort_questions(True)
-    answers = connection.read_from_csv("./sample_data/answer.csv")
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
 
     if request.method == "GET":
         for question in questions:
