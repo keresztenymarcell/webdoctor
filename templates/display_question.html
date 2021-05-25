@@ -1,49 +1,15 @@
 {% extends "base.html" %}
 
-{%block title%} {{ title }} {%endblock%}
+{%block title%} {{ question.title }} {%endblock%}
 
 {% block content%}
 
 <form action="questions/{{ question.id }}" method="GET">
-    <label >Question:</label>
-    <h2>{{ question.title }}</h2><br>
-    <label>Message:</label>
-    <h3>{{ question.message }}</h3><br>
-
-
-    <table>
-        <tbody>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Submission Time</th>
-                <th>Vote Number</th>
-                <th>Message</th>
-                <th>Image</th>
-
-            </tr>
-
-        </thead>
-        <tbody>
-            {% for answer in answers %}
-                {% if question.id == answer.question_id  %}
-                <tr>
-                    <td>{{ answer.id }}</td>
-                    <td>{{ answer.submission_time }}</td>
-                    <td>{{ answer.vote_number }}</td>
-                    <td>{{ answer.message }}</td>
-                    <td><img src="{{ answer.image }}" width="120" alt="some picture"></td>
-                </tr>
-                {% endif %}
-
-            {% endfor %}
-
-
-
-        </tbody>
-
-    </table>
-
+    <label ><h1>Question:</h1></label>
+    <h3>{{ question.title }}</h3><br>
+    <label><h1>Message:</h1></label>
+    <h4>{{ question.message }}</h4><br>
 </form>
+<a href="{{ question.id }}/new-answer">Answer this Question</a>
 
 {% endblock %}
