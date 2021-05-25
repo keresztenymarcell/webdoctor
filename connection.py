@@ -12,6 +12,7 @@ def open_csvfile(filepath):
         read_csvfile = list(csv.DictReader(csvfile))
         return read_csvfile
 
+
 def read_from_csv(filepath):
     input_file = csv.DictReader(open(filepath))
     database = []
