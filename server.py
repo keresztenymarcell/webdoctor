@@ -11,11 +11,10 @@ def hello():
     return 'Hello World'
 
 
-@app.route("/list", defaults={'sort_parameters': 'order_by=submission_time&order_direction=desc'})
-@app.route("/list/<sort_parameters>")
-def list_page(sort_parameters):
-    order_by = sort_parameters.split("&")[0].split("=")[1]
-    order_direction = sort_parameters.split("&")[1].split("=")[1]
+@app.route("/list")
+def list_page():
+    order_by = request.args.get('order_by', 'submission_time')
+    order_direction = request.args.get('order_direction', 'desc')
     questions = data_handler.sort_questions(order_by, order_direction)
     return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions)
 
