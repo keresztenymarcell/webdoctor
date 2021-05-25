@@ -11,3 +11,11 @@ def open_csvfile(filepath):
     with open(filepath, newline='') as csvfile:
         read_csvfile = list(csv.DictReader(csvfile))
         return read_csvfile
+
+def read_from_csv(filepath):
+    input_file = csv.DictReader(open(filepath))
+    database = []
+    for row in input_file:
+        database.append(row)
+
+    return database
