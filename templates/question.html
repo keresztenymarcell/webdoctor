@@ -22,10 +22,10 @@
 
     {% if question %}
         <input type="hidden" name="id" value="{{ question.id }}" >
-        <input type="hidden" name="id" value="{{ question.submission_time }}" >
-        <input type="hidden" name="id" value="{{ question.view_number }}" >
-        <input type="hidden" name="id" value="{{ question.vote_number }}" >
-        <input type="hidden" name="id" value="{{ question.image }}" >
+        <input type="hidden" name="submission_time" value="{{ question.submission_time }}" >
+        <input type="hidden" name="view_number" value="{{ question.view_number }}" >
+        <input type="hidden" name="vote_number" value="{{ question.vote_number }}" >
+        <input type="hidden" name="image" value="{{ question.image }}" >
     {% endif %}
 
         <label for="title">Question title:<br></label>

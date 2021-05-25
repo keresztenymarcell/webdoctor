@@ -7,6 +7,8 @@
 <form action="questions/{{ question.id }}" method="GET">
     <h1>Question:</h1>
     <h3>{{ question.title }}</h3><br>
+    <a href="question/{{ question.id }}/delete">Delete</a>
+
     <h1>Detail:</h1>
     <h3>{{ question.message }}</h3><br>
 
