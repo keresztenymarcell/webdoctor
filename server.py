@@ -56,11 +56,11 @@ def edit_question(question_id):
     if request.method == 'POST':
         edited_question = request.form.to_dict()
         data_handler.edit_question(questions, edited_question, question_id)
-        return redirect("/list")
+        return redirect(url_for("display_question", question_id=question_id))
 
     target_question = data_handler.find_question(questions, question_id)
     if target_question is None:
-        return redirect("/list")
+        return redirect(url_for("display_question", question_id=question_id))
     return render_template("question.html", question=target_question)
 
 
