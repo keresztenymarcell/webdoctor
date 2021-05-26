@@ -17,7 +17,7 @@
     {% if question %}
         <form action="/question/{{ question.id }}/edit" method="post">
     {% else %}
-        <form action="/add-question" method="post">
+        <form action="/add-question" method="post" enctype="multipart/form-data">
     {% endif %}
 
     {% if question %}
@@ -33,6 +33,9 @@
 
         <label for="message">Question message:<br></label>
         <textarea name="message" rows="4" cols="50">{{ question.message if question }}</textarea><br><br>
+
+        <label for="image">Image:</label><br>
+        <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
     {% if question %}
         <button type="submit">Done</button></a>

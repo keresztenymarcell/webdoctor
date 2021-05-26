@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-
+from werkzeug.utils import secure_filename
 import data_handler, connection
 import time
+import os
 
 
 app = Flask(__name__)
@@ -43,6 +44,11 @@ def write_questions():
         get_data["submission_time"] = time.time()
         get_data["view_number"] = 0
         get_data["vote_number"] = 0
+        get_data["image"] = secure_filename(request.files['image'].filename)
+
+        image_file = request.files['image']
+        image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_QUESTIONS, secure_filename(image_file.filename)))
+
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)
         return redirect(url_for("display_question", question_id=question_id))
@@ -115,6 +121,12 @@ def add_new_answer(question_id):
                 get_data["submission_time"] = time.time()
                 get_data["vote_number"] = 0
                 get_data["question_id"] = question_id
+
+                get_data["image"] = secure_filename(request.files['image'].filename)
+
+                image_file = request.files['image']
+                image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_ANSWERS, secure_filename(image_file.filename)))
+
         answers.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
