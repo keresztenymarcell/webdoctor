@@ -38,20 +38,20 @@
         <tbody>
             {% for question_input in questions %}
                 <tr>
-                    <td><a href="question/{{ question_input.id }}">{{ question_input.id }}</a></td>
+                    <td><a href="/question/{{ question_input.id }}">{{ question_input.id }}</a></td>
                     <td>{{ question_input.submission_time }}</td>
                     <td>{{ question_input.view_number }}</td>
                     <td>{{ question_input.vote_number }}</td>
                     <td>
                         <button
-                            formaction="question/{{ question_input.id }}/vote_up"
+                            formaction="/question/{{ question_input.id }}/vote_up"
                             class="vote-btn"
                             data-default-text="Vote This Dish Up!"
                             data-alt-text="Thanks for Voting">
                         <span class="icon"></span> <span class="text">Vote up</span>
                         </button>
                         <button
-                            formaction="question/{{ question_input.id }}/vote_down"
+                            formaction="/question/{{ question_input.id }}/vote_down"
                             class="vote-btn"
                             data-default-text="Vote This Dish Down!"
                             data-alt-text="Thanks for Voting">
@@ -60,8 +60,8 @@
                     </td>
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
-                    <td><img src="{{ question_input.image }}" width="120" alt="some picture"></td>
-                    <td><a href="question/{{ question_input.id }}/edit">Edit</a></td>
+                    <td><img src="/pictures/question_pictures/{{ question_input.image }}" width="120" alt="some picture"></td>
+                    <td><a href="/question/{{ question_input.id }}/edit">Edit</a></td>
                 </tr>
             {% endfor %}
         </tbody>
