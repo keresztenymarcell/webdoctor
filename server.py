@@ -33,16 +33,11 @@ def display_question(question_id):
 @app.route("/add-question", methods=["GET", "POST"])
 def write_questions():
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    new_question_id = data_handler.generate_id(questions)
     if request.method == "POST":
 
-        if questions is []:
-            question_id = 0
-        else:
-            question_id = int(questions[-1]["id"]) + 1
-
-
         get_data = request.form.to_dict()
-        get_data["id"] = str(question_id)
+        get_data["id"] = str(new_question_id)
         get_data["submission_time"] = time.time()
         get_data["view_number"] = 0
         get_data["vote_number"] = 0
@@ -108,20 +103,14 @@ def question_vote_down(question_id):
 def add_new_answer(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-
-    if not answers:
-        new_id = 0
-    else:
-        new_id = int(answers[-1]["id"]) + 1
-
-    ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+    new_answer_id = data_handler.generate_id(answers)
 
     if request.method == "POST":
         for question in questions:
             if question["id"] is question_id:
                 
                 get_data = request.form.to_dict()
-                get_data["id"] = new_id
+                get_data["id"] = new_answer_id
                 get_data["submission_time"] = time.time()
                 get_data["vote_number"] = 0
                 get_data["question_id"] = question_id

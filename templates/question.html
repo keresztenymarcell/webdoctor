@@ -8,8 +8,14 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+    h1 {color:white; font-family: sans-serif; font-size: 50px;}
+    body {background-color: #177199;}
+    .titles  {color:white; font-family: sans-serif; font-size: 30px}
+    .btn {background-color: #9C1A1C; color:black; font-family: sans-serif; font-size: 20px;}
+    </style>
     {% if question %}
-        <h1>Edit question</h1>
+        <h1><em>Edit question</em></h1>
     {% else %}
         <h1>Add question</h1>
     {% endif %}
@@ -27,20 +33,21 @@
         <input type="hidden" name="vote_number" value="{{ question.vote_number }}" >
         <input type="hidden" name="image" value="{{ question.image }}" >
     {% endif %}
+        <div class="titles">
 
         <label for="title">Question title:<br></label>
-        <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br>
+        <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br></p>
 
         <label for="message">Question message:<br></label>
         <textarea name="message" rows="4" cols="50">{{ question.message if question }}</textarea><br><br>
 
-        <label for="image">Image:</label><br>
-        <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
+        <label for="image">Image:</label><br></div>
+        <input style="font-family: serif; font-size:15px" type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
     {% if question %}
         <button type="submit">Done</button></a>
     {% else %}
-        <a href="/question{{ question_id }}"><button type="submit">Display a question</button></a>
+        <a href="/question{{ question_id }}"><button  class="btn" type="submit">Display a question</button></a>
     {% endif %}
 
     </form> </p>
