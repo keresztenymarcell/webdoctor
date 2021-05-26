@@ -32,6 +32,15 @@ def delete_answer_by_id(answer_id):
     connection.write_files(connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWERS_KEYS, answers))
 
 
+def generate_id(database):
+    if database is []:
+        new_id = 0
+    else:
+        new_id = int(database[-1]["id"]) + 1
+
+    return new_id
+
+
 def find_question(questions, question_id):
     for question in questions:
         if question["id"] == question_id:
