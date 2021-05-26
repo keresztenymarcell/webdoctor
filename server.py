@@ -121,6 +121,12 @@ def add_new_answer(question_id):
                 get_data["submission_time"] = time.time()
                 get_data["vote_number"] = 0
                 get_data["question_id"] = question_id
+
+                get_data["image"] = secure_filename(request.files['image'].filename)
+
+                image_file = request.files['image']
+                image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_ANSWERS, secure_filename(image_file.filename)))
+
         answers.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 

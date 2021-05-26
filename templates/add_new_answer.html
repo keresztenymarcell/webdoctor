@@ -6,10 +6,12 @@
 {% block content %}
     <h1>Posting a new answer</h1>
 
-    <form action="/question/{{ question_id }}/new_answer" method="post">
+    <form action="/question/{{ question_id }}/new_answer" method="post" enctype="multipart/form-data">
         <label for="message">Enter your answer here:</label>
         <textarea name="message" rows="4" cols="50" required></textarea>
 
+        <label for="image">Image:</label><br>
+        <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
         <button type="submit">Post your answer</button>
 
