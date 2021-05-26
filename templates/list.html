@@ -6,7 +6,8 @@
     <h1>List of Questions</h1>
     <br>
     <form action="/list" method="get">
-    <label>Sort by:</label><br>
+    <p style="text-align:right;">
+        <label style="font-size:18px">Sort by:</label>
             <select name="order_by">
                 {% for option_index in range(header|length) %}
                     {% if header[option_index] == 'Submission Time' %}
@@ -15,15 +16,16 @@
                         <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
                     {% endif %}
                 {% endfor %}
-            </select><br>
+            </select>
             <select name="order_direction">
                 <option value="desc" selected>Descending</option>
                 <option value="asc">Ascending</option>
-            </select><br>
+            </select>
 
-            <button>Sort!</button>
-    <table>
-        <thead>
+            <button>Sort</button>
+    </p>
+    <table cellspacing="3" style="background-color:rgb(223, 17, 118);">
+        <thead style="color:rgb(255, 255, 255)">
             <tr>
                 <th id="id">{{ header[0] }}</th>
                 <th id="submission_time">{{ header[1] }}</th>
@@ -35,7 +37,7 @@
                 <th id="image">{{ header[6] }}</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="color:rgb(255, 255, 255)">
             {% for question_input in questions %}
                 <tr>
                     <td><a href="/question/{{ question_input.id }}">{{ question_input.id }}</a></td>
@@ -66,5 +68,5 @@
             {% endfor %}
         </tbody>
     </table>
-    <p><a href="/add-question">Add questions</a></p>
+    <p style="color:rgb(223, 17, 118)"><a href="/add-question">Add questions</a></p>
 {% endblock%}
