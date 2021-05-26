@@ -37,6 +37,7 @@ def find_question(questions, question_id):
             return target_question
     return None
 
+
 def edit_questions(questions, edited_question, question_id):
     edited_question["submission_time"] = time.time()
     for question_index in range(len(questions)):
