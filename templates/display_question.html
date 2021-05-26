@@ -1,15 +1,56 @@
 {% extends "base.html" %}
 
-{%block title%} {{ question.title }} {%endblock%}
+{%block title%} {{ title }} {%endblock%}
 
 {% block content%}
 
 <form action="questions/{{ question.id }}" method="GET">
-    <label ><h1>Question:</h1></label>
+
+
+    <h1>Question:</h1>
     <h3>{{ question.title }}</h3><br>
-    <label><h1>Message:</h1></label>
-    <h4>{{ question.message }}</h4><br>
+    <a href="question/{{ question.id }}/delete">Delete</a>
+
+    <h1>Detail:</h1>
+    <h3>{{ question.message }}</h3><br>
+
+
+    <table>
+        <tbody>
+        <thead>
+            <tr>
+                <th>Id:</th>
+                <th>Submission Time:</th>
+                <th>Vote Number:</th>
+                <th>Message:</th>
+                <th>Image:</th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+                {% if question.id == answer.question_id  %}
+                <tr>
+                    <td>{{ answer.id }}</td>
+                    <td>{{ answer.submission_time }}</td>
+                    <td>{{ answer.vote_number }}</td>
+                    <td>{{ answer.message }}</td>
+                    <td><img src="{{ answer.image }}" width="120" alt="some picture"></td>
+                </tr>
+                {% endif %}
+
+            {% endfor %}
+
+
+
+        </tbody>
+
+    </table>
 </form>
-<a href="{{ question.id }}/new-answer">Answer this Question</a>
+    <button><a href="/question/{{ question.id }}/new_answer">Post a new answer</a></button>
+
+
+
 
 {% endblock %}
