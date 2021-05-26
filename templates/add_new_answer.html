@@ -6,12 +6,12 @@
 {% block content %}
     <h1>Posting a new answer</h1>
 
-    <form action="/question/{{ question_id }}/new-answer" method="post">
+    <form action="/question/{{ question_id }}/new_answer" method="post">
         <label for="message">Enter your answer here:</label>
         <textarea name="message" rows="4" cols="50" required></textarea>
 
 
-        <a href="/question{{ question_id }}"><button type="submit">Post your answer</button></a>
+        <button type="submit">Post your answer</button>
 
 
 

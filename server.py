@@ -72,7 +72,7 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    data_handler.delete_answer_by_id(anwser_id)
+    data_handler.delete_answer_by_id(answer_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -94,7 +94,7 @@ def question_vote_down(question_id):
     return redirect("/list")
 
 
-@app.route("/question/<question_id>/new-answer", methods= ["POST"])
+@app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
 def add_new_answer(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
@@ -114,15 +114,13 @@ def add_new_answer(question_id):
                 get_data["id"] = new_id
                 get_data["submission_time"] = time.time()
                 get_data["vote_number"] = 0
-                get_data["question"] = question_id
+                get_data["question_id"] = question_id
+        answers.append(get_data)
+        connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
-                return redirect(url_for("display_question"), question_id=question_id)
+        return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_answer.html', question_id=question_id)
-
-
-
-
 
 
 if __name__ == "__main__":
