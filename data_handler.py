@@ -40,12 +40,15 @@ def find_question(questions, question_id):
     return None
 
 
-def edit_questions(questions, edited_question, question_id):
-    edited_question["submission_time"] = time.time()
-    for question_index in range(len(questions)):
-        if questions[question_index]["id"] == question_id:
-            questions[question_index] = edited_question
-            connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
+def edit_database(database, edited_data, data_id):
+    edited_data["submission_time"] = time.time()
+    for data_index in range(len(database)):
+        if database[data_index]["id"] == data_id:
+            database[data_index] = edited_data
+            if "question_id" in database[0].keys():
+                connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, database)
+            else:
+                connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
     return None
 
 # writing back to csv according to id(ascending)? + use QUESTION_KEYS/ANSWER_KEYS to make order within rows

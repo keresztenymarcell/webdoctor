@@ -4,12 +4,10 @@
 
 {% block content%}
 
-<form action="questions/{{ question.id }}" method="GET">
-
 
     <h1>Question:</h1>
     <h3>{{ question.title }}</h3><br>
-    <a href="question/{{ question.id }}/delete">Delete</a>
+    <a href="/question/{{ question.id }}/delete">Delete</a>
 
     <h1>Detail:</h1>
     <h3>{{ question.message }}</h3><br>
@@ -36,18 +34,17 @@
                     <td>{{ answer.submission_time }}</td>
                     <td>{{ answer.vote_number }}</td>
                     <td>{{ answer.message }}</td>
-                    <td><img src="{{ answer.image }}" width="120" alt="some picture"></td>
+                    <td><img src="/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture"></td>
                 </tr>
                 {% endif %}
 
             {% endfor %}
 
 
-
         </tbody>
 
     </table>
-</form>
+
     <button><a href="/question/{{ question.id }}/new_answer">Post a new answer</a></button>
 
 
