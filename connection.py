@@ -19,4 +19,5 @@ def write_files(file_path, fieldnames, data_table):
     dict_writer.writeheader()
     dict_writer.writerows(data_table)
     csvfile.close()
+    
 

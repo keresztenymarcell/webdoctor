@@ -27,9 +27,8 @@ def delete_answer_by_id(answer_id):
         if answer_id == answer["id"]:
             answers.remove(answer)
     
-    connection.write_files(connection.open_csvfile(connection.))
+    connection.write_files(connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWERS_KEYS, answers))
 
-    # still need to write back to the file
 
 def find_question(questions, question_id):
     for question in questions:
@@ -38,7 +37,7 @@ def find_question(questions, question_id):
             return target_question
     return None
 
-def edit_question(questions, edited_question, question_id):
+def edit_questions(questions, edited_question, question_id):
     edited_question["submission_time"] = time.time()
     for question_index in range(len(questions)):
         if questions[question_index]["id"] == question_id:

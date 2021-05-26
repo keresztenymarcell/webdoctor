@@ -55,7 +55,7 @@ def edit_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     if request.method == 'POST':
         edited_question = request.form.to_dict()
-        data_handler.edit_question(questions, edited_question, question_id)
+        data_handler.edit_questions(questions, edited_question, question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
     target_question = data_handler.find_question(questions, question_id)
@@ -72,11 +72,26 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    data_handler.delete_answer_by_id(question_id)
-    return
+    data_handler.delete_answer_by_id(anwser_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route("/question/<question_id>/vote_up")
+def question_vote_up(question_id):
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    target_question = data_handler.find_question(questions, question_id)
+    target_question["vote_number"] = int(target_question["vote_number"]) + 1
+    data_handler.edit_questions(questions, target_question, question_id)
+    return redirect("/list")
 
+
+@app.route("/question/<question_id>/vote_down")
+def question_vote_down(question_id):
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    target_question = data_handler.find_question(questions, question_id)
+    target_question["vote_number"] = int(target_question["vote_number"]) - 1
+    data_handler.edit_questions(questions, target_question, question_id)
+    return redirect("/list")
 
 
 

@@ -29,6 +29,7 @@
                 <th id="submission_time">{{ header[1] }}</th>
                 <th id="view_number">{{ header[2] }}</th>
                 <th id="vote_number">{{ header[3] }}</th>
+                <th> Vote up </th>
                 <th id="title">{{ header[4] }}</th>
                 <th id="message">{{ header[5] }}</th>
                 <th id="image">{{ header[6] }}</th>
@@ -41,6 +42,27 @@
                     <td>{{ question_input.submission_time }}</td>
                     <td>{{ question_input.view_number }}</td>
                     <td>{{ question_input.vote_number }}</td>
+                    <td>
+                    <form action="question/{{ question_input.id}}/vote_up">
+
+                    <button
+                        class="vote-btn"
+                        data-default-text="Vote This Dish Up!"
+                        data-alt-text="Thanks for Voting">
+                    <span class="icon"></span> <span class="text">Vote up</span>
+                    </button>
+                    </form>
+
+                    <form action="question/{{ question_input.id}}/vote_down">
+                        <button
+                        class="vote-btn"
+                        data-default-text="Vote This Dish Up!"
+                        data-alt-text="Thanks for Voting">
+                    <span class="icon"></span> <span class="text">Vote down</span>
+                    </button>
+                    </form>
+
+                    </td>
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
                     <td><img src="{{ question_input.image }}" width="120" alt="some picture"></td>
