@@ -94,6 +94,33 @@ def question_vote_down(question_id):
     return redirect("/list")
 
 
+@app.route("/question/<question_id>/new-answer", methods= ["POST"])
+def add_new_answer(question_id):
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+
+    if not answers:
+        new_id = 0
+    else:
+        new_id = int(answers[-1]["id"]) + 1
+
+    ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
+    if request.method == "POST":
+        for question in questions:
+            if question["id"] is question_id:
+                
+                get_data = request.form.to_dict()
+                get_data["id"] = new_id
+                get_data["submission_time"] = time.time()
+                get_data["vote_number"] = 0
+                get_data["question"] = question_id
+
+                return redirect(url_for("display_question"), question_id=question_id)
+
+    return render_template('add_new_answer.html', question_id=question_id)
+
+
 
 
 
