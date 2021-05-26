@@ -106,20 +106,17 @@ def add_new_answer(question_id):
     new_answer_id = data_handler.generate_id(answers)
 
     if request.method == "POST":
-        for question in questions:
-            if question["id"] is question_id:
-                
-                get_data = request.form.to_dict()
-                get_data["id"] = new_answer_id
-                get_data["submission_time"] = time.time()
-                get_data["vote_number"] = 0
-                get_data["question_id"] = question_id
+        get_data = request.form.to_dict()
+        get_data["id"] = new_answer_id
+        get_data["submission_time"] = time.time()
+        get_data["vote_number"] = 0
+        get_data["question_id"] = question_id
 
-                if secure_filename(request.files['image'].filename) != "":
-                    get_data["image"] = secure_filename(request.files['image'].filename)
+        if secure_filename(request.files['image'].filename) != "":
+            get_data["image"] = secure_filename(request.files['image'].filename)
 
-                    image_file = request.files['image']
-                    image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_ANSWERS, secure_filename(image_file.filename)))
+            image_file = request.files['image']
+            image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_ANSWERS, secure_filename(image_file.filename)))
 
         answers.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
