@@ -1,5 +1,1 @@
-created virtual environment CPython3.8.2.final.0-64 in 209ms
-  creator CPython3macOsFramework(dest=/Users/keresztenymarcell/projects/Web/1st week/ask-mate-1-python-gyongyi0888/freeze, clear=False, no_vcs_ignore=False, global=False)
-  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/Users/keresztenymarcell/Library/Application Support/virtualenv)
-    added seed packages: pip==21.1.1, setuptools==56.0.0, wheel==0.36.2
-  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
+Flask==2.0.1
