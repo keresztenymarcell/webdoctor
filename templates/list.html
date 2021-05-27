@@ -9,17 +9,16 @@
         }
         .down_arrow{
             transform: rotate(90deg);
-
-
         }
+
     </style>
 
-    <h1 style="text-align:center;">Vanda helps!</h1>
-    <h3 style="text-align:center;">Ask your question</h3>
+    <h1>Vanda helps!</h1>
+    <h3>Ask your question</h3>
     <br>
     <form action="/list" method="get">
     <p style="text-align:right;">
-        <label style="font-size:18px">Sort by:</label>
+        <label>Sort by:</label>
             <select name="order_by">
                 {% for option_index in range(header|length) %}
                     {% if header[option_index] == 'Submission Time' %}
@@ -56,19 +55,13 @@
                 <td>
                     <p>{{ question.message }}</p>
                 </td>
-
-
-
-
-
-
             </tr>
         </table>
     {% endfor %}
-
-    <table cellspacing="3" style="background-color:rgb(223, 17, 118); border-collapse: collapse;">
+    <!--
+    <table cellspacing="3">
         <thead>
-            <tr style="border-bottom: 1px solid black;">
+            <tr>
                 <th id="id">{{ header[0] }}</th>
                 <th id="submission_time">{{ header[1] }}</th>
                 <th id="view_number">{{ header[2] }}</th>
@@ -79,7 +72,7 @@
                 <th id="image">{{ header[6] }}</th>
             </tr>
         </thead>
-        <tbody style="color:rgb(255, 255, 255)">
+        <tbody>
             {% for question_input in questions %}
                 <tr>
                     <td><a href="/question/{{ question_input.id }}">{{ question_input.id }}</a></td>
@@ -97,6 +90,6 @@
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
-    <p style="color:rgb(223, 17, 118)"><a href="/add-question">Add questions</a></p>
+    </table> -->
+    <p><a href="/add-question"><button>Add questions</button></a></p>
 {% endblock%}
