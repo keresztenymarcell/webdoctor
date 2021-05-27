@@ -21,16 +21,23 @@
         <label>Sort by:</label>
             <select name="order_by">
                 {% for option_index in range(header|length) %}
-                    {% if header[option_index] == 'Submission Time' %}
-                        <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
-                    {% else %}
-                        <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
+                    {% if header[option_index] != "Image" %}
+                        {% if keys[option_index] == orderby %}
+                            <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
+                        {% else %}
+                            <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </select>
             <select name="order_direction">
-                <option value="desc" selected>Descending</option>
-                <option value="asc">Ascending</option>
+                {% if orderdir == "desc" %}
+                    <option value="desc" selected>Descending</option>
+                    <option value="asc">Ascending</option>
+                {% else %}
+                    <option value="desc">Descending</option>
+                    <option value="asc" selected>Ascending</option>
+                {% endif %}
             </select>
 
             <button>Sort</button>
@@ -59,42 +66,5 @@
         </table>
     {% endfor %}
 
-    <table cellspacing="3">
-        <thead>
-            <tr>
-                <th id="id">{{ header[0] }}</th>
-                <th id="submission_time">{{ header[1] }}</th>
-                <th id="view_number">{{ header[2] }}</th>
-                <th id="vote_number">{{ header[3] }}</th>
-                <th> Vote </th>
-                <th id="title">{{ header[4] }}</th>
-                <th id="message">{{ header[5] }}</th>
-                <th id="image">{{ header[6] }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for question_input in questions %}
-                <tr>
-                    <td><a href="/question/{{ question_input.id }}">{{ question_input.id }}</a></td>
-                    <td>{{ question_input.submission_time }}</td>
-                    <td>{{ question_input.view_number }}</td>
-                    <td>{{ question_input.vote_number }}</td>
-                    <td>
-                        <p><a href="/question/{{ question_input.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                        <p><a href="/question/{{ question_input.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-                    </td>
-                    <td>{{ question_input.title }}</td>
-                    <td>{{ question_input.message }}</td>
-                    <td>
-                        {% if question_input.image  %}
-                            <img src="/static/pictures/question_pictures/{{ question_input.image }}" width="120" alt="some picture">
-                        {% endif %}
-                    </td>
-
-                    <td><a href="/question/{{ question_input.id }}/edit">Edit</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     <p style="color:rgb(223, 17, 118)"><a href="/add-question">Add questions</a></p>
 {% endblock%}

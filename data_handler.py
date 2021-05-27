@@ -10,7 +10,7 @@ ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Messag
 def sort_questions(order_by, order_direction):
     sorting = True if order_direction == 'desc' else False
     read_csvfile = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    sorted_listofdict = sorted(read_csvfile, key=lambda x: x[order_by], reverse=sorting)
+    sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if x[order_by].isdigit() else (1, x[order_by]), reverse=sorting)
     return sorted_listofdict
 
 
@@ -51,18 +51,10 @@ def find_data(database, data_id):
 def edit_database(database, edited_data, data_id):
     edited_data["submission_time"] = time.time()
     for data_index in range(len(database)):
-        print(data_index)
-        print(database[data_index])
-        print(data_id)
         if database[data_index]['id'] == data_id:
             database[data_index] = edited_data
-            print(database[data_index])
-            print("1. if inside")
             if "question_id" in database[0].keys():
                 connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, database)
-                print("2. if inside")
             else:
                 connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
     return None
-
-# writing back to csv according to id(ascending)? + use QUESTION_KEYS/ANSWER_KEYS to make order within rows
