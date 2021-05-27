@@ -1,11 +1,10 @@
+import os.path
+
 import connection
 import time
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
-
-UPLOAD_FOLDER_QUESTIONS = "/static/pictures/question_pictures/"
-UPLOAD_FOLDER_ANSWERS = "/static/pictures/answer_pictures/"
 
 
 def sort_questions(order_by, order_direction):
@@ -25,12 +24,12 @@ def delete_question_by_id(question_id):
 
 
 def delete_answer_by_id(answer_id):
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
         if answer_id == answer["id"]:
             answers.remove(answer)
     
-    connection.write_files(connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWERS_KEYS, answers))
+    connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
 
 def generate_id(database):
@@ -42,28 +41,26 @@ def generate_id(database):
     return new_id
 
 
-def find_question(questions, question_id):
-    for question in questions:
-        if question["id"] == question_id:
-            return question
-    return None
-
-
-def find_answer(answers, question_id, answer_id):
-    for answer in answers:
-        if answer["question_id"] == question_id:
-            if answer["id"] == answer_id:
-                return answer
+def find_data(database, data_id):
+    for data in database:
+        if data["id"] == data_id:
+            return data
     return None
 
 
 def edit_database(database, edited_data, data_id):
     edited_data["submission_time"] = time.time()
     for data_index in range(len(database)):
-        if database[data_index]["id"] == data_id:
+        print(data_index)
+        print(database[data_index])
+        print(data_id)
+        if database[data_index]['id'] == data_id:
             database[data_index] = edited_data
+            print(database[data_index])
+            print("1. if inside")
             if "question_id" in database[0].keys():
                 connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, database)
+                print("2. if inside")
             else:
                 connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
     return None
