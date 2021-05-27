@@ -4,15 +4,24 @@
 
 {% block content%}
 
+    <style>
+        .up_arrow{
+            transform: rotate(-90deg);
+        }
+        .down_arrow{
+            transform: rotate(90deg);
 
+            
+        }
+    </style>
 
     <h1>{{ question.title }}</h1><br>
     <table id="question_table">
         <tr>
             <td>
-                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="10" height="10"></a></p>
-                <p>Votes: {{ question.vote_number }}</p>
-                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote"></a></p>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                <p>{{ question.vote_number }}</p>
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
             </td>
             <td>{{ question.message }}</td>
             <td>
@@ -36,9 +45,9 @@
                 {% if question.id == answer.question_id  %}
                 <tr>
                     <td>
-                        <p><a href="/answer/{{ answer_id }}/vote_up">Up</a></p>
+                        <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
                         <p>{{ answer.vote_number }}</p>
-                        <p><a href="/answer/{{ answer_id }}/vote_up">Down</a></p>
+                        <p><a href="/answer/{{ answer.id }}/vote_up"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td>{{ answer.message }}</td>
                     <td>
@@ -47,8 +56,8 @@
                         {% endif %}
                     </td>
                     <td>
-                        <p><a href="/answer/{{ answer_id }}/delete"></a></p>
-                        <button>DELETE</button>
+                        <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
+
                     </td>
                 </tr>
                 {% endif %}
