@@ -34,7 +34,11 @@
                     <td>{{ answer.submission_time }}</td>
                     <td>{{ answer.vote_number }}</td>
                     <td>{{ answer.message }}</td>
-                    <td><img src="/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture"></td>
+                    <td>
+                        {% if answer.image  %}
+                            <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endif %}
 
