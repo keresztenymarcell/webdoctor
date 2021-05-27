@@ -4,8 +4,8 @@ import time
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
 
-UPLOAD_FOLDER_QUESTIONS = "pictures/question_pictures/"
-UPLOAD_FOLDER_ANSWERS = "pictures/answer_pictures/"
+UPLOAD_FOLDER_QUESTIONS = "/static/pictures/question_pictures/"
+UPLOAD_FOLDER_ANSWERS = "/static/pictures/answer_pictures/"
 
 def sort_questions(order_by, order_direction):
     sorting = True if order_direction == 'desc' else False

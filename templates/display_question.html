@@ -15,7 +15,6 @@
         }
     </style>
 
-
     <h1>{{ question.title }}</h1><br>
     <table id="question_table">
         <tr>
@@ -51,7 +50,11 @@
                         <p><a href="/answer/{{ answer_id }}/vote_up"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td>{{ answer.message }}</td>
-                    <td><img src="/static/answer_pictures/{{ answer.image }}" width="100" alt="some picture"></td>
+                    <td>
+                        {% if answer.image  %}
+                            <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
+                        {% endif %}
+                    </td>
                     <td>
                         <p><a href="/answer/{{ answer_id }}/delete"></a></p>
                         <button>DELETE</button>

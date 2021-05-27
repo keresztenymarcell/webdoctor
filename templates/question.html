@@ -36,7 +36,7 @@
         <div class="titles">
 
         <label for="title">Question title:<br></label>
-        <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br></p>
+        <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br>
 
         <label for="message">Question message:<br></label>
         <textarea name="message" rows="4" cols="50">{{ question.message if question }}</textarea><br><br>
@@ -45,10 +45,10 @@
         <input style="font-family: serif; font-size:15px" type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
     {% if question %}
-        <button type="submit">Done</button></a>
+        <button type="submit">Done</button>
     {% else %}
         <a href="/question{{ question_id }}"><button  class="btn" type="submit">Display a question</button></a>
     {% endif %}
 
-    </form> </p>
+    </form>
 {% endblock %}
