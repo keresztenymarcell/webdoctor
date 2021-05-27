@@ -63,7 +63,12 @@
                     </td>
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
-                    <td><img src="/static/pictures/question_pictures/{{ question_input.image }}" width="120" alt="some picture"></td>
+                    <td>
+                        {% if answer.image  %}
+                            <img src="/static/pictures/question_pictures/{{ question_input.image }}" width="120" alt="some picture">
+                        {% endif %}
+                    </td>
+
                     <td><a href="/question/{{ question_input.id }}/edit">Edit</a></td>
                 </tr>
             {% endfor %}
