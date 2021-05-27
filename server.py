@@ -4,6 +4,10 @@ import data_handler, connection
 import time
 import os
 
+DIRNAME = os.path.dirname(__file__)
+UPLOAD_FOLDER_QUESTIONS = DIRNAME + "/static/pictures/question_pictures/"
+UPLOAD_FOLDER_ANSWERS = DIRNAME + "/static/pictures/answer_pictures/"
+
 
 app = Flask(__name__)
 
@@ -21,9 +25,6 @@ def list_page():
 def display_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-
-    # source = os.path.abspath(data_handler.UPLOAD_FOLDER_ANSWERS)
-
     if request.method == "GET":
         for question in questions:
             if question["id"] == question_id:
@@ -46,9 +47,8 @@ def write_questions():
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
-
-            image_file = request.files['image']
-            image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_QUESTIONS, secure_filename(image_file.filename)))
+            folder_route = UPLOAD_FOLDER_QUESTIONS + get_data["image"]
+            request.files["image"].save(folder_route)
 
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)
@@ -116,10 +116,8 @@ def add_new_answer(question_id):
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
-
-            image_file = request.files['image']
-            image_file.save(os.path.join(data_handler.UPLOAD_FOLDER_ANSWERS, secure_filename(image_file.filename)))
-
+            folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
+            request.files["image"].save(folder_route)
         answers.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
@@ -130,10 +128,8 @@ def add_new_answer(question_id):
 
 @app.route("/question/<question_id>/<answer_id>/vote_up")
 def answer_vote_up(question_id, answer_id):
-    print("vote up")
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     target_answer = data_handler.find_answer(answers, question_id, answer_id)
-    print(target_answer)
     target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
     data_handler.edit_database(answers, target_answer, question_id)
     return redirect(f'/question/{question_id}')

@@ -4,3 +4,4 @@ id,submission_time,view_number,vote_number,title,message,image
 
 This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
 4,1622113792.97012,2,0,"No internet, how to make it work?","Since 3 day ago i dont have a working internet, download and upload are 1-2 kb/sec and the phone line is dead too. What to do?",
+
