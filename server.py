@@ -103,7 +103,6 @@ def question_vote_down(question_id):
 
 @app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
 def add_new_answer(question_id):
-    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     new_answer_id = data_handler.generate_id(answers)
 
@@ -130,10 +129,8 @@ def add_new_answer(question_id):
 
 @app.route("/question/<question_id>/<answer_id>/vote_up")
 def answer_vote_up(question_id, answer_id):
-    print("vote up")
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     target_answer = data_handler.find_answer(answers, question_id, answer_id)
-    print(target_answer)
     target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
     data_handler.edit_database(answers, target_answer, question_id)
     return redirect(f'/question/{question_id}')
