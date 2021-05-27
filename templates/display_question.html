@@ -43,9 +43,9 @@
                 {% if question.id == answer.question_id  %}
                 <tr>
                     <td>
-                        <p><a href="/question/{{ question.id }}/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                        <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
                         <p>{{ answer.vote_number }}</p>
-                        <p><a href="/question/{{ question.id }}/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                        <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td>{{ answer.message }}</td>
                     <td>
@@ -54,7 +54,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <p><a href="/question/{{ question.id }}/{{ answer.id }}/delete"><button>DELETE</button></a></p>
+                        <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
 
                     </td>
                 </tr>
