@@ -27,6 +27,7 @@ def display_question(question_id):
     if request.method == "GET":
         for question in questions:
             if question["id"] == question_id:
+                question["view_number"] = int(question["view_number"]) + 1
                 return render_template('display_question.html', question=question, answers=answers)
 
 

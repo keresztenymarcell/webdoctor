@@ -36,6 +36,33 @@
 
             <button>Sort</button>
     </p>
+
+    {% for question in questions %}
+
+        <table id="question_table">
+            <tr>
+                <td>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                <p>{{ question.vote_number }}</p>
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                </td>
+                <td><p><a href="/question/{{ question.id }}/edit"></a><button>EDIT</button></p>
+                    <p> {{ question.title }}</p>
+                    <p><a href="/question/{{ question.id }}"><button>ANSWER</button></a></p>
+                </td>
+                <td>
+                    <p>{{ question.message }}</p>
+                </td>
+
+
+
+
+
+
+            </tr>
+        </table>
+    {% endfor %}
+
     <table cellspacing="3" style="background-color:rgb(223, 17, 118); border-collapse: collapse;">
         <thead>
             <tr style="border-bottom: 1px solid black;">
