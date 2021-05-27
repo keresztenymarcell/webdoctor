@@ -4,17 +4,18 @@
 {% endblock %}
 
 {% block content %}
+
     <h1>Posting a new answer</h1>
     <form action="/question/{{ question_id }}/new_answer" method="post" enctype="multipart/form-data">
         <label for="message">Enter your answer here:</label><br>
-        <textarea name="message" rows="4" cols="50" placeholder="Your answer goes here" required></textarea><br>
+        <textarea name="message" rows="4" cols="50" placeholder="Your answer goes here" required></textarea><br><br>
 
         <label for="image">Upload image here (optional):</label><br>
         <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
-        <button type="submit">Post your answer</button>
+        <button type="submit">Post your answer</button><br><br>
+
+        <a href="/list" onclick="return confirm('Are you sure?')">
+        <button style="text-align: center">Return to main page</button></a>
     </form>
-    <br>
-    <a href="/list" onclick="return confirm('Are you sure?')">
-    <button>Return to main page</button></a>
 {% endblock %}
