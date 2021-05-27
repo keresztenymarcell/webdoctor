@@ -50,7 +50,7 @@ def write_questions():
 
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)
-        return redirect(url_for("display_question", question_id=question_id))
+        return redirect(url_for("display_question", question_id=get_data["id"]))
 
     return render_template('question.html')
 
@@ -124,6 +124,26 @@ def add_new_answer(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_answer.html', question_id=question_id)
+
+
+@app.route("/question/<question_id>/<answer_id>/vote_up")
+def answer_vote_up(question_id, answer_id):
+    print("vote up")
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+    target_answer = data_handler.find_answer(answers, question_id, answer_id)
+    print(target_answer)
+    target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
+    data_handler.edit_database(answers, target_answer, question_id)
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/question/<question_id>/<answer_id>/vote_down")
+def answer_vote_down(question_id, answer_id):
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+    target_answer = data_handler.find_answer(answers, question_id, answer_id)
+    target_answer["vote_number"] = int(target_answer["vote_number"]) - 1
+    data_handler.edit_database(answers, target_answer, question_id)
+    return redirect(f'/question/{question_id}')
 
 
 if __name__ == "__main__":
