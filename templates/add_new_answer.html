@@ -4,26 +4,6 @@
 {% endblock %}
 
 {% block content %}
-    <style>
-    h1 {font-family: Arial, Helvetica, sans-serif;
-        color: white;
-        background-color: magenta;
-        border-bottom-width: 22px;
-        border-bottom-style: solid;
-        margin-bottom: 0px;
-        border-bottom-color: magenta;
-        border-top-width: 22px;
-        border-top-style: solid;
-        margin-top: 0px;
-        border-top-color: magenta;
-        padding-left: 40px;}
-    body {font-family: Arial, Helvetica, sans-serif;
-        background-color: white;}
-    button {color: white;
-        background-color: magenta;
-        border-color: #ffb1ff;
-        border-width: 5px}
-    </style>
     <h1>Posting a new answer</h1>
     <form action="/question/{{ question_id }}/new_answer" method="post" enctype="multipart/form-data">
         <label for="message">Enter your answer here:</label><br>
