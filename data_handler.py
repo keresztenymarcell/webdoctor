@@ -42,18 +42,10 @@ def generate_id(database):
     return new_id
 
 
-def find_question(questions, question_id):
-    for question in questions:
-        if question["id"] == question_id:
-            return question
-    return None
-
-
-def find_answer(answers, question_id, answer_id):
-    for answer in answers:
-        if answer["question_id"] == question_id:
-            if answer["id"] == answer_id:
-                return answer
+def find_data(database, data_id):
+    for data in database:
+        if data["id"] == data_id:
+            return data
     return None
 
 

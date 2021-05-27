@@ -65,7 +65,7 @@ def edit_question(question_id):
         data_handler.edit_database(questions, edited_question, question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
-    target_question = data_handler.find_question(questions, question_id)
+    target_question = data_handler.find_data(questions, question_id)
     if target_question is None:
         return redirect(url_for("display_question", question_id=question_id))
     return render_template("question.html", question=target_question)
@@ -86,7 +86,7 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    target_question = data_handler.find_question(questions, question_id)
+    target_question = data_handler.find_data(questions, question_id)
     target_question["vote_number"] = int(target_question["vote_number"]) + 1
     data_handler.edit_database(questions, target_question, question_id)
     return redirect("/list")
@@ -95,7 +95,7 @@ def question_vote_up(question_id):
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    target_question = data_handler.find_question(questions, question_id)
+    target_question = data_handler.find_data(questions, question_id)
     target_question["vote_number"] = int(target_question["vote_number"]) - 1
     data_handler.edit_database(questions, target_question, question_id)
     return redirect("/list")
@@ -127,20 +127,22 @@ def add_new_answer(question_id):
     return render_template('add_new_answer.html', question_id=question_id)
 
 
-@app.route("/question/<question_id>/<answer_id>/vote_up")
-def answer_vote_up(question_id, answer_id):
+@app.route("/answer/<answer_id>/vote_up")
+def answer_vote_up(answer_id):
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_answer(answers, question_id, answer_id)
+    target_answer = data_handler.find_data(answers, answer_id)
     target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
+    question_id = target_answer["question_id"]
     data_handler.edit_database(answers, target_answer, question_id)
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/<answer_id>/vote_down")
-def answer_vote_down(question_id, answer_id):
+@app.route("/answer/<answer_id>/vote_down")
+def answer_vote_down(answer_id):
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_answer(answers, question_id, answer_id)
+    target_answer = data_handler.find_data(answers, answer_id)
     target_answer["vote_number"] = int(target_answer["vote_number"]) - 1
+    question_id = target_answer["question_id"]
     data_handler.edit_database(answers, target_answer, question_id)
     return redirect(f'/question/{question_id}')
 
