@@ -10,9 +10,9 @@
     <table id="question_table">
         <tr>
             <td>
-                <p><a href="/question/{{ question.id }}/vote_up">Up</a></p>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="10" height="10"></a></p>
                 <p>Votes: {{ question.vote_number }}</p>
-                <p><a href="/question/{{ question.id }}/vote_down">Down</a></p>
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote"></a></p>
             </td>
             <td>{{ question.message }}</td>
             <td>
