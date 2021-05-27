@@ -28,6 +28,7 @@ def display_question(question_id):
         for question in questions:
             if question["id"] == question_id:
                 question["view_number"] = int(question["view_number"]) + 1
+                connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
                 return render_template('display_question.html', question=question, answers=answers)
 
 
