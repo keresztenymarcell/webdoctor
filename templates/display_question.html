@@ -5,29 +5,19 @@
 {% block content%}
 
     <style>
-        .up_arrow{
-            transform: rotate(-90deg);
-        }
-        .down_arrow{
-            transform: rotate(90deg);
-        }
-        #table_row{
-            width:100%;
-            background-color: #A5D6D9;
-            border: 2px solid black;
-        }
+        .up_arrow{transform: rotate(-90deg);}
+        .down_arrow{transform: rotate(90deg);}
 
-        h4{
-            font-size: 23px;
-            color: #ffffff;
-        }
+        p {text-align: center;}
+
+        #buttons{text-align: center;}
     </style>
 
-    <h1>{{ question.title }}</h1><br>
-    <table id="question_table">
-        <tr id="table_row">
-            <td><h4>{{ question.message }}</h4></td>
-            <td>
+    <h2>{{ question.title }}</h2><br>
+    <table>
+        <tr>
+            <td><p><strong>{{ question.message }}</strong></p></td>
+            <td id="buttons">
                 <a href="/question/{{ question.id }}/edit">
                     <button>EDIT</button></a>
                 <a href="/question/{{ question.id }}/new_answer">
@@ -36,23 +26,20 @@
                     <button>DELETE</button></a>
             </td>
         </tr>
-    </table>
-
+    </table><br><br><br>
 
     <h2>Answers</h2>
-
     <table>
-
         <tbody>
             {% for answer in answers %}
                 {% if question.id == answer.question_id  %}
-                <tr id="table_row">
+                <tr>
                     <td>
                         <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
                         <p>{{ answer.vote_number }}</p>
                         <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
-                    <td style=""><h4>{{ answer.message }}</h4></td>
+                    <td ><p><strong>{{ answer.message }}</strong></p></td>
                     <td>
                         {% if answer.image  %}
                             <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
@@ -66,17 +53,11 @@
                 {% endif %}
 
             {% endfor %}
-
-
         </tbody>
 
-    </table>
+    </table><br><br>
 
-    <a href="/list" onclick="return confirm('Are you sure?')">
-    <button>Return to main page</button></a>
-
-
-
-
+    <p id="buttons"><a href="/list" onclick="return confirm('Are you sure?')">
+    <button>Return to main page</button></a></p>
 
 {% endblock %}
