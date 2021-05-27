@@ -7,6 +7,7 @@ ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Messag
 UPLOAD_FOLDER_QUESTIONS = "/static/pictures/question_pictures/"
 UPLOAD_FOLDER_ANSWERS = "/static/pictures/answer_pictures/"
 
+
 def sort_questions(order_by, order_direction):
     sorting = True if order_direction == 'desc' else False
     read_csvfile = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
@@ -44,8 +45,15 @@ def generate_id(database):
 def find_question(questions, question_id):
     for question in questions:
         if question["id"] == question_id:
-            target_question = question
-            return target_question
+            return question
+    return None
+
+
+def find_answer(answers, question_id, answer_id):
+    for answer in answers:
+        if answer["question_id"] == question_id:
+            if answer["id"] == answer_id:
+                return answer
     return None
 
 
