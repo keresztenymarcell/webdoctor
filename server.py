@@ -134,10 +134,6 @@ def answer_vote_up(answer_id):
     target_answer = data_handler.find_data(answers, answer_id)
     target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
     question_id = target_answer["question_id"]
-    print(answer_id)
-    print("answer_id")
-    print(target_answer["vote_number"])
-    print("next vote value")
     data_handler.edit_database(answers, target_answer, answer_id)
     return redirect(f'/question/{question_id}')
 
