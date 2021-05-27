@@ -79,8 +79,11 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+    target_answer = data_handler.find_data(answers, answer_id)
+    question_id = target_answer["question_id"]
     data_handler.delete_answer_by_id(answer_id)
-    return redirect(url_for("display_question", question_id=question_id))
+    return redirect(f'/question/{question_id}')
 
 
 @app.route("/question/<question_id>/vote_up")

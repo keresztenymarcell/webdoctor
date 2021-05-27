@@ -25,12 +25,12 @@ def delete_question_by_id(question_id):
 
 
 def delete_answer_by_id(answer_id):
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
         if answer_id == answer["id"]:
             answers.remove(answer)
     
-    connection.write_files(connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWERS_KEYS, answers))
+    connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
 
 def generate_id(database):
