@@ -56,6 +56,13 @@
                         <button>EDIT</button></a>
                     <a href="/question/{{ question.id }}">
                         <button>ANSWER</button></a>
+                    <p style="text-align: right">
+                        Views: {{ question.view_number }}</p>
+                </td>
+                <td style="width: 100%">
+                    {% if question.image  %}
+                            <img src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
+                        {% endif %}
                 </td>
             </tr>
         </table>

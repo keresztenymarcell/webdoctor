@@ -17,14 +17,14 @@ app = Flask(__name__)
 def list_page():
     order_by = request.args.get('order_by', 'submission_time')
     order_direction = request.args.get('order_direction', 'desc')
-    questions = data_handler.sort_questions(order_by, order_direction)
+    questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
     return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions, orderby=order_by, orderdir=order_direction)
 
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+    answers = data_handler.sort_data(connection.DATA_FILE_PATH_ANSWERS, "vote_number", "desc")
     if request.method == "GET":
         for question in questions:
             if question["id"] == question_id:
@@ -62,6 +62,7 @@ def edit_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     if request.method == 'POST':
         edited_question = request.form.to_dict()
+        edited_question["submission_time"] = time.time()
         data_handler.edit_database(questions, edited_question, question_id)
         return redirect(url_for("display_question", question_id=question_id))
 

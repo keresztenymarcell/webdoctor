@@ -40,9 +40,9 @@
                         <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td ><p><strong>{{ answer.message }}</strong></p></td>
-                    <td>
+                    <td style="text-align: center">
                         {% if answer.image  %}
-                            <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
+                            <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
                         {% endif %}
                     </td>
                     <td>

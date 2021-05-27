@@ -7,10 +7,10 @@ QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Titl
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
 
 
-def sort_questions(order_by, order_direction):
+def sort_data(filepath, order_by, order_direction):
     sorting = True if order_direction == 'desc' else False
-    read_csvfile = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if x[order_by].isdigit() else (1, x[order_by]), reverse=sorting)
+    read_csvfile = connection.open_csvfile(filepath)
+    sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if (x[order_by].isdigit() or x[order_by][0] == "-") else (1, x[order_by]), reverse=sorting)
     return sorted_listofdict
 
 
@@ -49,7 +49,6 @@ def find_data(database, data_id):
 
 
 def edit_database(database, edited_data, data_id):
-    edited_data["submission_time"] = time.time()
     for data_index in range(len(database)):
         if database[data_index]['id'] == data_id:
             database[data_index] = edited_data
