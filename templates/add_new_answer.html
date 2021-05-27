@@ -4,13 +4,17 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+    h1 {font-family: Arial, Helvetica, sans-serif; ;color: white;background-color: magenta;border-bottom-width: 22px;border-bottom-style: solid;margin-bottom: 0px;border-bottom-color: magenta;border-top-width: 22px;border-top-style: solid;margin-top: 0px;border-top-color: magenta; padding-left: 40px;}
+    body {font-family: Arial, Helvetica, sans-serif; background-color: white;}
+    button {color: white;background-color: magenta; border-color: #ffb1ff; border-width: 5px}
+    </style>
     <h1>Posting a new answer</h1>
-
     <form action="/question/{{ question_id }}/new_answer" method="post" enctype="multipart/form-data">
-        <label for="message">Enter your answer here:</label>
-        <textarea name="message" rows="4" cols="50" required></textarea>
+        <label for="message">Enter your answer here:</label><br>
+        <textarea name="message" rows="4" cols="50" placeholder="Your answer goes here" required></textarea><br>
 
-        <label for="image">Image:</label><br>
+        <label for="image">Upload image here (optional):</label><br>
         <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
         <button type="submit">Post your answer</button>
