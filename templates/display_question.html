@@ -5,39 +5,51 @@
 {% block content%}
 
 
-    <h1>Question:</h1>
-    <h3>{{ question.title }}</h3><br>
-    <a href="/question/{{ question.id }}/delete">Delete</a>
 
-    <h1>Detail:</h1>
-    <h3>{{ question.message }}</h3><br>
+    <h1>{{ question.title }}</h1><br>
+    <table id="question_table">
+        <tr>
+            <td>
+                <p><a href="/question/{{ question.id }}/vote_up">Up</a></p>
+                <p>Votes: {{ question.vote_number }}</p>
+                <p><a href="/question/{{ question.id }}/vote_down">Down</a></p>
+            </td>
+            <td>{{ question.message }}</td>
+            <td>
+                <a href="/question/{{ question.id }}/edit">
+                    <button>EDIT</button></a>
+                <a href="/question/{{ question.id }}/new_answer">
+                    <button>POST A NEW ANSWER</button></a>
+                <a href="/question/{{ question.id }}/delete" onclick="return confirm('Are you sure?')">
+                    <button>DELETE</button></a>
+            </td>
+        </tr>
+    </table>
 
+
+    <h2>Answers</h2>
 
     <table>
-        <tbody>
-        <thead>
-            <tr>
-                <th>Id:</th>
-                <th>Submission Time:</th>
-                <th>Vote Number:</th>
-                <th>Message:</th>
-                <th>Image:</th>
 
-            </tr>
-
-        </thead>
         <tbody>
             {% for answer in answers %}
                 {% if question.id == answer.question_id  %}
                 <tr>
-                    <td>{{ answer.id }}</td>
-                    <td>{{ answer.submission_time }}</td>
-                    <td>{{ answer.vote_number }}</td>
+                    <td>
+                        <p><a href="/answer/{{ answer_id }}/vote_up">Up</a></p>
+                        <p>{{ answer.vote_number }}</p>
+                        <p><a href="/answer/{{ answer_id }}/vote_up">Down</a></p>
+                    </td>
                     <td>{{ answer.message }}</td>
                     <td>
                         {% if answer.image  %}
                             <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
                         {% endif %}
+                    </td>
+                    <td><img src="/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture"></td>
+                    <td>
+                        <p><a href="/answer/{{ answer_id }}/delete"></a></p>
+                        <button>DELETE</button>
                     </td>
                 </tr>
                 {% endif %}
@@ -49,7 +61,7 @@
 
     </table>
 
-    <button><a href="/question/{{ question.id }}/new_answer">Post a new answer</a></button>
+
 
 
 
