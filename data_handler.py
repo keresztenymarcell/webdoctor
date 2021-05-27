@@ -52,10 +52,16 @@ def find_data(database, data_id):
 def edit_database(database, edited_data, data_id):
     edited_data["submission_time"] = time.time()
     for data_index in range(len(database)):
-        if database[data_index]["id"] == data_id:
+        print(data_index)
+        print(database[data_index])
+        print(data_id)
+        if database[data_index]['id'] == data_id:
             database[data_index] = edited_data
+            print(database[data_index])
+            print("1. if inside")
             if "question_id" in database[0].keys():
                 connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, database)
+                print("2. if inside")
             else:
                 connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
     return None
