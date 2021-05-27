@@ -3,6 +3,17 @@
 {% block title %}List of Questions{% endblock %}
 
 {% block content %}
+    <style>
+        .up_arrow{
+            transform: rotate(-90deg);
+        }
+        .down_arrow{
+            transform: rotate(90deg);
+
+
+        }
+    </style>
+
     <h1 style="text-align:center;">Vanda helps!</h1>
     <h3 style="text-align:center;">Ask your question</h3>
     <br>
@@ -46,20 +57,8 @@
                     <td>{{ question_input.view_number }}</td>
                     <td>{{ question_input.vote_number }}</td>
                     <td>
-                        <button
-                            formaction="/question/{{ question_input.id }}/vote_up"
-                            class="vote-btn"
-                            data-default-text="Vote This Dish Up!"
-                            data-alt-text="Thanks for Voting">
-                        <span class="icon"></span> <span class="text">Vote up</span>
-                        </button>
-                        <button
-                            formaction="/question/{{ question_input.id }}/vote_down"
-                            class="vote-btn"
-                            data-default-text="Vote This Dish Down!"
-                            data-alt-text="Thanks for Voting">
-                        <span class="icon"></span> <span class="text">Vote down</span>
-                        </button>
+                        <p><a href="/question/{{ question_input.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                        <p><a href="/question/{{ question_input.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td>{{ question_input.title }}</td>
                     <td>{{ question_input.message }}</td>
