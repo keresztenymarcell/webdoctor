@@ -11,6 +11,18 @@
             transform: rotate(90deg);
         }
 
+        .table_row{
+            width:100%;
+            background-color: #A5D6D9;
+            border: 2px solid black;
+        }
+
+        h4{
+            font-size: 23px;
+            color: #ffffff;
+        }
+
+
     </style>
 
     <h1>Vanda helps!</h1>
@@ -45,22 +57,21 @@
     </form>
     {% for question in questions %}
 
-        <table id="question_table">
-            <tr>
+        <table>
+            <tr class="table_row">
                 <td>
                 <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                <p>{{ question.vote_number }}</p>
+                <p style="text-align: center">{{ question.vote_number }}</p>
                 <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                 </td>
-                <td>
+
+                <td style="width: 100%">
+                    <h4> {{ question.title }}</h4>
+                    <p>{{ question.message }}</p>
                     <a href="/question/{{ question.id }}/edit">
                         <button>EDIT</button></a>
-                    <p> {{ question.title }}</p>
                     <a href="/question/{{ question.id }}">
                         <button>ANSWER</button></a>
-                </td>
-                <td>
-                    <p>{{ question.message }}</p>
                 </td>
             </tr>
         </table>

@@ -8,6 +8,15 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        .form{
+            color: white;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+    </style>
     {% if question %}
         <h1>Edit question</h1>
     {% else %}
@@ -27,6 +36,7 @@
         <input type="hidden" name="vote_number" value="{{ question.vote_number }}" >
         <input type="hidden" name="image" value="{{ question.image }}" >
     {% endif %}
+    <div class="form">
         <label for="title">Question title:<br></label>
         <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br>
 
@@ -41,6 +51,7 @@
     {% else %}
         <a href="/question/{{ question_id }}"><button type="submit">Display a question</button></a>
     {% endif %}
+    </div>
 
     </form>
 {% endblock %}

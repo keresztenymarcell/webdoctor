@@ -5,39 +5,44 @@
         <title>{% block title %}{% endblock %}</title>
         <style>
             {% block style %}
-                body {
+                body {background-image: url('/static/bg.jpeg');
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-color: #147CCEFF;
+
 
                 }
-                h1 {color:darkmagenta;
+                h1 {color: #ffffff;
                     font-size: 70px;
                     font-family: Arial, Helvetica, sans-serif;
                     text-align: center;
                     font-style: italic}
 
-                h2 {color:darkmagenta;
+                h2 {color: #ffffff;
                     font-size: 50px;
                     font-family: Arial, Helvetica, sans-serif;
                     text-align: center;}
 
-                h3 {color: magenta;
+                h3 {color: #ffffff;
                     font-size: 30px;
                     font-family: Arial, Helvetica, sans-serif;
                     text-align: center;}
 
-                button {color: white;
-                        font-family: Arial, Helvetica, sans-serif;
-                        background-color: magenta;
-                        border-color: #ffb1ff;
-                        border-width: 5px}
+                p { color: #ffffff;}
 
-                table {background-color:rgb(223, 17, 118);
-                        }
+                button {color: red;
+                        font-family: Arial, Helvetica, sans-serif;
+                        background-color: #debf0a;
+                        border-color: #dbcece;
+                        border-width: 5px;}
 
                 tr {border-bottom: 1px solid black;}
 
-                tbody {color:rgb(255, 255, 255);}
-
-                label {font-size:18px; font-family: Arial, Helvetica, sans-serif}
+                textarea{
+                font-family: Arial, Helvetica, sans-serif;
+                text-align: center;
+                }
 
             {% endblock %}
         </style>

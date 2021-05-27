@@ -11,17 +11,22 @@
         .down_arrow{
             transform: rotate(90deg);
         }
+        #table_row{
+            width:100%;
+            background-color: #A5D6D9;
+            border: 2px solid black;
+        }
+
+        h4{
+            font-size: 23px;
+            color: #ffffff;
+        }
     </style>
 
     <h1>{{ question.title }}</h1><br>
     <table id="question_table">
-        <tr>
-            <td>
-                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                <p>{{ question.vote_number }}</p>
-                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-            </td>
-            <td>{{ question.message }}</td>
+        <tr id="table_row">
+            <td><h4>{{ question.message }}</h4></td>
             <td>
                 <a href="/question/{{ question.id }}/edit">
                     <button>EDIT</button></a>
@@ -41,13 +46,13 @@
         <tbody>
             {% for answer in answers %}
                 {% if question.id == answer.question_id  %}
-                <tr>
+                <tr id="table_row">
                     <td>
                         <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
                         <p>{{ answer.vote_number }}</p>
                         <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
-                    <td>{{ answer.message }}</td>
+                    <td style=""><h4>{{ answer.message }}</h4></td>
                     <td>
                         {% if answer.image  %}
                             <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="100" alt="some picture">
