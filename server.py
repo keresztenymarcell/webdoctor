@@ -23,6 +23,7 @@ def list_page():
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
+    # questions = data_handler.get_all_questions()
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = data_handler.sort_data(connection.DATA_FILE_PATH_ANSWERS, "vote_number", "desc")
     if request.method == "GET":
@@ -40,15 +41,14 @@ def write_questions():
     if request.method == "POST":
 
         get_data = request.form.to_dict()
-        get_data["id"] = str(new_question_id)
-        get_data["submission_time"] = time.time()
-        get_data["view_number"] = 0
-        get_data["vote_number"] = 0
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_QUESTIONS + get_data["image"]
             request.files["image"].save(folder_route)
+
+        # function to add the question, I dont know exactly how to add image route yet.
+        # data_handler.add_new_question(get_data)
 
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)

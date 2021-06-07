@@ -2,6 +2,9 @@ import os.path
 
 import connection
 import database_common
+from datetime import datetime
+
+return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 import time
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
@@ -15,6 +18,17 @@ def sort_data(filepath, order_by, order_direction):
     return sorted_listofdict
 
 
+@database_common.connection_handler
+def add_new_question(cursor, question):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image
+                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s
+                     """,
+                     {'timestamp': timestamp, 'title': question['title'], 'message': question['message'], 'image': question['image']})
+
+
+
 def delete_question_by_id(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     for question in questions:
@@ -22,6 +36,33 @@ def delete_question_by_id(question_id):
             questions.remove(question)
 
     connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
+
+@database_common.connection_handler
+def get_all_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM questions
+                    """)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_by_id(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM questions
+                    WHERE id = %(id)s
+                    """,
+                   {'id': question_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_by_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM questions
+                    WHERE id = %(id)s
+                    """,
+                   {'id': answer_id})
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -65,6 +106,9 @@ def find_data(database, data_id):
         if data["id"] == data_id:
             return data
     return None
+
+def generate_timestamp():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def edit_database(database, edited_data, data_id):
