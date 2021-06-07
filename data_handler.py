@@ -4,8 +4,6 @@ import connection
 import database_common
 from datetime import datetime
 
-return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-import time
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
@@ -24,8 +22,18 @@ def add_new_question(cursor, question):
     cursor.execute("""
                      INSERT INTO question (submission_time, view_number, vote_number, title, message, image
                      VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s
-                     """,
-                     {'timestamp': timestamp, 'title': question['title'], 'message': question['message'], 'image': question['image']})
+                     """, {'timestamp': timestamp, 'title': question['title'], 'message': question['message'],
+                           'image': question['image']})
+
+
+@database_common.connection_handler
+def add_new_question(cursor, answer):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                     INSERT INTO answer (submission_time, vote_number, question_id, message, image
+                     VALUES (%(timestamp)s, 0, %(question_id)s, %(title)s, %(message)s, %(image)s
+                     """, {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
+                           'image': answer['image']})
 
 
 
