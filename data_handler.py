@@ -17,6 +17,17 @@ def sort_data(filepath, order_by, order_direction):
 
 
 @database_common.connection_handler
+def get_all_data(cursor, table, order_by, direction):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    ORDER BY {order_by} {direction}
+                    """)
+
+    return cursor.fetchall()
+
+
+
+@database_common.connection_handler
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""

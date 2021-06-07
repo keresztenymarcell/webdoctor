@@ -15,10 +15,17 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/list")
 def list_page():
-    order_by = request.args.get('order_by', 'submission_time')
-    order_direction = request.args.get('order_direction', 'desc')
-    questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
-    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions, orderby=order_by, orderdir=order_direction)
+
+    # new sorting
+    order_by = request.args.get('order_by')
+    order_direction = request.args.get('order_direction')
+    questions = data_handler.get_all_data('question', order_by, order_direction)
+
+    # old
+    # questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
+
+    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS,
+                           questions=questions, orderby=order_by, orderdir=order_direction)
 
 
 @app.route("/question/<question_id>")
