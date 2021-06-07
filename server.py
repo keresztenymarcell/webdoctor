@@ -68,10 +68,18 @@ def write_questions():
 def edit_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     if request.method == 'POST':
+
         edited_question = request.form.to_dict()
-        edited_question["submission_time"] = time.time()
+        
+        # new edit function
+        # data_handler.edit_question(question_id, edited_question)
+
+        # old one
         data_handler.edit_database(questions, edited_question, question_id)
         return redirect(url_for("display_question", question_id=question_id))
+
+    # SQL
+    # target_question = data_handler.get_question_by_id(question_id)
 
     target_question = data_handler.find_data(questions, question_id)
     if target_question is None:

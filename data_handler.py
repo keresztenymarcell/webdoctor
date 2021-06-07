@@ -26,7 +26,6 @@ def get_all_data(cursor, table, order_by, direction):
     return cursor.fetchall()
 
 
-
 @database_common.connection_handler
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
@@ -66,13 +65,21 @@ def get_question_by_id(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_question_by_id(cursor, answer_id):
+def get_answer_by_id(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM questions
+                    SELECT * FROM answer
                     WHERE id = %(id)s
                     """,
                    {'id': answer_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def edit_question(cursor, question_id, edited):
+    cursor.execute(f"""
+                    UPDATE question
+                    SET title = {edited['title']}, message = {edited['message']}
+                    WHERE id = {question_id}
+                   """)
 
 
 @database_common.connection_handler
