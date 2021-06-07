@@ -17,6 +17,16 @@ def sort_data(filepath, order_by, order_direction):
 
 
 @database_common.connection_handler
+def get_last_five_questions_by_time(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5;
+                    """)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_all_data(cursor, table, order_by, direction):
     cursor.execute(f"""
                     SELECT * FROM {table}
