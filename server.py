@@ -70,7 +70,7 @@ def edit_question(question_id):
     if request.method == 'POST':
 
         edited_question = request.form.to_dict()
-        
+
         # new edit function
         # data_handler.edit_question(question_id, edited_question)
 
@@ -90,15 +90,20 @@ def edit_question(question_id):
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     data_handler.delete_question_by_id(question_id)
+
+    # SQL
+    # data_handler.delete_question_by_id_sql(question_id)
     return redirect("/list")
 
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_data(answers, answer_id)
+
+    # SQL DONE not tested
+    target_answer = data_handler.get_answer_by_id(answer_id)
     question_id = target_answer["question_id"]
-    data_handler.delete_answer_by_id(answer_id)
+    data_handler.delete_answer_by_id_sql(answer_id)
+
     return redirect(f'/question/{question_id}')
 
 
