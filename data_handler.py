@@ -1,6 +1,7 @@
 import os.path
 
 import connection
+import database_common
 import time
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
@@ -23,6 +24,15 @@ def delete_question_by_id(question_id):
     connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
 
 
+@database_common.connection_handler
+def delete_question_by_id_sql(cursor, question_id):
+    cursor.execute("""
+                    DELETE from question
+                    WHERE id = %(id)s
+                   """,
+                   {'id': question_id})
+
+
 def delete_answer_by_id(answer_id):
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
@@ -30,6 +40,15 @@ def delete_answer_by_id(answer_id):
             answers.remove(answer)
     
     connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
+
+
+@database_common.connection_handler
+def delete_answer_by_id_sql(cursor, answer_id):
+    cursor.execute("""
+                    DELETE from answer
+                    WHERE id = %(id)s
+                   """,
+                   {'id': answer_id})
 
 
 def generate_id(database):
@@ -57,3 +76,7 @@ def edit_database(database, edited_data, data_id):
             else:
                 connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
     return None
+
+
+
+
