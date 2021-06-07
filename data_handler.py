@@ -27,7 +27,7 @@ def add_new_question(cursor, question):
 
 
 @database_common.connection_handler
-def add_new_question(cursor, answer):
+def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
                      INSERT INTO answer (submission_time, vote_number, question_id, message, image
@@ -35,15 +35,6 @@ def add_new_question(cursor, answer):
                      """, {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
                            'image': answer['image']})
 
-
-
-def delete_question_by_id(question_id):
-    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
-    for question in questions:
-        if question_id == question["id"]:
-            questions.remove(question)
-
-    connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
 
 @database_common.connection_handler
 def get_all_questions(cursor):
@@ -82,6 +73,25 @@ def delete_question_by_id_sql(cursor, question_id):
                    {'id': question_id})
 
 
+@database_common.connection_handler
+def delete_answer_by_id_sql(cursor, answer_id):
+    cursor.execute("""
+                    DELETE from answer
+                    WHERE id = %(id)s
+                   """,
+                   {'id': answer_id})
+
+
+@database_common.connection_handler
+def increment_view_number(cursor, question_id):
+    cursor.execute("""
+                   UPDATE question
+                   SET view_number = (SELECT view_number FROM question
+                                      WHERE id = %(question_id)s) + 1
+                   WHERE id=%(question_id)s
+                   """, {'question_id': question_id})
+
+
 def delete_answer_by_id(answer_id):
     answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
@@ -91,13 +101,16 @@ def delete_answer_by_id(answer_id):
     connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
 
 
-@database_common.connection_handler
-def delete_answer_by_id_sql(cursor, answer_id):
-    cursor.execute("""
-                    DELETE from answer
-                    WHERE id = %(id)s
-                   """,
-                   {'id': answer_id})
+def delete_question_by_id(question_id):
+    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    for question in questions:
+        if question_id == question["id"]:
+            questions.remove(question)
+
+    connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
+
+
+
 
 
 def generate_id(database):
