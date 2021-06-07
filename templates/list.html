@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}List of Questions{% endblock %}
+
+{% block content %}
+    <style>
+        .up_arrow{transform: rotate(-90deg);}
+        .down_arrow{transform: rotate(90deg);}
+        h4{color: blue;}
+    </style>
+
+    <h1>Ásóka helps!</h1>
+    <h3>Ask your question</h3>
+    <br>
+    <form action="/list" method="get">
+    <p style="text-align:right;">
+        <label style="color:white">Sort by:</label>
+            <select name="order_by">
+                {% for option_index in range(header|length) %}
+                    {% if header[option_index] != "Image" %}
+                        {% if keys[option_index] == orderby %}
+                            <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
+                        {% else %}
+                            <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="order_direction">
+                {% if orderdir == "desc" %}
+                    <option value="desc" selected>Descending</option>
+                    <option value="asc">Ascending</option>
+                {% else %}
+                    <option value="desc">Descending</option>
+                    <option value="asc" selected>Ascending</option>
+                {% endif %}
+            </select>
+
+            <button>Sort</button>
+    </p>
+    </form>
+    {% for question in questions %}
+
+        <table>
+            <tr>
+                <td>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                <p style="text-align: center">{{ question.vote_number }}</p>
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                </td>
+
+                <td style="width: 100%">
+                    <h4> {{ question.title }}</h4>
+                    <p>{{ question.message }}</p>
+                    <a href="/question/{{ question.id }}/edit">
+                        <button>EDIT</button></a>
+                    <a href="/question/{{ question.id }}">
+                        <button>ANSWER</button></a>
+                    <p style="text-align: right">
+                        Views: {{ question.view_number }}</p>
+                </td>
+                <td style="width: 100%">
+                    {% if question.image  %}
+                            <img src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
+                        {% endif %}
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+    <p><a href="/add-question"><button>Add questions</button></a></p>
+{% endblock%}
