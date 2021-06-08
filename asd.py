@@ -1,9 +1,12 @@
-# Creates a decorator to handle the database connection/cursor opening/closing.
-# Creates the cursor with RealDictCursor, thus it returns real dictionaries, where the column names are the keys.
 import os
 
 import psycopg2
 import psycopg2.extras
+
+DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
+DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
+QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 def get_connection_string():
@@ -50,3 +53,5 @@ def connection_handler(function):
         return ret_value
 
     return wrapper
+    
+
