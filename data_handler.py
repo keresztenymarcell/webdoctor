@@ -1,13 +1,16 @@
 import os.path
 
 import asd
-import conection
+import connection
 from datetime import datetime
 
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
-
+DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
+DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
+QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 
@@ -18,7 +21,7 @@ def sort_data(filepath, order_by, order_direction):
     return sorted_listofdict
 
 
-@conection.connection_handler
+@connection.connection_handler
 def get_last_five_questions_by_time(cursor):
     cursor.execute("""
                     SELECT * FROM question
@@ -28,7 +31,7 @@ def get_last_five_questions_by_time(cursor):
     return cursor.fetchall()
 
 
-@conection.connection_handler
+@connection.connection_handler
 def get_all_data(cursor, table, order_by, direction):
     cursor.execute(f"""
                     SELECT * FROM {table}
@@ -38,7 +41,7 @@ def get_all_data(cursor, table, order_by, direction):
     return cursor.fetchall()
 
 
-@conection.connection_handler
+@connection.connection_handler
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -48,7 +51,7 @@ def add_new_question(cursor, question):
                            'image': question['image']})
 
 
-@conection.connection_handler
+@connection.connection_handler
 def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -58,7 +61,7 @@ def add_new_answer(cursor, answer):
                            'image': answer['image']})
 
 
-@conection.connection_handler
+@connection.connection_handler
 def get_all_questions(cursor):
     cursor.execute("""
                     SELECT * FROM questions
@@ -66,7 +69,7 @@ def get_all_questions(cursor):
     return cursor.fetchall()
 
 
-@conection.connection_handler
+@connection.connection_handler
 def get_question_by_id(cursor, question_id):
     cursor.execute("""
                     SELECT * FROM questions
@@ -76,7 +79,7 @@ def get_question_by_id(cursor, question_id):
     return cursor.fetchall()
 
 
-@conection.connection_handler
+@connection.connection_handler
 def get_answer_by_id(cursor, answer_id):
     cursor.execute("""
                     SELECT * FROM answer
@@ -86,7 +89,7 @@ def get_answer_by_id(cursor, answer_id):
     return cursor.fetchall()
 
 
-@conection.connection_handler
+@connection.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
                     UPDATE question
@@ -95,7 +98,7 @@ def edit_question(cursor, question_id, edited):
                    """)
 
 
-@conection.connection_handler
+@connection.connection_handler
 def delete_question_by_id_sql(cursor, question_id):
     cursor.execute("""
                     DELETE from question
@@ -104,7 +107,7 @@ def delete_question_by_id_sql(cursor, question_id):
                    {'id': question_id})
 
 
-@conection.connection_handler
+@connection.connection_handler
 def delete_answer_by_id_sql(cursor, answer_id):
     cursor.execute("""
                     DELETE from answer
@@ -113,7 +116,7 @@ def delete_answer_by_id_sql(cursor, answer_id):
                    {'id': answer_id})
 
 
-@conection.connection_handler
+@connection.connection_handler
 def increment_view_number(cursor, question_id):
     cursor.execute("""
                    UPDATE question
