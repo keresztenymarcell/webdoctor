@@ -15,14 +15,22 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/list")
 def list_page():
-    order_by = request.args.get('order_by', 'submission_time')
-    order_direction = request.args.get('order_direction', 'desc')
-    questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
-    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS, questions=questions, orderby=order_by, orderdir=order_direction)
+
+    # new sorting
+    order_by = request.args.get('order_by')
+    order_direction = request.args.get('order_direction')
+    questions = data_handler.get_all_data('question', order_by, order_direction)
+
+    # old
+    # questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
+
+    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=connection.QUESTION_KEYS,
+                           questions=questions, orderby=order_by, orderdir=order_direction)
 
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
+    # questions = data_handler.get_all_questions()
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     answers = data_handler.sort_data(connection.DATA_FILE_PATH_ANSWERS, "vote_number", "desc")
     if request.method == "GET":
@@ -40,15 +48,14 @@ def write_questions():
     if request.method == "POST":
 
         get_data = request.form.to_dict()
-        get_data["id"] = str(new_question_id)
-        get_data["submission_time"] = time.time()
-        get_data["view_number"] = 0
-        get_data["vote_number"] = 0
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_QUESTIONS + get_data["image"]
             request.files["image"].save(folder_route)
+
+        # function to add the question, I dont know exactly how to add image route yet.
+        # data_handler.add_new_question(get_data)
 
         questions.append(get_data)
         connection.write_files(connection.DATA_FILE_PATH_QUESTIONS,connection.QUESTION_KEYS,questions)
@@ -61,10 +68,18 @@ def write_questions():
 def edit_question(question_id):
     questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
     if request.method == 'POST':
+
         edited_question = request.form.to_dict()
-        edited_question["submission_time"] = time.time()
+
+        # new edit function
+        # data_handler.edit_question(question_id, edited_question)
+
+        # old one
         data_handler.edit_database(questions, edited_question, question_id)
         return redirect(url_for("display_question", question_id=question_id))
+
+    # SQL
+    # target_question = data_handler.get_question_by_id(question_id)
 
     target_question = data_handler.find_data(questions, question_id)
     if target_question is None:
@@ -75,15 +90,20 @@ def edit_question(question_id):
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     data_handler.delete_question_by_id(question_id)
+
+    # SQL
+    # data_handler.delete_question_by_id_sql(question_id)
     return redirect("/list")
 
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_data(answers, answer_id)
+
+    # SQL DONE not tested
+    target_answer = data_handler.get_answer_by_id(answer_id)
     question_id = target_answer["question_id"]
-    data_handler.delete_answer_by_id(answer_id)
+    data_handler.delete_answer_by_id_sql(answer_id)
+
     return redirect(f'/question/{question_id}')
 
 
