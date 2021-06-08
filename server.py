@@ -146,13 +146,13 @@ def answer_vote_down(answer_id):
 
 
 @app.route("/search")
-def list_page():
+def search_page():
 
     search_phrase = request.args.get('q')
 
     if search_phrase:
         found_questions = data_handler.search_table('question', search_phrase)
-        found_answers = data_handler.search_table('question', search_phrase)
+        found_answers = data_handler.search_table('answer', search_phrase)
         # nothing found needs handling in html: '0 matches found'
         return render_template('results.html', questions=found_questions, answers=found_answers)
     return redirect('/list')

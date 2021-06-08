@@ -152,7 +152,7 @@ def search_table(cursor, table, phrase, order='submission_time'):
                     WHERE 
                         EXISTS (SELECT * FROM question WHERE title LIKE '%{phrase}%')
                         OR message LIKE '%{phrase}%'
-                    ORDER_BY {order}
+                    ORDER BY {order}
                     """)
     return cursor.fetchall()
 
