@@ -83,6 +83,7 @@ def get_answer_by_id(cursor, answer_id):
                    {'id': answer_id})
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
