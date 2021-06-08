@@ -157,6 +157,14 @@ def search_table(cursor, table, phrase, order='submission_time'):
     return cursor.fetchall()
 
 
+def highlight_search_phrase(datatable, phrase):
+    for entry_index in range(len(datatable)):
+        if 'title' in datatable:
+            datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
+    return datatable
+
+
 def delete_answer_by_id(answer_id):
     answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
