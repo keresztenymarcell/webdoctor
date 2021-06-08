@@ -107,24 +107,25 @@ def question_vote_down(question_id):
 
 @app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
 def add_new_answer(question_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    new_answer_id = data_handler.generate_id(answers)
+    
+
 
     if request.method == "POST":
         get_data = request.form.to_dict()
-        get_data["id"] = new_answer_id
-        get_data["submission_time"] = time.time()
-        get_data["vote_number"] = 0
-        get_data["question_id"] = question_id
+       
+       
+        
+        
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
             request.files["image"].save(folder_route)
-        answers.append(get_data)
-        asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
+
+        data_handler.add_new_answer(get_data)
 
         return redirect(url_for("display_question", question_id=question_id))
+
 
     return render_template('add_new_answer.html', question_id=question_id)
 
