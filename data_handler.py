@@ -1,22 +1,27 @@
 import os.path
 
+import asd
 import connection
-import database_common
 from datetime import datetime
 
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
+DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
+DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
+QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
 
 
 def sort_data(filepath, order_by, order_direction):
     sorting = True if order_direction == 'desc' else False
-    read_csvfile = connection.open_csvfile(filepath)
+    read_csvfile = asd.open_csvfile(filepath)
     sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if (x[order_by].isdigit() or x[order_by][0] == "-") else (1, x[order_by]), reverse=sorting)
     return sorted_listofdict
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_last_five_questions_by_time(cursor):
     cursor.execute("""
                     SELECT * FROM question
@@ -26,7 +31,7 @@ def get_last_five_questions_by_time(cursor):
     return cursor.fetchall()
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_all_data(cursor, table, order_by, direction):
     cursor.execute(f"""
                     SELECT * FROM {table}
@@ -36,7 +41,7 @@ def get_all_data(cursor, table, order_by, direction):
     return cursor.fetchall()
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -46,7 +51,7 @@ def add_new_question(cursor, question):
                            'image': question['image']})
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -56,7 +61,7 @@ def add_new_answer(cursor, answer):
                            'image': answer['image']})
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_all_questions(cursor):
     cursor.execute("""
                     SELECT * FROM questions
@@ -64,7 +69,7 @@ def get_all_questions(cursor):
     return cursor.fetchall()
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_question_by_id(cursor, question_id):
     cursor.execute("""
                     SELECT * FROM questions
@@ -74,7 +79,7 @@ def get_question_by_id(cursor, question_id):
     return cursor.fetchall()
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_answer_by_id(cursor, answer_id):
     cursor.execute("""
                     SELECT * FROM answer
@@ -84,7 +89,7 @@ def get_answer_by_id(cursor, answer_id):
     return cursor.fetchall()
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
                     UPDATE question
@@ -93,7 +98,7 @@ def edit_question(cursor, question_id, edited):
                    """)
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def delete_question_by_id_sql(cursor, question_id):
     cursor.execute("""
                     DELETE from question
@@ -102,7 +107,7 @@ def delete_question_by_id_sql(cursor, question_id):
                    {'id': question_id})
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def delete_answer_by_id_sql(cursor, answer_id):
     cursor.execute("""
                     DELETE from answer
@@ -111,7 +116,7 @@ def delete_answer_by_id_sql(cursor, answer_id):
                    {'id': answer_id})
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def increment_view_number(cursor, question_id):
     cursor.execute("""
                    UPDATE question
@@ -122,21 +127,21 @@ def increment_view_number(cursor, question_id):
 
 
 def delete_answer_by_id(answer_id):
-    answers = connection.open_csvfile(connection.DATA_FILE_PATH_ANSWERS)
+    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
         if answer_id == answer["id"]:
             answers.remove(answer)
     
-    connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, answers)
+    asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
 
 
 def delete_question_by_id(question_id):
-    questions = connection.open_csvfile(connection.DATA_FILE_PATH_QUESTIONS)
+    questions = asd.open_csvfile(asd.DATA_FILE_PATH_QUESTIONS)
     for question in questions:
         if question_id == question["id"]:
             questions.remove(question)
 
-    connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, questions)
+    asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, questions)
 
 
 
@@ -166,9 +171,9 @@ def edit_database(database, edited_data, data_id):
         if database[data_index]['id'] == data_id:
             database[data_index] = edited_data
             if "question_id" in database[0].keys():
-                connection.write_files(connection.DATA_FILE_PATH_ANSWERS, connection.ANSWER_KEYS, database)
+                asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, database)
             else:
-                connection.write_files(connection.DATA_FILE_PATH_QUESTIONS, connection.QUESTION_KEYS, database)
+                asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, database)
     return None
 
 
