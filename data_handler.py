@@ -64,7 +64,7 @@ def add_new_answer(cursor, answer):
 @connection.connection_handler
 def get_all_questions(cursor):
     cursor.execute("""
-                    SELECT * FROM questions
+                    SELECT * FROM question
                     """)
     return cursor.fetchall()
 
@@ -72,7 +72,7 @@ def get_all_questions(cursor):
 @connection.connection_handler
 def get_question_by_id(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM questions
+                    SELECT * FROM question
                     WHERE id = %(id)s
                     """,
                    {'id': question_id})
@@ -124,6 +124,25 @@ def increment_view_number(cursor, question_id):
                                       WHERE id = %(question_id)s) + 1
                    WHERE id=%(question_id)s
                    """, {'question_id': question_id})
+
+
+@connection.connection_handler
+def increment_vote_number(cursor, table, specific_id, increment):  # table: question, answer; increment: 1, -1
+    cursor.execute(f"""
+                   UPDATE {table}
+                   SET vote_number = vote_number + {increment}
+                   WHERE id = {specific_id}
+                   """)
+
+
+@connection.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question_id FROM answer
+                    WHERE id = %(answer_id)s
+                    """,
+                   {'answer_id': answer_id})
+    return cursor.fetchall()
 
 
 def delete_answer_by_id(answer_id):

@@ -4,7 +4,6 @@ import data_handler, asd
 import time
 import os
 
-import connection
 
 DIRNAME = os.path.dirname(__file__)
 UPLOAD_FOLDER_QUESTIONS = DIRNAME + "/static/pictures/question_pictures/"
@@ -94,19 +93,13 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
-    questions = asd.open_csvfile(asd.DATA_FILE_PATH_QUESTIONS)
-    target_question = data_handler.find_data(questions, question_id)
-    target_question["vote_number"] = int(target_question["vote_number"]) + 1
-    data_handler.edit_database(questions, target_question, question_id)
+    data_handler.increment_vote_number('question', question_id, 1)
     return redirect("/list")
 
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
-    questions = asd.open_csvfile(asd.DATA_FILE_PATH_QUESTIONS)
-    target_question = data_handler.find_data(questions, question_id)
-    target_question["vote_number"] = int(target_question["vote_number"]) - 1
-    data_handler.edit_database(questions, target_question, question_id)
+    data_handler.increment_vote_number('question', question_id, -1)
     return redirect("/list")
 
 
@@ -136,21 +129,19 @@ def add_new_answer(question_id):
 
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_data(answers, answer_id)
-    target_answer["vote_number"] = int(target_answer["vote_number"]) + 1
-    question_id = target_answer["question_id"]
-    data_handler.edit_database(answers, target_answer, answer_id)
+    data_handler.increment_vote_number('answer', answer_id, 1)
+    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = question_id["question_id"]
+
     return redirect(f'/question/{question_id}')
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    target_answer = data_handler.find_data(answers, answer_id)
-    target_answer["vote_number"] = int(target_answer["vote_number"]) - 1
-    question_id = target_answer["question_id"]
-    data_handler.edit_database(answers, target_answer, answer_id)
+    data_handler.increment_vote_number('answer', answer_id, -1)
+    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = question_id["question_id"]
+
     return redirect(f'/question/{question_id}')
 
 
