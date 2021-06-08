@@ -4,22 +4,16 @@ import data_handler, asd
 import time
 import os
 
-
 DIRNAME = os.path.dirname(__file__)
 UPLOAD_FOLDER_QUESTIONS = DIRNAME + "/static/pictures/question_pictures/"
 UPLOAD_FOLDER_ANSWERS = DIRNAME + "/static/pictures/answer_pictures/"
-
 
 app = Flask(__name__)
 
 
 @app.route("/")
-
-
-
 @app.route("/list")
 def list_page():
-
     # new sorting
     order_by = request.args.get('order_by', 'submission_time')
     order_direction = request.args.get('order_direction', 'desc')
@@ -34,7 +28,6 @@ def list_page():
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
-
     question = data_handler.get_question_by_id(question_id)
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
@@ -44,7 +37,6 @@ def display_question(question_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def write_questions():
-
     if request.method == "POST":
 
         get_data = request.form.to_dict()
@@ -64,7 +56,6 @@ def write_questions():
 def edit_question(question_id):
     questions = data_handler.get_all_questions()
     if request.method == 'POST':
-
         edited_question = request.form.to_dict()
         data_handler.edit_question(question_id, edited_question)
         return redirect(url_for("display_question", question_id=question_id))
@@ -75,7 +66,6 @@ def edit_question(question_id):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-
     data_handler.delete_question_by_id_sql(question_id)
 
     return redirect("/list")
@@ -83,7 +73,6 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-
     target_answer = data_handler.get_answer_by_id(answer_id)
     question_id = target_answer["question_id"]
     data_handler.delete_answer_by_id_sql(answer_id)
@@ -103,24 +92,17 @@ def question_vote_down(question_id):
     return redirect("/list")
 
 
-@app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
+@app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
 def add_new_answer(question_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    new_answer_id = data_handler.generate_id(answers)
-
     if request.method == "POST":
         get_data = request.form.to_dict()
-        get_data["id"] = new_answer_id
-        get_data["submission_time"] = time.time()
-        get_data["vote_number"] = 0
-        get_data["question_id"] = question_id
 
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
             request.files["image"].save(folder_route)
-        answers.append(get_data)
-        asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
+
+        data_handler.add_new_answer(get_data)
 
         return redirect(url_for("display_question", question_id=question_id))
 
