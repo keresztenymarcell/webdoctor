@@ -123,6 +123,15 @@ def edit_comment(cursor, comment_id, edited):
 
 
 @connection.connection_handler
+def delete_comment(cursor, comment_id):
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE id = %(comment_id)s
+                    """,
+                   {'comment_id': comment_id})
+
+
+@connection.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
                     UPDATE question

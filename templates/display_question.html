@@ -24,7 +24,7 @@
                     <button>POST A NEW ANSWER</button></a>
                 <a href="/question/{{ question.id }}/delete" onclick="return confirm('Are you sure?')">
                     <button>DELETE</button></a>
-                <button style="font-size:24px"><i class="fa fa-trash-o"></i></button>
+                <button style="font-size:24px"><i class="fa fa-trash-o"></i><a href="/comment/{{ comment.id }}/delete"></a><i class="fa fa-trash-o"></i></button>
             </td>
         </tr>
     </table><br><br><br>

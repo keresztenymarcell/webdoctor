@@ -173,6 +173,15 @@ def edit_comment(comment_id):
     return render_template("edit_comment.html", comment=comment)
 
 
+@app.route("/comment/<comment_id>/delete")
+def delete_comment(comment_id):
+    data_handler.delete_comment_by_id(comment_id)
+    comment = data_handler.get_comment_by_id(comment_id)
+    question_id = comment["question_id"]
+    # check if comment is passed as argument
+    return redirect(url_for("display_question", question_id=question_id))
+
+
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
     data_handler.increment_vote_number('answer', answer_id, 1)
