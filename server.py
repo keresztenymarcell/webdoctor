@@ -159,9 +159,14 @@ def search_page():
     if search_phrase:
         found_questions = data_handler.search_table('question', search_phrase)
         found_answers = data_handler.search_table('answer', search_phrase)
-        # nothing found needs handling in html: '0 matches found'
+        if len(found_questions) != 0:
+            found_questions = data_handler.highlight_search_phrase(found_questions, search_phrase)
+        if len(found_answers) != 0:
+            found_answers = data_handler.highlight_search_phrase(found_answers, search_phrase)
+
         return render_template('results.html', questions=found_questions, answers=found_answers)
     return redirect('/list')
+
 
 if __name__ == "__main__":
     app.run(

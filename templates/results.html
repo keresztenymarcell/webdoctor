@@ -32,12 +32,8 @@
                     </td>
 
                     <td style="width: 100%">
-                        <h4> {{ question.title }}</h4>
-                        <p>{{ question.message }}</p>
-                        <a href="/question/{{ question.id }}/edit">
-                            <button>EDIT</button></a>
-                        <a href="/question/{{ question.id }}">
-                            <button>ANSWER</button></a>
+                        <h4> {{ question.title | safe }}</h4>
+                        <p>{{ question.message | safe }}</p>
                         <p style="text-align: right">
                             Views: {{ question.view_number }}</p>
                     </td>
@@ -57,7 +53,7 @@
                                 <p>{{ answer.vote_number }}</p>
                                 <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                                 </td>
-                                <td ><p><strong>{{ answer.message }}</strong></p></td>
+                                <td ><p><strong>{{ answer.message | safe }}</strong></p></td>
                                 <td style="text-align: center">
                                 {% if answer.image  %}
                                     <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
@@ -85,7 +81,7 @@
                                     <p>{{ answer.vote_number }}</p>
                                     <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                                     </td>
-                                    <td ><p><strong>{{ answer.message }}</strong></p></td>
+                                    <td ><p><strong>{{ answer.message | safe}}</strong></p></td>
                                     <td style="text-align: center">
                                     {% if answer.image  %}
                                         <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
@@ -102,7 +98,7 @@
                                 <p>{{ answer.vote_number }}</p>
                                 <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                                 </td>
-                                <td ><p><strong>{{ answer.message }}</strong></p></td>
+                                <td ><p><strong>{{ answer.message | safe }}</strong></p></td>
                                 <td style="text-align: center">
                                 {% if answer.image  %}
                                     <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">

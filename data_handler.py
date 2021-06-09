@@ -55,7 +55,7 @@ def add_new_question(cursor, question):
 def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
-                     INSERT INTO answer (submission_time, vote_number, question_id, message, image
+                     INSERT INTO answer (submission_time, vote_number, question_id, message, image)
                      VALUES (%(timestamp)s, 0, %(question_id)s, %(title)s, %(message)s, %(image)s
                      """, {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
                            'image': answer['image']})
@@ -157,6 +157,14 @@ def search_table(cursor, table, phrase, order='submission_time'):
     return cursor.fetchall()
 
 
+def highlight_search_phrase(datatable, phrase):
+    for entry_index in range(len(datatable)):
+        if 'title' in datatable[entry_index]:
+            datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['message'] = datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
+    return datatable
+
+
 @connection.connection_handler
 def add_new_comment(cursor, comment):
     timestamp = generate_timestamp()
@@ -218,5 +226,16 @@ def edit_database(database, edited_data, data_id):
     return None
 
 
-
+@connection.connection_handler
+def add_new_comment_to_question(cursor, comment_dict):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                        INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count)
+                        VALUES(%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);
+                        """,
+                       {'question_id': comment_dict['question_id'],
+                        'answer_id': comment_dict['answer_id'],
+                        'message': comment_dict['message'],
+                        'submission_time': timestamp,
+                        'edited_count': comment_dict['edited_count']})
 
