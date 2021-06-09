@@ -159,9 +159,9 @@ def search_table(cursor, table, phrase, order='submission_time'):
 
 def highlight_search_phrase(datatable, phrase):
     for entry_index in range(len(datatable)):
-        if 'title' in datatable:
+        if 'title' in datatable[entry_index]:
             datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
-        datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['message'] = datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
     return datatable
 
 
