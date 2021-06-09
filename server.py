@@ -127,6 +127,19 @@ def add_new_answer(question_id):
     return render_template('add_new_answer.html', question_id=question_id)
 
 
+@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+def add_new_comment_to_question(question_id):
+    if request.method == "POST":
+        new_comment = {'question_id': question_id,
+                       'answer_id': None,
+                       'message': request.form.get("new-comment"),
+                       'edited_count': 0}
+        data_handler.add_new_comment_to_question(new_comment)
+        return redirect(url_for("display_question", question_id=question_id))
+
+    return render_template('add_new_comment.html', question_id=question_id)
+
+
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
     data_handler.increment_vote_number('answer', answer_id, 1)
