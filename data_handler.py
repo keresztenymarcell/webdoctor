@@ -83,7 +83,8 @@ def get_question_by_id(cursor, question_id):
 @connection.connection_handler
 def get_answer_by_id(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT * 
+                    FROM answer
                     WHERE id = %(id)s
                     """,
                    {'id': answer_id})
@@ -132,13 +133,16 @@ def edit_question(cursor, question_id, edited):
 
 
 @connection.connection_handler
-def edit_answer(cursor, answer_id, edited):
+def edit_answer(cursor, edited):
     cursor.execute(f"""
                     UPDATE answer
-                    SET message = {edited['message']}, image = {edited['image']}
-                    WHERE id = {answer_id}
-                   """)
-
+                    SET message=%(message)s, image=%(image)s
+                    WHERE id=%(answer_id)s;
+                   """,
+                   {'answer_id': edited['id'],
+                    'message': edited['message'],
+                    'image': edited['image']}
+                   )
 
 @connection.connection_handler
 def delete_question_by_id_sql(cursor, question_id):

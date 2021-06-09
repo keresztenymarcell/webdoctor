@@ -5,17 +5,40 @@
 
 {% block content %}
 
-    <h1>Posting a new answer</h1>
-    <form action="/question/{{ question_id }}/new_answer" method="post" enctype="multipart/form-data">
-        <label for="message">Enter your answer here:</label><br>
-        <textarea name="message" rows="4" cols="50" placeholder="Your answer goes here" required></textarea><br><br>
+    {% if answer %}
+        <h1>Edit answer</h1>
+    {% else %}
+        <h1>Add answer</h1>
+    {% endif %}
+    <br>
+    {% if answer %}
+        <form action="/answer/{{ answer.id }}/edit" method="POST">
+    {% else %}
+        <form action="/question/{{ question.id }}/new_answer" method="POST" enctype="multipart/form-data">
+    {% endif %}
 
-        <label for="image">Upload image here (optional):</label><br>
-        <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
+    {% if answer %}
+            <input type="hidden" name="id" value="{{ answer.id }}" >
+            <input type="hidden" name="submission_time" value="{{ answer.submission_time }}" >
+            <input type="hidden" name="vote_number" value="{{ answer.vote_number }}" >
+            <input type="hidden" name="question_id" value="{{ answer.question_id }}" >
+            <input type="hidden" name="image" value="{{ answer.image }}" >
+    {% endif %}
 
-        <button type="submit">Post your answer</button><br><br>
+            <label for="message">Enter your answer here:</label><br>
+            <textarea name="message" rows="4" cols="50" placeholder="Your answer goes here" required>{{ answer.message if answer }}</textarea><br><br>
 
-        <a href="/list" onclick="return confirm('Are you sure?')">
-        <button style="text-align: center">Return to main page</button></a>
-    </form>
+            <label for="image">Upload image here (optional):</label><br>
+            <input type="file" id="question" name="image" accept="image/png, image/jpeg">{{ answer.image if answer }}<br><br>
+
+            {% if answer %}
+                <a href="/question/{{ question_id }}"><button type="submit">Edit answer</button></a>
+            {% else %}
+                <button type="submit">Done</button>
+            {% endif %}
+            <br><br>
+
+            <a href="/list" onclick="return confirm('Are you sure?')">
+            <button style="text-align: center">Return to main page</button></a>
+        </form>
 {% endblock %}
