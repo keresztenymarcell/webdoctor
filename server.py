@@ -122,10 +122,15 @@ def add_new_answer(question_id):
 
 @app.route("/answer/<answer_id>/new-comment", methods=["POST"])
 def add_comment_to_answer(answer_id):
-    pass
+    
+    if request.method == "POST":
+        new_comment = request.form.to_dict()
+        data_handler.add_new_comment(new_comment)
+        question_id = data_handler.get_question_id_by_answer_id(answer_id)
 
+        return redirect(url_for("display_question", question_id=question_id))
 
-
+    return render_template("add_new_comment.html")
 
 
 @app.route("/answer/<answer_id>/vote_up")
