@@ -311,17 +311,17 @@ def add_new_tag(cursor, tag_name):
     cursor.execute("""
                         INSERT INTO tag (name)
                         VALUES(%(tag_name)s)
-                        """,
-                   {'tag_name': tag_name})
+                        """, {'tag_name':tag_name})
 
 
 @connection.connection_handler
-def delete_tag(cursor, tag_name):
+def delete_tag_by_question_id(cursor, question_id, tag_id):
     cursor.execute("""
-                    DELETE from tag
-                    WHERE name = %(tag_name)s
-                   """,
-                   {'tag_name': tag_name})
+                    DELETE from question_tag
+                    WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s
+                    """,
+                   {'question_id': question_id, 'tag_id':tag_id})
+
 
 @connection.connection_handler
 def get_tag_id_by_name(cursor, tag_name):
@@ -331,4 +331,52 @@ def get_tag_id_by_name(cursor, tag_name):
                    """,
                    {'tag_name': tag_name})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_tag_by_name(cursor, tag_name):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    WHERE name = %(tag_name)s
+                   """,
+                   {'tag_name': tag_name})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_tags_id_by_question_id(cursor, id):
+    cursor.execute("""
+                    SELECT tag_id FROM question_tag
+                    WHERE question_id = %(id)s
+                   """,
+                   {'id': id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_tags_by_tag_id(cursor, tag_id):
+    cursor.execute("""
+                    SELECT * FROM tag
+                    WHERE id = %(tag_id)s
+                   """,
+                   {'tag_id': tag_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def add_tag_id_to_question_tag(cursor, question_id, tag_id):
+    cursor.execute("""
+                        INSERT INTO question_tag(question_id, tag_id)
+                        VALUES(%(question_id)s, %(tag_id)s)
+                        """, {'question_id':question_id, 'tag_id':tag_id})
+
+
+@connection.connection_handler
+def get_tags_by_question_id(cursor, question_id):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    WHERE id = (SELECT tag_id FROM question_tag
+                       WHERE question_id = %(question_id)s)
+                        """, {'question_id':question_id})
+    return cursor.fetchall()
 

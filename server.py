@@ -40,7 +40,7 @@ def display_question(question_id):
     question = data_handler.get_question_by_id(question_id)
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
-    tags = data_handler.get_all_tag()
+    tags = data_handler.get_tags_by_question_id(question_id)
     return render_template('display_question.html', question=question, answers=answers, tags=tags)
 
 
@@ -208,21 +208,31 @@ def search_page():
 
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
 def add_tag(question_id):
+    new_tag = request.form.get("new-tag")
+    exist_tag = request.form.get("existing-tag")
     if request.method == "POST":
-        new_tag = request.form.get("new-tag")
-        data_handler.add_new_tag(new_tag)
-        return redirect(url_for("display_question", question_id=question_id))
-    tags = data_handler.get_all_tag()
+        if new_tag:
+            new_tag = request.form.get("new-tag")
+            data_handler.add_new_tag(new_tag)
+            tag_id = data_handler.get_tag_id_by_name(new_tag)
+            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
+            tags = data_handler.get_tags_by_question_id(question_id)
+            return redirect(url_for("display_question", question_id=question_id, tags=tags))
+        else:
+            tag_id = data_handler.get_tag_id_by_name(exist_tag)
+            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
+            tags = data_handler.get_tags_by_question_id(question_id)
+            return redirect(url_for("display_question", question_id=question_id, tags=tags))
+
+    tags = data_handler.get_tags_by_question_id(question_id)
     return render_template('add_new_tag.html', question_id=question_id, tags=tags)
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
-def remove_tag(question_id):
-    tag_id = data_handler.get_tag_id_by_name(tag)
-    data_handler.delete_tag()
-    tags = data_handler.get_all_tag()
-    return render_template('add_new_tag.html', question_id=question_id, tags=tags)
-
+def remove_tag(question_id, tag_id):
+    data_handler.delete_tag_by_question_id(question_id, tag_id)
+    tags = data_handler.get_tags_by_question_id(question_id)
+    return redirect(url_for("display_question", question_id=question_id, tags=tags))
 
 
 if __name__ == "__main__":
