@@ -41,7 +41,8 @@ def display_question(question_id):
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
     tags = data_handler.get_tags_by_question_id(question_id)
-    return render_template('display_question.html', question=question, answers=answers, tags=tags)
+    comments = data_handler.get_comment_by_question_id(question_id)
+    return render_template('display_question.html', question=question, answers=answers, tags=tags, comments=comments)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -158,7 +159,7 @@ def add_new_comment_to_question(question_id):
         data_handler.add_new_comment_to_question(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
-    return render_template('add_new_comment.html', question_id=question_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])

@@ -4,7 +4,12 @@ body {background-image: url('/static/bg.jpeg');
     background-size: cover;
     background-color: #147CCEFF;
     margin: 10%;
+}
 
+.navbar #link {font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    color:white;
+    font-size: 20px;
 
 }
 h1 {color: #ffffff;

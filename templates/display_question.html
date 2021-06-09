@@ -20,6 +20,14 @@
                 {% for tag in tags %}
                 <a href="//question/{{ question.id }}/tag/{{ tag.id }}/delete">x {{tag.name}}</a>
                 {% endfor %}
+                <!--<div class="comments">
+                  <button class="dropdown">Comments</button>
+                  <div class="dropdown">
+                      {%for comment in comments%}
+                          -{{ comment.message }}
+                      {%endfor%}
+                  </div>
+                </div>-->
             </td>
             <td id="buttons">
                 <a href="/question/{{ question.id }}/edit">
@@ -64,7 +72,13 @@
 
     </table><br><br>
 
+
+
     <p id="buttons"><a href="/list" onclick="return confirm('Are you sure?')">
     <button>Return to main page</button></a></p>
 
+    {% include 'add_new_comment.html' %}
+
 {% endblock %}
+
+

@@ -301,6 +301,15 @@ def add_new_comment_to_question(cursor, comment_dict):
                         'submission_time': timestamp,
                         'edited_count': comment_dict['edited_count']})
 
+@connection.connection_handler
+def get_comment_by_question_id(cursor, question_id):
+    cursor.execute("""
+                        SELECT message, submission_time, edited_count FROM comment
+                        WHERE question_id = %(question_id)s
+                        """,
+                       {'question_id': question_id})
+    return cursor.fetchall()
+
 
 @connection.connection_handler
 def get_all_tag(cursor):
