@@ -15,7 +15,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def main_page():
-    return render_template("index.html")
+    question_data = data_handler.get_last_five_questions_by_time()
+
+    return render_template("index.html", questions=question_data)
 
 
 @app.route("/list")
