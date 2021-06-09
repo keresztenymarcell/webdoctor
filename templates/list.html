@@ -9,44 +9,55 @@
         h4{color: blue;}
     </style>
 
+    <nav>
+        <div class="navbar">
+          <a href="{{ url_for('main_page')}}"><strong>Home</strong></a>
+        <div>
+         <form class="search" action="/search" method="get">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+            </form>
+        <div>
+            <form class="sort" action="/list" method="get">
+            <div>
+                <label>Sort by:</label>
+                    <select name="order_by">
+                        {% for option_index in range(header|length) %}
+                            {% if header[option_index] != "Image" %}
+                                {% if keys[option_index] == orderby %}
+                                    <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
+                                {% else %}
+                                    <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
+                                {% endif %}
+
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select name="order_direction">
+                        {% if orderdir == "desc" %}
+                            <option value="desc" selected>Descending</option>
+                            <option value="asc">Ascending</option>
+                        {% else %}
+                            <option value="desc">Descending</option>
+                            <option value="asc" selected>Ascending</option>
+                        {% endif %}
+                    </select>
+
+                    <button>Sort</button>
+            </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    </nav>
+
     <h1>Ásóka helps!</h1>
     <h3>Ask your question</h3>
     <br>
 
-    <form action="/search" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
-    </form>
-    <br>
 
-    <form action="/list" method="get">
-    <p style="text-align:right;">
-        <label style="color:white">Sort by:</label>
-            <select name="order_by">
-                {% for option_index in range(header|length) %}
-                    {% if header[option_index] != "Image" %}
-                        {% if keys[option_index] == orderby %}
-                            <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
-                        {% else %}
-                            <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
-                        {% endif %}
 
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <select name="order_direction">
-                {% if orderdir == "desc" %}
-                    <option value="desc" selected>Descending</option>
-                    <option value="asc">Ascending</option>
-                {% else %}
-                    <option value="desc">Descending</option>
-                    <option value="asc" selected>Ascending</option>
-                {% endif %}
-            </select>
 
-            <button>Sort</button>
-    </p>
-    </form>
     {% for question in questions %}
 
         <table>

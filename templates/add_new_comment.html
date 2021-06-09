@@ -6,7 +6,7 @@
 {% block content %}
 
     <h1>Add a new comment</h1>
-    <form action="/question/{{question_id}}/new-comment" method="POST" enctype="multipart/form-data">
+    <form action="/question/{{question_id}}/new-comment" method="POST">
         <label for="new-comment" >Enter your comment here:</label><br>
         <textarea name="new-comment" id="new-comment" rows="4" cols="50" placeholder="Your comment goes here..." required></textarea><br><br>
 

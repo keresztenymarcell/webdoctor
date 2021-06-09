@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
-import data_handler, asd
-import time
+import data_handler
 import os
 
 
@@ -15,7 +14,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def main_page():
-    return render_template("index.html")
+    question_data = data_handler.get_last_five_questions_by_time()
+
+    return render_template("index.html", questions=question_data)
 
 
 @app.route("/list")
@@ -36,11 +37,12 @@ def list_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
 
-    question = data_handler.get_question_by_id(question_id)[0]
+    question = data_handler.get_question_by_id(question_id)
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
-
-    return render_template('display_question.html', question=question, answers=answers)
+    tags = data_handler.get_tags_by_question_id(question_id)
+    comments = data_handler.get_comment_by_question_id(question_id)
+    return render_template('display_question.html', question=question, answers=answers, tags=tags, comments=comments)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -79,10 +81,11 @@ def edit_question(question_id):
 def edit_answer(answer_id):
     if request.method == 'POST':
         edited_answer = request.form.to_dict()
-        data_handler.edit_answer(answer_id, edited_answer)
-        return redirect(url_for("display_question", answer_id=answer_id))
+        data_handler.edit_answer(edited_answer)
+        question_id = edited_answer['question_id']
+        return redirect(url_for("display_question", question_id=question_id))
 
-    target_answer = data_handler.get_answer_by_id(answer_id)
+    target_answer = data_handler.get_answer_by_id(answer_id)[0]
     return render_template("add_new_answer.html", answer=target_answer)
 
 
@@ -156,7 +159,7 @@ def add_new_comment_to_question(question_id):
         data_handler.add_new_comment_to_question(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
-    return render_template('add_new_comment.html', question_id=question_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
@@ -212,6 +215,35 @@ def search_page():
 
         return render_template('results.html', results=result, phrase=search_phrase)
     return redirect('/list')
+
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def add_tag(question_id):
+    new_tag = request.form.get("new-tag")
+    exist_tag = request.form.get("existing-tag")
+    if request.method == "POST":
+        if new_tag:
+            new_tag = request.form.get("new-tag")
+            data_handler.add_new_tag(new_tag)
+            tag_id = data_handler.get_tag_id_by_name(new_tag)
+            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
+            tags = data_handler.get_tags_by_question_id(question_id)
+            return redirect(url_for("display_question", question_id=question_id, tags=tags))
+        else:
+            tag_id = data_handler.get_tag_id_by_name(exist_tag)
+            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
+            tags = data_handler.get_tags_by_question_id(question_id)
+            return redirect(url_for("display_question", question_id=question_id, tags=tags))
+
+    tags = data_handler.get_tags_by_question_id(question_id)
+    return render_template('add_new_tag.html', question_id=question_id, tags=tags)
+
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
+def remove_tag(question_id, tag_id):
+    data_handler.delete_tag_by_question_id(question_id, tag_id)
+    tags = data_handler.get_tags_by_question_id(question_id)
+    return redirect(url_for("display_question", question_id=question_id, tags=tags))
 
 
 if __name__ == "__main__":
