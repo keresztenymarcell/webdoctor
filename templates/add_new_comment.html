@@ -4,7 +4,18 @@
 {% endblock %}
 
 {% block content %}
+    <div id="comment">
 
+    <h3> Leave a comment </h3>
+
+    <form action="add_new_comment.html" method="post">
+        <label for="message"> Your message:</label>
+        <textarea id="message" name="message" rows="10" required></textarea>
+        <button type="submit">Post comment</button>
+
+    </form>
+
+    </div>
 
 
 

@@ -122,7 +122,7 @@ def add_new_answer(question_id):
 
 @app.route("/answer/<answer_id>/new-comment", methods=["POST"])
 def add_comment_to_answer(answer_id):
-    
+
     if request.method == "POST":
         new_comment = request.form.to_dict()
         data_handler.add_new_comment(new_comment)
