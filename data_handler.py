@@ -45,9 +45,10 @@ def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""
                      INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s);
+                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s) RETURNING id;
                      """, {'timestamp': timestamp, 'title': question['title'], 'message': question['message'],
                            'image': question['image']})
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -65,14 +66,6 @@ def add_new_answer(cursor, answer):
 def get_all_questions(cursor):
     cursor.execute("""
                     SELECT * FROM question
-                    """)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_question_by_sub_time(cursor):
-    cursor.execute("""
-                    SELECT max(id) FROM question
                     """)
     return cursor.fetchall()
 

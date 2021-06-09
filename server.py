@@ -56,8 +56,7 @@ def write_questions():
             request.files["image"].save(folder_route)
         else:
             get_data["image"] = ''
-        data_handler.add_new_question(get_data)
-        question_id = data_handler.get_question_by_sub_time()[0]['max']
+        question_id = data_handler.add_new_question(get_data)['id']
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('question.html')
