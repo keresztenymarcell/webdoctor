@@ -145,6 +145,36 @@ def get_question_id_by_answer_id(cursor, answer_id):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def search_table(cursor, table, phrase, order='submission_time'):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    WHERE 
+                        EXISTS (SELECT * FROM question WHERE title LIKE '%{phrase}%')
+                        OR message LIKE '%{phrase}%'
+                    ORDER BY {order}
+                    """)
+    return cursor.fetchall()
+
+
+def highlight_search_phrase(datatable, phrase):
+    for entry_index in range(len(datatable)):
+        if 'title' in datatable[entry_index]:
+            datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['message'] = datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
+    return datatable
+
+
+@connection.connection_handler
+def add_new_comment(cursor, comment):
+    timestamp = generate_timestamp()
+    cursor.execute(f"""
+                    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+                    VALUES ({comment['question_id']}, {comment['answer_id']},
+                            {comment['message']}, {timestamp}, {0}
+                    """)
+
+
 def delete_answer_by_id(answer_id):
     answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
     for answer in answers:

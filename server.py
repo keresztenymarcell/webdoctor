@@ -14,6 +14,8 @@ app = Flask(__name__)
 
 
 @app.route("/")
+def main_page():
+    return render_template("index.html")
 
 
 
@@ -105,39 +107,30 @@ def question_vote_down(question_id):
 
 @app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
 def add_new_answer(question_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    new_answer_id = data_handler.generate_id(answers)
-
     if request.method == "POST":
         get_data = request.form.to_dict()
-        get_data["id"] = new_answer_id
-        get_data["submission_time"] = time.time()
-        get_data["vote_number"] = 0
-        get_data["question_id"] = question_id
-
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
             request.files["image"].save(folder_route)
-        answers.append(get_data)
-        asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
+
+        data_handler.add_new_answer(get_data)
 
         return redirect(url_for("display_question", question_id=question_id))
-
     return render_template('add_new_answer.html', question_id=question_id)
 
 
-@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
-def add_new_comment_to_question(question_id):
+@app.route("/answer/<answer_id>/new-comment", methods=["POST"])
+def add_comment_to_answer(answer_id):
+
     if request.method == "POST":
-        new_comment = {'question_id': question_id,
-                       'answer_id': None,
-                       'message': request.form.get("new-comment"),
-                       'edited_count': 0}
-        data_handler.add_new_comment_to_question(new_comment)
+        new_comment = request.form.to_dict()
+        data_handler.add_new_comment(new_comment)
+        question_id = data_handler.get_question_id_by_answer_id(answer_id)
+
         return redirect(url_for("display_question", question_id=question_id))
 
-    return render_template('add_new_comment.html', question_id=question_id)
+    return render_template("add_new_comment.html")
 
 
 @app.route("/answer/<answer_id>/vote_up")
@@ -156,6 +149,23 @@ def answer_vote_down(answer_id):
     question_id = question_id["question_id"]
 
     return redirect(f'/question/{question_id}')
+
+
+@app.route("/search")
+def search_page():
+
+    search_phrase = request.args.get('q')
+
+    if search_phrase:
+        found_questions = data_handler.search_table('question', search_phrase)
+        found_answers = data_handler.search_table('answer', search_phrase)
+        if len(found_questions) != 0:
+            found_questions = data_handler.highlight_search_phrase(found_questions, search_phrase)
+        if len(found_answers) != 0:
+            found_answers = data_handler.highlight_search_phrase(found_answers, search_phrase)
+
+        return render_template('results.html', questions=found_questions, answers=found_answers)
+    return redirect('/list')
 
 
 if __name__ == "__main__":
