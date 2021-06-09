@@ -107,16 +107,8 @@ def question_vote_down(question_id):
 
 @app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
 def add_new_answer(question_id):
-    
-
-
     if request.method == "POST":
         get_data = request.form.to_dict()
-       
-       
-        
-        
-
         if secure_filename(request.files['image'].filename) != "":
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
@@ -125,9 +117,15 @@ def add_new_answer(question_id):
         data_handler.add_new_answer(get_data)
 
         return redirect(url_for("display_question", question_id=question_id))
-
-
     return render_template('add_new_answer.html', question_id=question_id)
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["POST"])
+def add_comment_to_answer(answer_id):
+    pass
+
+
+
 
 
 @app.route("/answer/<answer_id>/vote_up")
