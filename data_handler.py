@@ -146,22 +146,37 @@ def get_question_id_by_answer_id(cursor, answer_id):
 
 
 @connection.connection_handler
-def search_table(cursor, table, phrase, order='submission_time'):
+def search_table(cursor, phrase, order='submission_time'):
     cursor.execute(f"""
-                    SELECT * FROM {table}
+                    SELECT question.id AS q_id,
+                    question.submission_time AS q_submission_time,
+                    view_number,
+                    question.vote_number AS q_vote_number,
+                    title,
+                    question.message AS q_message,
+                    question.image AS q_image,
+                    answer.id AS a_id,
+                    answer.submission_time AS a_submission_time,
+                    answer.vote_number AS a_vote_number,
+                    question_id,
+                    answer.message AS a_message,
+                    answer.image AS a_image
+                    FROM question FULL OUTER JOIN answer ON question.id = answer.question_id
                     WHERE 
-                        EXISTS (SELECT * FROM question WHERE title LIKE '%{phrase}%')
-                        OR message LIKE '%{phrase}%'
-                    ORDER BY {order}
+                        title LIKE '%{phrase}%'
+                        OR question.message LIKE '%{phrase}%'
+                        OR answer.message LIKE '%{phrase}%'
+                    ORDER BY question.{order}
                     """)
     return cursor.fetchall()
 
 
 def highlight_search_phrase(datatable, phrase):
     for entry_index in range(len(datatable)):
-        if 'title' in datatable[entry_index]:
-            datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
-        datatable[entry_index]['message'] = datatable[entry_index]['message'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['title'] = datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
+        datatable[entry_index]['q_message'] = datatable[entry_index]['q_message'].replace(phrase, f'<mark>{phrase}</mark>')
+        if datatable[entry_index]['a_message'] is not None:
+            datatable[entry_index]['a_message'] = datatable[entry_index]['a_message'].replace(phrase, f'<mark>{phrase}</mark>')
     return datatable
 
 

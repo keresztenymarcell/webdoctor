@@ -170,14 +170,11 @@ def search_page():
     search_phrase = request.args.get('q')
 
     if search_phrase:
-        found_questions = data_handler.search_table('question', search_phrase)
-        found_answers = data_handler.search_table('answer', search_phrase)
-        if len(found_questions) != 0:
-            found_questions = data_handler.highlight_search_phrase(found_questions, search_phrase)
-        if len(found_answers) != 0:
-            found_answers = data_handler.highlight_search_phrase(found_answers, search_phrase)
+        result = data_handler.search_table(search_phrase)
+        if len(result) != 0:
+            result = data_handler.highlight_search_phrase(result, search_phrase)
 
-        return render_template('results.html', questions=found_questions, answers=found_answers)
+        return render_template('results.html', results=result, phrase=search_phrase)
     return redirect('/list')
 
 
