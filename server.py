@@ -80,10 +80,11 @@ def edit_question(question_id):
 def edit_answer(answer_id):
     if request.method == 'POST':
         edited_answer = request.form.to_dict()
-        data_handler.edit_answer(answer_id, edited_answer)
-        return redirect(url_for("display_question", answer_id=answer_id))
+        data_handler.edit_answer(edited_answer)
+        question_id = edited_answer['question_id']
+        return redirect(url_for("display_question", question_id=question_id))
 
-    target_answer = data_handler.get_answer_by_id(answer_id)
+    target_answer = data_handler.get_answer_by_id(answer_id)[0]
     return render_template("add_new_answer.html", answer=target_answer)
 
 
