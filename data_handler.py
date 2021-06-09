@@ -90,6 +90,28 @@ def get_answer_by_id(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_comment_by_id(cursor, comment_id):
+    cursor.execute(f"""
+                    SELECT * FROM comment
+                    WHERE id = %(id)s
+                    """,
+                   {'id': comment_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def edit_comment(cursor, comment_id, edited):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                    UPDATE comment
+                    SET message = %(message)s,
+                        submission_time = %(timestamp)s, edited_count = edited_count + 1
+                    WHERE id = %(id)s
+                    """,
+                   {'message': edited['message'], 'timestamp': timestamp, 'id': comment_id})
+
+
+@connection.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
                     UPDATE question

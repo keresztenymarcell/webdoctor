@@ -130,7 +130,7 @@ def add_comment_to_answer(answer_id):
 
         return redirect(url_for("display_question", question_id=question_id))
 
-    return render_template("add_new_comment.html")
+    return render_template("add_new_comment.html", answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
@@ -144,6 +144,20 @@ def add_new_comment_to_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_comment.html', question_id=question_id)
+
+
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    comment = data_handler.get_comment_by_id(comment_id)
+    question_id = comment["question_id"]
+
+    if request.method == "POST":
+        edited_comment = request.form.to_dict()
+        data_handler.edit_comment(comment_id, edited_comment)
+
+        return redirect(url_for("display_question", question_id=question_id))
+
+    return render_template("edit_comment.html", comment=comment)
 
 
 @app.route("/answer/<answer_id>/vote_up")
