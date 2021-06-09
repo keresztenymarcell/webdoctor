@@ -145,6 +145,18 @@ def get_question_id_by_answer_id(cursor, answer_id):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def search_table(cursor, table, phrase, order='submission_time'):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    WHERE 
+                        EXISTS (SELECT * FROM question WHERE title LIKE '%{phrase}%')
+                        OR message LIKE '%{phrase}%'
+                    ORDER BY {order}
+                    """)
+    return cursor.fetchall()
+
+
 def delete_answer_by_id(answer_id):
     answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
     for answer in answers:
