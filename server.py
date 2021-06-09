@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
-import data_handler, asd
-import time
+import data_handler
 import os
 
 
@@ -37,11 +36,11 @@ def list_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
 
-    question = data_handler.get_question_by_id(question_id)[0]
+    question = data_handler.get_question_by_id(question_id)
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
-
-    return render_template('display_question.html', question=question, answers=answers)
+    tags = data_handler.get_all_tag()
+    return render_template('display_question.html', question=question, answers=answers, tags=tags)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -179,6 +178,25 @@ def search_page():
 
         return render_template('results.html', questions=found_questions, answers=found_answers)
     return redirect('/list')
+
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def add_tag(question_id):
+    if request.method == "POST":
+        new_tag = request.form.get("new-tag")
+        data_handler.add_new_tag(new_tag)
+        return redirect(url_for("display_question", question_id=question_id))
+    tags = data_handler.get_all_tag()
+    return render_template('add_new_tag.html', question_id=question_id, tags=tags)
+
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
+def remove_tag(question_id):
+    tag_id = data_handler.get_tag_id_by_name(tag)
+    data_handler.delete_tag()
+    tags = data_handler.get_all_tag()
+    return render_template('add_new_tag.html', question_id=question_id, tags=tags)
+
 
 
 if __name__ == "__main__":

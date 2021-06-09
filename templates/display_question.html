@@ -16,14 +16,20 @@
     <h2>{{ question.title }}</h2><br>
     <table>
         <tr>
-            <td><p><strong>{{ question.message }}</strong></p></td>
+            <td><p><strong>{{ question.message }}</strong><br><br>
+                {% for tag in tags %}
+                <a href="//question/{{ question.id }}/tag/{{ tag.id }}/delete">x {{tag.name}}</a>
+                {% endfor %}
+            </td>
             <td id="buttons">
                 <a href="/question/{{ question.id }}/edit">
                     <button>EDIT</button></a>
                 <a href="/question/{{ question.id }}/new_answer">
                     <button>POST A NEW ANSWER</button></a>
-                <a href="/question/{{ question.id }}/delete" onclick="return confirm('Are you sure?')">
+                <a href="/question/{{ question.id }}/delete">
                     <button>DELETE</button></a>
+                <a href="/question/{{ question.id }}/new-tag">
+                    <button>ADD TAG</button></a>
             </td>
         </tr>
     </table><br><br><br>

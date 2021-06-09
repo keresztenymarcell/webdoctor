@@ -17,10 +17,9 @@
         <input type="text" name="q">
         <input type="submit" value="Search">
     </form>
-    <br>
 
     <form action="/list" method="get">
-    <p style="text-align:right;">
+    <div style="text-align:right;">
         <label style="color:white">Sort by:</label>
             <select name="order_by">
                 {% for option_index in range(header|length) %}
@@ -45,7 +44,7 @@
             </select>
 
             <button>Sort</button>
-    </p>
+    </div>
     </form>
     {% for question in questions %}
 

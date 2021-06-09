@@ -76,7 +76,7 @@ def get_question_by_id(cursor, question_id):
                     WHERE id = %(id)s
                     """,
                    {'id': question_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -238,4 +238,39 @@ def add_new_comment_to_question(cursor, comment_dict):
                         'message': comment_dict['message'],
                         'submission_time': timestamp,
                         'edited_count': comment_dict['edited_count']})
+
+
+@connection.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                    SELECT * FROM tag
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_new_tag(cursor, tag_name):
+    cursor.execute("""
+                        INSERT INTO tag (name)
+                        VALUES(%(tag_name)s)
+                        """,
+                   {'tag_name': tag_name})
+
+
+@connection.connection_handler
+def delete_tag(cursor, tag_name):
+    cursor.execute("""
+                    DELETE from tag
+                    WHERE name = %(tag_name)s
+                   """,
+                   {'tag_name': tag_name})
+
+@connection.connection_handler
+def get_tag_id_by_name(cursor, tag_name):
+    cursor.execute("""
+                    SELECT id FROM tag
+                    WHERE name = %(tag_name)s
+                   """,
+                   {'tag_name': tag_name})
+    return cursor.fetchone()
 

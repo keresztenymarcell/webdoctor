@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+    Tag Section
+{% endblock %}
+
+{% block content %}
+
+    <h1>Add a new tag</h1>
+    <form action="/question/{{question_id}}/new-tag" method="POST">
+        <label for="new-tag" >Enter your new tag here:</label><br>
+        <textarea name="new-tag" id="new-tag" rows="4" cols="10" placeholder="Your tag goes here..." required></textarea><br><br>
+        <label for="new-tag" >Choose from existing tags:</label><br>
+       <select name="existing-tag" id="existing-tag"><br>
+              {% for tag in tags %}
+              <option value="{{ tag.name }}">{{ tag.name }}</option>
+              {% endfor %}
+       </select><br><br>
+        <button type="submit">Post your tag</button><br><br>
+
+        <a href="/list">
+        <button style="text-align: center">Return to main page</button></a>
+    </form>
+
+{% endblock %}
+
