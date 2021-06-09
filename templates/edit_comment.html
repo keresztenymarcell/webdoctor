@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+    Edit your comment
+{% endblock %}
+
+{% block content %}
+
+    <div id="edit">
+        <form action=/comment/{{ comment.id }}/edit method="post">
+        <label for="message">Your comment:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required>{{ comment.message }}</textarea><br>
+        <button type="submit">Accept</button>
+
+        <a href="/list" onclick="return confirm('Are you sure?')">
+        <button style="text-align: center">Return to main page</button></a>
+        </form>
+
+    </div>
+
+{% endblock %}

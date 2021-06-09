@@ -18,7 +18,6 @@ def main_page():
     return render_template("index.html")
 
 
-
 @app.route("/list")
 def list_page():
 
@@ -55,9 +54,10 @@ def write_questions():
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_QUESTIONS + get_data["image"]
             request.files["image"].save(folder_route)
-
-        data_handler.add_new_question(get_data)
-        return redirect(url_for("display_question", question_id=get_data["id"]))
+        else:
+            get_data["image"] = ''
+        question_id = data_handler.add_new_question(get_data)['id']
+        return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('question.html')
 
@@ -73,6 +73,17 @@ def edit_question(question_id):
 
     target_question = data_handler.get_question_by_id(question_id)
     return render_template("question.html", question=target_question)
+
+
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        edited_answer = request.form.to_dict()
+        data_handler.edit_answer(answer_id, edited_answer)
+        return redirect(url_for("display_question", answer_id=answer_id))
+
+    target_answer = data_handler.get_answer_by_id(answer_id)
+    return render_template("add_new_answer.html", answer=target_answer)
 
 
 @app.route("/question/<question_id>/delete")
@@ -105,7 +116,7 @@ def question_vote_down(question_id):
     return redirect("/list")
 
 
-@app.route("/question/<question_id>/new_answer", methods= ["GET", "POST"])
+@app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
 def add_new_answer(question_id):
     if request.method == "POST":
         get_data = request.form.to_dict()
@@ -113,7 +124,9 @@ def add_new_answer(question_id):
             get_data["image"] = secure_filename(request.files['image'].filename)
             folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
             request.files["image"].save(folder_route)
-
+        else:
+            get_data["image"] = ''
+        get_data["question_id"] = question_id
         data_handler.add_new_answer(get_data)
 
         return redirect(url_for("display_question", question_id=question_id))
@@ -130,7 +143,7 @@ def add_comment_to_answer(answer_id):
 
         return redirect(url_for("display_question", question_id=question_id))
 
-    return render_template("add_new_comment.html")
+    return render_template("add_new_comment.html", answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
@@ -144,6 +157,20 @@ def add_new_comment_to_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_comment.html', question_id=question_id)
+
+
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    comment = data_handler.get_comment_by_id(comment_id)
+    question_id = comment["question_id"]
+
+    if request.method == "POST":
+        edited_comment = request.form.to_dict()
+        data_handler.edit_comment(comment_id, edited_comment)
+
+        return redirect(url_for("display_question", question_id=question_id))
+
+    return render_template("edit_comment.html", comment=comment)
 
 
 @app.route("/answer/<answer_id>/vote_up")

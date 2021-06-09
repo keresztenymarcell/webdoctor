@@ -13,7 +13,6 @@ QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title',
 ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-
 def sort_data(filepath, order_by, order_direction):
     sorting = True if order_direction == 'desc' else False
     read_csvfile = asd.open_csvfile(filepath)
@@ -45,10 +44,11 @@ def get_all_data(cursor, table, order_by, direction):
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""
-                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image
-                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s
+                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s) RETURNING id;
                      """, {'timestamp': timestamp, 'title': question['title'], 'message': question['message'],
                            'image': question['image']})
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -56,9 +56,10 @@ def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
                      INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                     VALUES (%(timestamp)s, 0, %(question_id)s, %(title)s, %(message)s, %(image)s
-                     """, {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
-                           'image': answer['image']})
+                     VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s);
+                     """,
+                   {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
+                    'image': answer['image']})
 
 
 @connection.connection_handler
@@ -90,11 +91,52 @@ def get_answer_by_id(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_answer_by_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %(id)s
+                    """,
+                   {'id': answer_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comment_by_id(cursor, comment_id):
+    cursor.execute(f"""
+                    SELECT * FROM comment
+                    WHERE id = %(id)s
+                    """,
+                   {'id': comment_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def edit_comment(cursor, comment_id, edited):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                    UPDATE comment
+                    SET message = %(message)s,
+                        submission_time = %(timestamp)s, edited_count = edited_count + 1
+                    WHERE id = %(id)s
+                    """,
+                   {'message': edited['message'], 'timestamp': timestamp, 'id': comment_id})
+
+
+@connection.connection_handler
 def edit_question(cursor, question_id, edited):
     cursor.execute(f"""
                     UPDATE question
                     SET title = {edited['title']}, message = {edited['message']}
                     WHERE id = {question_id}
+                   """)
+
+
+@connection.connection_handler
+def edit_answer(cursor, answer_id, edited):
+    cursor.execute(f"""
+                    UPDATE answer
+                    SET message = {edited['message']}, image = {edited['image']}
+                    WHERE id = {answer_id}
                    """)
 
 
@@ -225,6 +267,7 @@ def find_data(database, data_id):
         if data["id"] == data_id:
             return data
     return None
+
 
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
