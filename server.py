@@ -205,7 +205,6 @@ def answer_vote_down(answer_id):
 
 @app.route("/search")
 def search_page():
-
     search_phrase = request.args.get('q')
 
     if search_phrase:

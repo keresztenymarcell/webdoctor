@@ -25,6 +25,9 @@
                   <div class="dropdown">
                       {%for comment in comments%}
                           -{{ comment.message }}
+                          <button style="font-size:20px">
+                            <i class="fa fa-trash-o"><a href="/comment/{{ comment.id }}/delete"></i></a>
+                            </button>
                       {%endfor%}
                   </div>
                 </div>-->
@@ -36,7 +39,6 @@
                     <button>POST A NEW ANSWER</button></a>
                 <a href="/question/{{ question.id }}/delete">
                     <button>DELETE</button></a>
-                <button style="font-size:24px"><i class="fa fa-trash-o"></i><a href="/comment/{{ comment.id }}/delete"></a><i class="fa fa-trash-o"></i></button>
                 <a href="/question/{{ question.id }}/new-tag">
                     <button>ADD TAG</button></a>
             </td>
