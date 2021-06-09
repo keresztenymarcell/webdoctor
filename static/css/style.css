@@ -6,12 +6,35 @@ body {background-image: url('/static/bg.jpeg');
     margin: 10%;
 }
 
-.navbar #link {font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    color:white;
-    font-size: 20px;
-
+.navbar {
+  overflow: hidden;
+  background-color: white;
 }
+
+.navbar .search{float: right;
+              font-size: 20px;
+              color: darkblue;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;}
+
+
+.navbar .sort{float: center;
+              font-size: 20px;
+              color: darkblue;
+              text-align: right;
+              padding: 14px 16px;
+              text-decoration: none;}
+
+.navbar a {
+  float: left;
+  font-size: 20px;
+  color: darkblue;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
 h1 {color: #ffffff;
     font-size: 70px;
     font-family: Arial, Helvetica, sans-serif;
