@@ -1,6 +1,5 @@
 import os.path
 
-import asd
 import connection
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -8,8 +7,6 @@ from datetime import datetime
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
-DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
-DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
 QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
@@ -35,14 +32,18 @@ def get_data_by_id(cursor, table, data_id):
 
 def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
     if secure_filename(image_data.filename) != "":
-        get_data["image"] = secure_filename(image_data.filename)
+        time = generate_timestamp()
+        to_replace = {'-': '', ' ': '_', ':': ''}
+        for key, value in to_replace.items():
+            time = time.replace(key, value)
+        print(time)
+        get_data["image"] = time + "_" + secure_filename(image_data.filename)
         folder_route = UPLOAD_FOLDER + get_data["image"]
         image_data.save(folder_route)
     elif do_edit:
-        return get_data
+        pass
     else:
         get_data["image"] = ''
-    return get_data
 
 
 @connection.connection_handler

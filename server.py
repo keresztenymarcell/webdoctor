@@ -58,6 +58,19 @@ def write_questions():
     return render_template('question.html')
 
 
+@app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
+def add_new_answer(question_id):
+    do_edit = False
+    if request.method == "POST":
+        get_data = request.form.to_dict()
+        data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
+        get_data["question_id"] = question_id
+        data_handler.add_new_answer(get_data)
+        return redirect(url_for("display_question", question_id=question_id))
+
+    return render_template('add_new_answer.html', question_id=question_id)
+
+
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
     do_edit = True
@@ -113,19 +126,6 @@ def question_vote_up(question_id):
 def question_vote_down(question_id):
     data_handler.increment_vote_number('question', question_id, -1)
     return redirect("/list")
-
-
-@app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
-def add_new_answer(question_id):
-    do_edit = False
-    if request.method == "POST":
-        get_data = request.form.to_dict()
-        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
-        get_data["question_id"] = question_id
-        data_handler.add_new_answer(get_data)
-
-        return redirect(url_for("display_question", question_id=question_id))
-    return render_template('add_new_answer.html', question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
