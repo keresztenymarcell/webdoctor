@@ -136,17 +136,22 @@ def delete_comment_by_id(cursor, comment_id):
 
 
 @connection.connection_handler
-def edit_question(cursor, question_id, edited):
-    cursor.execute(f"""
+def edit_question(cursor, edited):
+    cursor.execute("""
                     UPDATE question
-                    SET title = {edited['title']}, message = {edited['message']}
-                    WHERE id = {question_id}
-                   """)
+                    SET title=%(title)s, message=%(message)s, image=%(image)s
+                    WHERE id=%(question_id)s
+                   """,
+                   {'question_id': edited['id'],
+                    'message': edited['message'],
+                    'title': edited['title'],
+                    'image': edited['image']}
+                   )
 
 
 @connection.connection_handler
 def edit_answer(cursor, edited):
-    cursor.execute(f"""
+    cursor.execute("""
                     UPDATE answer
                     SET message=%(message)s, image=%(image)s
                     WHERE id=%(answer_id)s;
