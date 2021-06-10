@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-from werkzeug.utils import secure_filename
 import data_handler
 import os
 
@@ -49,17 +48,10 @@ def display_question(question_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def write_questions():
-
+    do_edit = False
     if request.method == "POST":
-
         get_data = request.form.to_dict()
-
-        if secure_filename(request.files['image'].filename) != "":
-            get_data["image"] = secure_filename(request.files['image'].filename)
-            folder_route = UPLOAD_FOLDER_QUESTIONS + get_data["image"]
-            request.files["image"].save(folder_route)
-        else:
-            get_data["image"] = ''
+        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         question_id = data_handler.add_new_question(get_data)['id']
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -68,8 +60,10 @@ def write_questions():
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
+    do_edit = True
     if request.method == 'POST':
         edited_question = request.form.to_dict()
+        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], edited_question, do_edit)
         data_handler.edit_question(edited_question)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -79,8 +73,10 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
+    do_edit = True
     if request.method == 'POST':
         edited_answer = request.form.to_dict()
+        data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], edited_answer, do_edit)
         data_handler.edit_answer(edited_answer)
         question_id = edited_answer['question_id']
         return redirect(url_for("display_question", question_id=question_id))
@@ -121,14 +117,10 @@ def question_vote_down(question_id):
 
 @app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
 def add_new_answer(question_id):
+    do_edit = False
     if request.method == "POST":
         get_data = request.form.to_dict()
-        if secure_filename(request.files['image'].filename) != "":
-            get_data["image"] = secure_filename(request.files['image'].filename)
-            folder_route = UPLOAD_FOLDER_ANSWERS + get_data["image"]
-            request.files["image"].save(folder_route)
-        else:
-            get_data["image"] = ''
+        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
         data_handler.add_new_answer(get_data)
 
@@ -181,10 +173,16 @@ def edit_comment(comment_id):
 @app.route("/comment/<comment_id>/delete")
 def delete_comment(comment_id):
     comment = data_handler.get_data_by_id('comment', comment_id)
-    question_id = comment["question_id"]
-    data_handler.delete_data_by_id('comment', comment_id)
-
-    return redirect(url_for("display_question", question_id=question_id))
+    print(comment)
+    if comment["question_id"]:
+        question_id = comment['question_id']
+        data_handler.delete_data_by_id('comment', comment_id)
+        return redirect(url_for("display_question", question_id=question_id))
+    else:
+        answer_id = comment['answer_id']
+        question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
+        data_handler.delete_data_by_id('comment', comment_id)
+        return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/vote_up")
