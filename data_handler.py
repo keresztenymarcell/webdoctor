@@ -323,3 +323,13 @@ def get_tags_by_question_id(cursor, question_id):
                     """, {'question_id': question_id})
     return cursor.fetchall()
 
+
+@connection.connection_handler
+def get_image_name_by_id(cursor, table, id):
+    cursor.execute(f"""
+                    SELECT image FROM {table}
+                    WHERE id = {id}
+
+                    """)
+    return cursor.fetchone()
+
