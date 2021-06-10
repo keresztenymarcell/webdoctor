@@ -33,7 +33,7 @@
 
                     <td style="width: 100%">
                         <h4> {{ result.title | safe }}</h4>
-                        {% if phrase in result.q_message %}
+                        {% if tag_type in result.q_message %}
                             <p>{{ result.q_message | safe }}</p>
                         {% endif %}
                         <p style="text-align: right">
@@ -47,7 +47,7 @@
                 </tr>
 
                 {% if result.a_message %}
-                    {% if phrase in result.a_message %}
+                    {% if tag_type in result.a_message %}
                         <tr>
                             <td>
                             <p><a href="/answer/{{ result.a_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
