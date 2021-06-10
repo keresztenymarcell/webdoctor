@@ -6,11 +6,11 @@
 
     <nav>
         <div class="navbar">
-          <a href="{{ url_for('main_page')}}"><strong>Home</strong></a>
+          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
         <div>
          <form class="search" action="/search" method="get">
             <input type="text" name="q">
-            <input type="submit" value="Search">
+             <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         <div>
             <form class="sort" action="/list" method="get">
