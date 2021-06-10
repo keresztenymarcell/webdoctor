@@ -3,12 +3,15 @@ body {background-image: url('/static/bg.jpeg');
     background-attachment: fixed;
     background-size: cover;
     background-color: #147CCEFF;
-    margin: 10%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .navbar {
   overflow: hidden;
   background-color: white;
+    border-radius: 20px;
+    opacity: 90%;
 }
 
 .navbar .search{float: right;
@@ -94,6 +97,7 @@ tr {width:100%;
     background-color: lightgray;
     border: 2px solid black;}
 
+
 textarea{font-family: Arial, Helvetica, sans-serif;
 text-align: center;}
 
@@ -122,4 +126,9 @@ label {color:white;}
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+#submission{
+    text-align: right;
+
 }
