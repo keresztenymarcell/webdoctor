@@ -5,10 +5,9 @@
 {% block content%}
 
     <style>
-        .up_arrow{transform: rotate(-90deg);}
-        .down_arrow{transform: rotate(90deg);}
 
-        p {text-align: center;}
+
+        p {text-align: left;}
 
         #buttons{text-align: center;}
     </style>
@@ -20,9 +19,11 @@
                 <p>
                     <strong>{{ question.message }}</strong><br><br>
                     {% for tag in tags %}
-                    <a href="/question/{{ question.id }}/tag/{{ tag.id }}/delete" style="color: red">x</a> {{tag.name}}
+                    <div class="tags">
+                    <a href="/question/{{ question.id }}/tag/{{ tag.id }}/delete" style="color: gray"><i class="fa fa-trash"></i></a> {{tag.name}}
+                    </div>
                     {% endfor %}
-                    </p>
+                </p>
             </td>
 
 
