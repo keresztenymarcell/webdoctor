@@ -1,14 +1,20 @@
-body {background-image: url('/static/bg.jpeg');
+
+body {
+    /*background-image: url('/static/bg2.jpeg');*/
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     background-size: cover;
-    background-color: #147CCEFF;
-    margin: 10%;
+    background-color: #2daecb;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-family: 'Dosis', sans-serif;
 }
 
 .navbar {
   overflow: hidden;
   background-color: white;
+    border-radius: 20px;
+    opacity: 90%;
 }
 
 .navbar .search{float: right;
@@ -37,29 +43,31 @@ body {background-image: url('/static/bg.jpeg');
 
 h1 {color: #ffffff;
     font-size: 70px;
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+
     }
 
 h2 {color: #ffffff;
     font-size: 50px;
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;}
+    text-align: left;}
 
 h3 {color: #ffffff;
     font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;}
+    text-align: left;}
 
-h4{color:#ffffff;
-font-size: 23px;
-font-family: Arial, Helvetica, sans-serif;}
+h4 {
+    color: #ffffff;
+    font-size: 35px;
 
-p { color: darkblue;
+}
+p {
+    color: #ffffff;
     font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;}
+}
 
+.back_button{
 
+}
 button {
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
@@ -77,29 +85,65 @@ button {
 	text-shadow:0px 1px 0px #ffffff;
 }
 button:hover {
-	background:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
-	background-color:#dfdfdf;
+    background: #dfdfdf linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
 }
 button:active {
 	position:relative;
 	top:1px;
+
 }
-.up_arrow{transform: rotate(-90deg);}
-        .down_arrow{transform: rotate(90deg);}
+
+.tags{
+    text-align: end;
+    float: right;
+    padding: 6px;
+    background: #ececec;
+    border-radius: 10px;
+    border: 2px solid gray;
+}
+
+.tags:hover {
+    background: #dfdfdf linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+}
+
+.tags:active {
+	position:relative;
+	top:1px;
+
+}
+
+.up_arrow{
+    transform: rotate(-90deg);
+    color: green;
+}
+
+.down_arrow{
+    transform: rotate(90deg);
+    color: red;
+}
+
+#vote_number{text-align: center;}
 
 
-table {width:100%}
+table {width:100%;}
 
 tr {width:100%;
-    background-color: lightgray;
+
     border: 2px solid black;}
 
-textarea{font-family: Arial, Helvetica, sans-serif;
+.table-width{width:100%;}
+
+
+#view_number{text-align: right;}
+
+
+textarea{
 text-align: center;}
 
-form {color: white;
+form {
+    color: white;
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;}
+}
 
 label {color:white;}
 
@@ -122,4 +166,12 @@ label {color:white;}
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+#submission{
+    text-align: right;
+}
+
+.comments #edit{
+    align-items: end;
 }

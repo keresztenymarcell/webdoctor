@@ -3,19 +3,14 @@
 {% block title %}List of Questions{% endblock %}
 
 {% block content %}
-    <style>
-        .up_arrow{transform: rotate(-90deg);}
-        .down_arrow{transform: rotate(90deg);}
-        h4{color: blue;}
-    </style>
 
     <nav>
         <div class="navbar">
-          <a href="{{ url_for('main_page')}}"><strong>Home</strong></a>
+          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
         <div>
          <form class="search" action="/search" method="get">
             <input type="text" name="q">
-            <input type="submit" value="Search">
+             <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         <div>
             <form class="sort" action="/list" method="get">
@@ -51,13 +46,13 @@
         </div>
     </nav>
 
-    <h1>Ásóka helps!</h1>
+    <h1>WebDoctor</h1>
     <h3>Ask your question</h3>
     <br>
 
 
 
-
+    <p><a href="/add-question"><button>Add questions</button></a></p>
     {% for question in questions %}
 
 
@@ -65,11 +60,11 @@
             <tr>
                 <td>
                 <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                <p style="text-align: center">{{ question.vote_number }}</p>
+                <p id="vote_number">{{ question.vote_number }}</p>
                 <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                 </td>
 
-                <td style="width: 100%">
+                <td class="table-width">
                     <h4> {{ question.title }}</h4>
                     <p>{{ question.message }}</p>
                     <a href="/question/{{ question.id }}/edit">
@@ -77,11 +72,11 @@
                     <a href="/question/{{ question.id }}">
                         <button>ANSWER</button></a>
                     <a href="/question/{{ question.id }}/new-comment">
-                        <button>QUESTION COMMENT</button></a>
-                    <p style="text-align: right">
+                        <button>COMMENT</button></a>
+                    <p id="view_number">
                         Views: {{ question.view_number }}</p>
                 </td>
-                <td style="width: 100%">
+                <td class="table-width">
                     {% if question.image  %}
                             <img src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
                         {% endif %}
@@ -90,5 +85,4 @@
         </table>
 
     {% endfor %}
-    <p><a href="/add-question"><button>Add questions</button></a></p>
 {% endblock%}

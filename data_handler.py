@@ -2,32 +2,14 @@ import os.path
 
 import asd, re
 import connection
+from werkzeug.utils import secure_filename
 from datetime import datetime
 
 
 QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
 ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
-DATA_FILE_PATH_QUESTIONS = 'sample_data/question.csv'
-DATA_FILE_PATH_ANSWERS = 'sample_data/answer.csv'
 QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-
-
-def sort_data(filepath, order_by, order_direction):
-    sorting = True if order_direction == 'desc' else False
-    read_csvfile = asd.open_csvfile(filepath)
-    sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if (x[order_by].isdigit() or x[order_by][0] == "-") else (1, x[order_by]), reverse=sorting)
-    return sorted_listofdict
-
-
-@connection.connection_handler
-def get_last_five_questions_by_time(cursor):
-    cursor.execute("""
-                    SELECT * FROM question
-                    ORDER BY submission_time DESC
-                    LIMIT 5;
-                    """)
-    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -37,6 +19,41 @@ def get_all_data(cursor, table, order_by, direction):
                     ORDER BY {order_by} {direction}
                     """)
 
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_data_by_id(cursor, table, data_id):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    WHERE id = {data_id}
+                    """)
+    return cursor.fetchone()
+
+
+def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
+    if secure_filename(image_data.filename) != "":
+        time = generate_timestamp()
+        to_replace = {'-': '', ' ': '_', ':': ''}
+        for key, value in to_replace.items():
+            time = time.replace(key, value)
+        print(time)
+        get_data["image"] = time + "_" + secure_filename(image_data.filename)
+        folder_route = UPLOAD_FOLDER + get_data["image"]
+        image_data.save(folder_route)
+    elif do_edit:
+        pass
+    else:
+        get_data["image"] = ''
+
+
+@connection.connection_handler
+def get_last_five_questions_by_time(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5;
+                    """)
     return cursor.fetchall()
 
 
@@ -63,58 +80,6 @@ def add_new_answer(cursor, answer):
 
 
 @connection.connection_handler
-def get_all_questions(cursor):
-    cursor.execute("""
-                    SELECT * FROM question
-                    """)
-    return cursor.fetchall()
-
-
-
-
-
-@connection.connection_handler
-def get_question_by_id(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = %(id)s
-                    """,
-                   {'id': question_id})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    cursor.execute("""
-                    SELECT * 
-                    FROM answer
-                    WHERE id = %(id)s
-                    """,
-                   {'id': answer_id})
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE id = %(id)s
-                    """,
-                   {'id': answer_id})
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_comment_by_id(cursor, comment_id):
-    cursor.execute(f"""
-                    SELECT * FROM comment
-                    WHERE id = %(id)s
-                    """,
-                   {'id': comment_id})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
 def edit_comment(cursor, comment_id, edited):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -124,15 +89,6 @@ def edit_comment(cursor, comment_id, edited):
                     WHERE id = %(id)s
                     """,
                    {'message': edited['message'], 'timestamp': timestamp, 'id': comment_id})
-
-
-@connection.connection_handler
-def delete_comment_by_id(cursor, comment_id):
-    cursor.execute("""
-                    DELETE FROM comment
-                    WHERE id = %(comment_id)s
-                    """,
-                   {'comment_id': comment_id})
 
 
 @connection.connection_handler
@@ -161,22 +117,13 @@ def edit_answer(cursor, edited):
                     'image': edited['image']}
                    )
 
-@connection.connection_handler
-def delete_question_by_id_sql(cursor, question_id):
-    cursor.execute("""
-                    DELETE from question
-                    WHERE id = %(id)s
-                   """,
-                   {'id': question_id})
-
 
 @connection.connection_handler
-def delete_answer_by_id_sql(cursor, answer_id):
-    cursor.execute("""
-                    DELETE from answer
-                    WHERE id = %(id)s
-                   """,
-                   {'id': answer_id})
+def delete_data_by_id(cursor, table, data_id):
+    cursor.execute(f"""
+                    DELETE from {table}
+                    WHERE id = {data_id}
+                   """)
 
 
 @connection.connection_handler
@@ -205,7 +152,7 @@ def get_question_id_by_answer_id(cursor, answer_id):
                     WHERE id = %(answer_id)s
                     """,
                    {'answer_id': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -272,61 +219,13 @@ def add_new_comment(cursor, comment):
     timestamp = generate_timestamp()
     cursor.execute(f"""
                     INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-                    VALUES ({comment['question_id']}, {comment['answer_id']},
-                            {comment['message']}, {timestamp}, {0}
+                    VALUES ({None}, {comment['answer_id']},
+                            {comment['message']}, {timestamp}, {0})
                     """)
-
-
-def delete_answer_by_id(answer_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    for answer in answers:
-        if answer_id == answer["id"]:
-            answers.remove(answer)
-    
-    asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
-
-
-def delete_question_by_id(question_id):
-    questions = asd.open_csvfile(asd.DATA_FILE_PATH_QUESTIONS)
-    for question in questions:
-        if question_id == question["id"]:
-            questions.remove(question)
-
-    asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, questions)
-
-
-
-
-
-def generate_id(database):
-    if database is []:
-        new_id = 0
-    else:
-        new_id = int(database[-1]["id"]) + 1
-
-    return new_id
-
-
-def find_data(database, data_id):
-    for data in database:
-        if data["id"] == data_id:
-            return data
-    return None
 
 
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-def edit_database(database, edited_data, data_id):
-    for data_index in range(len(database)):
-        if database[data_index]['id'] == data_id:
-            database[data_index] = edited_data
-            if "question_id" in database[0].keys():
-                asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, database)
-            else:
-                asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, database)
-    return None
 
 
 @connection.connection_handler
@@ -341,6 +240,7 @@ def add_new_comment_to_question(cursor, comment_dict):
                         'message': comment_dict['message'],
                         'submission_time': timestamp,
                         'edited_count': comment_dict['edited_count']})
+
 
 @connection.connection_handler
 def get_comment_by_question_id(cursor, question_id):
@@ -447,4 +347,14 @@ def get_tags_by_question_id(cursor, question_id):
                     
                     """, {'question_id': question_id})
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_image_name_by_id(cursor, table, id):
+    cursor.execute(f"""
+                    SELECT image FROM {table}
+                    WHERE id = {id}
+
+                    """)
+    return cursor.fetchone()
 

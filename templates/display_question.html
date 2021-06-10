@@ -5,38 +5,28 @@
 {% block content%}
 
     <style>
-        .up_arrow{transform: rotate(-90deg);}
-        .down_arrow{transform: rotate(90deg);}
 
-        p {text-align: center;}
+
+        p {text-align: left;}
 
         #buttons{text-align: center;}
     </style>
 
-    <h2>{{ question.title }}</h2><br>
+    <br>
     <table>
         <tr>
-            <td><p><strong>{{ question.message }}</strong><br><br>
-                {% for tag in tags %}
-                <a href="/question/{{ question.id }}/tag/{{ tag.id }}/delete" style="color: red">x</a> {{tag.name}}
-                {% endfor %}
-            </p>
-
-                <div class="dropdown">
-                  <span>Comments</span>
-                  <div class="dropdown-content">
-                    {%for comment in comments%}
-                      <p>{{ comment.message }}<p>
-                      <a href="/comment/{{ comment.id }}/delete">
-                        <button style="font-size:20px">
-                          <i class="fa fa-trash-o"></i>
-                        </button>
-                      </a>
-                    {%endfor%}
-                  </div>
-                </div>
-
+            <td>
+                <p> <h4>{{ question.title }}</h4>
+                    <strong>{{ question.message }}</strong><br><br>
+                    {% for tag in tags %}
+                    <div class="tags">
+                    <a href="/question/{{ question.id }}/tag/{{ tag.id }}/delete" style="color: gray"><i class="fa fa-trash"></i></a> {{tag.name}}
+                    </div>
+                    {% endfor %}
+                </p>
             </td>
+
+
             <td id="buttons">
                 <a href="/question/{{ question.id }}/edit">
                     <button>EDIT</button></a>
@@ -48,9 +38,38 @@
                     <button>ADD TAG</button></a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <h3>Comments</h3>
+            </td>
+        </tr>
+        <div class="comments">
+            <tr>
+                <td>
+                    {% for comment in comments %}
+                    {% if comment.question_id == question.id %}
+
+                    <p>
+                        <div id="message"><a href="/comment/{{ comment.id }}/edit">{{ comment.message }}</a>
+
+                        <div id="submission">Submitted on: {{ comment.submission_time }}</div>
+                        </div>
+
+                    </p>
+
+
+                {% endif %}
+                {% endfor %}
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+        </div>
     </table><br><br><br>
 
-    <h2>Answers</h2>
+    <h3>Answers</h3>
     <table>
         <tbody>
             {% for answer in answers %}
@@ -66,12 +85,14 @@
                     <span>Comments</span>
                     <div class="dropdown-content">
                         {%for comment in comments%}
+                        {%if comment.answer_id == answer.id%}
                         <p>{{ comment.message }}<p>
                             <a href="/comment/{{ comment.id }}/delete">
                             <button style="font-size:20px">
                             <i class="fa fa-trash-o"></i>
                             </button>
                             </a>
+                        {%endif%}
                         {%endfor%}
                     </div>
                 </div>
@@ -84,7 +105,7 @@
                     <td>
                         <p><a href="/answer/{{ answer.id }}/edit"><button>EDIT THIS ANSWER</button></a></p>
                         <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
-                        <p><a href="/question/{{ answer.id }}/new-comment"><button>ANSWER COMMENT</button></a></p>
+                        <p><a href="/answer/{{ answer.id }}/new-comment"><button>ANSWER COMMENT</button></a></p>
                     </td>
                 </tr>
 
@@ -95,13 +116,12 @@
         </tbody>
 
     </table><br><br>
-
-
-
-    <p id="buttons"><a href="/list" onclick="return confirm('Are you sure?')">
-    <button>Return to main page</button></a></p>
-
-
+    {% include 'footer.html' %}
 {% endblock %}
+
+
+
+
+
 
 
