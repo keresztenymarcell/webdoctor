@@ -13,11 +13,24 @@ QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title',
 ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def sort_data(filepath, order_by, order_direction):
-    sorting = True if order_direction == 'desc' else False
-    read_csvfile = asd.open_csvfile(filepath)
-    sorted_listofdict = sorted(read_csvfile, key=lambda x: (0, int(x[order_by])) if (x[order_by].isdigit() or x[order_by][0] == "-") else (1, x[order_by]), reverse=sorting)
-    return sorted_listofdict
+@connection.connection_handler
+def get_all_data(cursor, table, order_by, direction):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    ORDER BY {order_by} {direction}
+                    """)
+
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_data_by_id(cursor, table, data_id):
+    cursor.execute("""
+                    SELECT * FROM %(table)s
+                    WHERE id = %(id)s
+                    """,
+                   {'id': data_id, 'table': table})
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -27,16 +40,6 @@ def get_last_five_questions_by_time(cursor):
                     ORDER BY submission_time DESC
                     LIMIT 5;
                     """)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_all_data(cursor, table, order_by, direction):
-    cursor.execute(f"""
-                    SELECT * FROM {table}
-                    ORDER BY {order_by} {direction}
-                    """)
-
     return cursor.fetchall()
 
 
@@ -63,58 +66,6 @@ def add_new_answer(cursor, answer):
 
 
 @connection.connection_handler
-def get_all_questions(cursor):
-    cursor.execute("""
-                    SELECT * FROM question
-                    """)
-    return cursor.fetchall()
-
-
-
-
-
-@connection.connection_handler
-def get_question_by_id(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = %(id)s
-                    """,
-                   {'id': question_id})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    cursor.execute("""
-                    SELECT * 
-                    FROM answer
-                    WHERE id = %(id)s
-                    """,
-                   {'id': answer_id})
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE id = %(id)s
-                    """,
-                   {'id': answer_id})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def get_comment_by_id(cursor, comment_id):
-    cursor.execute(f"""
-                    SELECT * FROM comment
-                    WHERE id = %(id)s
-                    """,
-                   {'id': comment_id})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
 def edit_comment(cursor, comment_id, edited):
     timestamp = generate_timestamp()
     cursor.execute("""
@@ -124,15 +75,6 @@ def edit_comment(cursor, comment_id, edited):
                     WHERE id = %(id)s
                     """,
                    {'message': edited['message'], 'timestamp': timestamp, 'id': comment_id})
-
-
-@connection.connection_handler
-def delete_comment_by_id(cursor, comment_id):
-    cursor.execute("""
-                    DELETE FROM comment
-                    WHERE id = %(comment_id)s
-                    """,
-                   {'comment_id': comment_id})
 
 
 @connection.connection_handler
@@ -161,22 +103,14 @@ def edit_answer(cursor, edited):
                     'image': edited['image']}
                    )
 
-@connection.connection_handler
-def delete_question_by_id_sql(cursor, question_id):
-    cursor.execute("""
-                    DELETE from question
-                    WHERE id = %(id)s
-                   """,
-                   {'id': question_id})
-
 
 @connection.connection_handler
-def delete_answer_by_id_sql(cursor, answer_id):
+def delete_data_by_id(cursor, table, question_id):
     cursor.execute("""
-                    DELETE from answer
+                    DELETE from %(table)s
                     WHERE id = %(id)s
                    """,
-                   {'id': answer_id})
+                   {'id': question_id, 'table': table})
 
 
 @connection.connection_handler
@@ -251,15 +185,6 @@ def add_new_comment(cursor, comment):
                     VALUES ({None}, {comment['answer_id']},
                             {comment['message']}, {timestamp}, {0})
                     """)
-
-
-def delete_answer_by_id(answer_id):
-    answers = asd.open_csvfile(asd.DATA_FILE_PATH_ANSWERS)
-    for answer in answers:
-        if answer_id == answer["id"]:
-            answers.remove(answer)
-    
-    asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
 
 
 def generate_timestamp():
