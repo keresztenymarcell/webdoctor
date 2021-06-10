@@ -6,7 +6,8 @@
 {% block content %}
 
     <h1>Add a new comment</h1>
-    <form action="/question/{{question_id}}/new-comment" method="POST">
+    {%if answer_id%}
+    <form action="/question/{{answer_id}}/new-comment" method="POST">
         <label for="new-comment" >Enter your comment here:</label><br>
         <textarea name="new-comment" id="new-comment" rows="4" cols="50" placeholder="Your comment goes here..." required></textarea><br><br>
 
@@ -15,6 +16,18 @@
         <a href="/list" onclick="return confirm('Are you sure?')">
         <button style="text-align: center">Return to main page</button></a>
     </form>
+    {%else%}
+   <form action="/question/{{question_id}}/new-comment" method="POST">
+        <label for="new-comment" >Enter your comment here:</label><br>
+        <textarea name="new-comment" id="new-comment" rows="4" cols="50" placeholder="Your comment goes here..." required></textarea><br><br>
+
+        <button type="submit">Post your comment</button><br><br>
+
+        <a href="/list" onclick="return confirm('Are you sure?')">
+        <button style="text-align: center">Return to main page</button></a>
+    </form>
+    {%endif%}
+
 
 {% endblock %}
 

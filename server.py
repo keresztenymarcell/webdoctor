@@ -157,7 +157,7 @@ def add_new_comment_to_question(question_id):
         data_handler.add_new_comment_to_question(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
-    return redirect(url_for("display_question", question_id=question_id))
+    return render_template("add_new_comment.html", question_id=question_id)
 
 
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])

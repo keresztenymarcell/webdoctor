@@ -61,7 +61,21 @@
                         <p>{{ answer.vote_number }}</p>
                         <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
-                    <td ><p><strong>{{ answer.message }}</strong></p></td>
+                    <td ><p><strong>{{ answer.message }}</strong></p>
+                    <div class="dropdown">
+                    <span>Comments</span>
+                    <div class="dropdown-content">
+                        {%for comment in comments%}
+                        <p>{{ comment.message }}<p>
+                            <a href="/comment/{{ comment.id }}/delete">
+                            <button style="font-size:20px">
+                            <i class="fa fa-trash-o"></i>
+                            </button>
+                            </a>
+                        {%endfor%}
+                    </div>
+                </div>
+                    </td>
                     <td style="text-align: center">
                         {% if answer.image  %}
                             <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
@@ -70,7 +84,7 @@
                     <td>
                         <p><a href="/answer/{{ answer.id }}/edit"><button>EDIT THIS ANSWER</button></a></p>
                         <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
-
+                        <p><a href="/question/{{ answer.id }}/new-comment"><button>ANSWER COMMENT</button></a></p>
                     </td>
                 </tr>
                 {% endif %}
