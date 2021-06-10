@@ -169,7 +169,7 @@ def search_table(cursor, phrase, order='submission_time'):
                     question_id,
                     answer.message AS a_message,
                     answer.image AS a_image
-                    FROM question FULL OUTER JOIN answer ON question.id = answer.question_id
+                    FROM question RIGHT OUTER JOIN answer ON question.id = answer.question_id
                     WHERE 
                         title ILIKE '%{phrase}%'
                         OR question.message ILIKE '%{phrase}%'

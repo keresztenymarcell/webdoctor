@@ -142,6 +142,10 @@ tr {width:100%;
 .table-width{width:100%;}
 
 
+
+
+
+
 #view_number{text-align: right;}
 
 
@@ -186,4 +190,9 @@ label {color:white;}
 
 #comments-title{
     border-top: 5px black;
+}
+
+.whysobig {
+    max-height: 100px;
+    width: auto;
 }
