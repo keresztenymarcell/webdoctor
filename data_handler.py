@@ -70,6 +70,9 @@ def get_all_questions(cursor):
     return cursor.fetchall()
 
 
+
+
+
 @connection.connection_handler
 def get_question_by_id(cursor, question_id):
     cursor.execute("""

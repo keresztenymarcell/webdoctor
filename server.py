@@ -26,12 +26,14 @@ def list_page():
     order_by = request.args.get('order_by', 'submission_time')
     order_direction = request.args.get('order_direction', 'desc')
     questions = data_handler.get_all_data('question', order_by, order_direction)
+    comments = data_handler.get_all_data('comment', 'submission_time', 'desc')
+    print(comments)
 
     # old
     # questions = data_handler.sort_data(connection.DATA_FILE_PATH_QUESTIONS, order_by, order_direction)
 
     return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=data_handler.QUESTION_KEYS,
-                           questions=questions, orderby=order_by, orderdir=order_direction)
+                           questions=questions, orderby=order_by, orderdir=order_direction, comments=comments)
 
 
 @app.route("/question/<question_id>")
