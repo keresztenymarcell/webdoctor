@@ -10,36 +10,7 @@
             <input type="text" name="q">
              <button type="submit"><i class="fa fa-search"></i></button>
             </form>
-        <div>
-            <form class="sort" action="/list" method="get">
-            <div>
-                <label>Sort by:</label>
-                    <select name="order_by">
-                        {% for option_index in range(header|length) %}
-                            {% if header[option_index] != "Image" %}
-                                {% if keys[option_index] == orderby %}
-                                    <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
-                                {% else %}
-                                    <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
-                                {% endif %}
 
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                    <select name="order_direction">
-                        {% if orderdir == "desc" %}
-                            <option value="desc" selected>Descending</option>
-                            <option value="asc">Ascending</option>
-                        {% else %}
-                            <option value="desc">Descending</option>
-                            <option value="asc" selected>Ascending</option>
-                        {% endif %}
-                    </select>
-
-                    <button>Sort</button>
-            </div>
-            </form>
-        </div>
         </div>
         </div>
     </nav>
@@ -58,12 +29,12 @@
                 <td style="width: 100%">
                     <h4> {{ question.title }}</h4>
                     <p>{{ question.message }}</p>
-                       <p> Views: {{ question.view_number }}</p>
+                    <p> Views: {{ question.view_number }}</p>
                 </td>
                 <td style="width: 100%">
                     {% if question.image  %}
                             <img src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
-                        {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         </table>

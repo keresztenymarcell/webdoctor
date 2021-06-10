@@ -53,11 +53,14 @@ h2 {color: #ffffff;
 
 h3 {color: #ffffff;
     font-size: 30px;
-    text-align: left;}
+    text-align: left;
+    border-top: 2px solid gray}
+
 
 h4 {
     color: #ffffff;
     font-size: 35px;
+    text-align: left;
 
 }
 p {
@@ -174,4 +177,8 @@ label {color:white;}
 
 .comments #edit{
     align-items: end;
+}
+
+#comments-title{
+    border-top: 5px black;
 }
