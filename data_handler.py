@@ -2,6 +2,7 @@ import os.path
 
 import asd
 import connection
+from werkzeug.utils import secure_filename
 from datetime import datetime
 
 
@@ -30,6 +31,18 @@ def get_data_by_id(cursor, table, data_id):
                     WHERE id = {data_id}
                     """)
     return cursor.fetchone()
+
+
+def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
+    if secure_filename(image_data.filename) != "":
+        get_data["image"] = secure_filename(image_data.filename)
+        folder_route = UPLOAD_FOLDER + get_data["image"]
+        image_data.save(folder_route)
+    elif do_edit:
+        return get_data
+    else:
+        get_data["image"] = ''
+    return get_data
 
 
 @connection.connection_handler
