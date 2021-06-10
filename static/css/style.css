@@ -117,12 +117,19 @@ button:active {
     color: red;
 }
 
+#vote_number{text-align: center;}
 
-table {width:100%}
+
+table {width:100%;}
 
 tr {width:100%;
     background-color: lightgray;
     border: 2px solid black;}
+
+.table-width{width:100%;}
+
+
+#view_number{text-align: right;}
 
 
 textarea{font-family: Arial, Helvetica, sans-serif;
