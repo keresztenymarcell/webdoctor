@@ -110,12 +110,9 @@ def delete_answer(answer_id):
     question_id = target_answer["question_id"]
 
     image_name = data_handler.get_image_name_by_id('answer', answer_id)['image']
-    print(image_name)
     image_list = os.listdir(UPLOAD_FOLDER_ANSWERS)
-    print(image_list)
     if image_name in image_list:
         file_path = UPLOAD_FOLDER_ANSWERS + image_name
-        print(file_path)
         os.remove(file_path)
         data_handler.delete_data_by_id('answer', answer_id)
 
