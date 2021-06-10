@@ -1,6 +1,4 @@
-import os.path
-
-import asd, re
+import re
 import connection
 from werkzeug.utils import secure_filename
 from datetime import datetime
