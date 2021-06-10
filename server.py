@@ -43,7 +43,7 @@ def display_question(question_id):
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
     tags = data_handler.get_tags_by_question_id(question_id)
-    comments = data_handler.get_comment_by_question_id(question_id)
+    comments = data_handler.get_all_data('comment', 'submission_time', 'desc')
     return render_template('display_question.html', question=question, answers=answers, tags=tags, comments=comments)
 
 
@@ -136,14 +136,15 @@ def add_new_answer(question_id):
     return render_template('add_new_answer.html', question_id=question_id)
 
 
-@app.route("/answer/<answer_id>/new-comment", methods=["POST"])
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
-
+    question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
     if request.method == "POST":
-        new_comment = request.form.to_dict()
-        data_handler.add_new_comment(new_comment)
-        question_id = data_handler.get_question_id_by_answer_id(answer_id)
-
+        new_comment = {'question_id': None,
+                       'answer_id': answer_id,
+                       'message': request.form.get("new-comment2"),
+                       'edited_count': 0}
+        data_handler.add_new_comment_to_question(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", answer_id=answer_id)

@@ -101,7 +101,7 @@ def get_answer_by_id(cursor, answer_id):
                     WHERE id = %(id)s
                     """,
                    {'id': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -205,7 +205,7 @@ def get_question_id_by_answer_id(cursor, answer_id):
                     WHERE id = %(answer_id)s
                     """,
                    {'answer_id': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -248,8 +248,8 @@ def add_new_comment(cursor, comment):
     timestamp = generate_timestamp()
     cursor.execute(f"""
                     INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-                    VALUES ({comment['question_id']}, {comment['answer_id']},
-                            {comment['message']}, {timestamp}, {0}
+                    VALUES ({None}, {comment['answer_id']},
+                            {comment['message']}, {timestamp}, {0})
                     """)
 
 
@@ -262,47 +262,8 @@ def delete_answer_by_id(answer_id):
     asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, answers)
 
 
-def delete_question_by_id(question_id):
-    questions = asd.open_csvfile(asd.DATA_FILE_PATH_QUESTIONS)
-    for question in questions:
-        if question_id == question["id"]:
-            questions.remove(question)
-
-    asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, questions)
-
-
-
-
-
-def generate_id(database):
-    if database is []:
-        new_id = 0
-    else:
-        new_id = int(database[-1]["id"]) + 1
-
-    return new_id
-
-
-def find_data(database, data_id):
-    for data in database:
-        if data["id"] == data_id:
-            return data
-    return None
-
-
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-def edit_database(database, edited_data, data_id):
-    for data_index in range(len(database)):
-        if database[data_index]['id'] == data_id:
-            database[data_index] = edited_data
-            if "question_id" in database[0].keys():
-                asd.write_files(asd.DATA_FILE_PATH_ANSWERS, asd.ANSWER_KEYS, database)
-            else:
-                asd.write_files(asd.DATA_FILE_PATH_QUESTIONS, asd.QUESTION_KEYS, database)
-    return None
 
 
 @connection.connection_handler

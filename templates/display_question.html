@@ -26,12 +26,14 @@
                   <span>Comments</span>
                   <div class="dropdown-content">
                     {%for comment in comments%}
-                      <p>{{ comment.message }}<p>
-                      <a href="/comment/{{ comment.id }}/delete">
+                      {%if comment.question_id == question.id%}
+                        <p>{{ comment.message }}<p>
+                         <a href="/comment/{{ comment.id }}/delete">
                         <button style="font-size:20px">
                           <i class="fa fa-trash-o"></i>
                         </button>
                       </a>
+                      {%endif%}
                     {%endfor%}
                   </div>
                 </div>
@@ -66,12 +68,14 @@
                     <span>Comments</span>
                     <div class="dropdown-content">
                         {%for comment in comments%}
+                        {%if comment.answer_id == answer.id%}
                         <p>{{ comment.message }}<p>
                             <a href="/comment/{{ comment.id }}/delete">
                             <button style="font-size:20px">
                             <i class="fa fa-trash-o"></i>
                             </button>
                             </a>
+                        {%endif%}
                         {%endfor%}
                     </div>
                 </div>
@@ -84,7 +88,7 @@
                     <td>
                         <p><a href="/answer/{{ answer.id }}/edit"><button>EDIT THIS ANSWER</button></a></p>
                         <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
-                        <p><a href="/question/{{ answer.id }}/new-comment"><button>ANSWER COMMENT</button></a></p>
+                        <p><a href="/answer/{{ answer.id }}/new-comment"><button>ANSWER COMMENT</button></a></p>
                     </td>
                 </tr>
 
