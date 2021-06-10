@@ -1,5 +1,4 @@
-import os.path
-
+import re
 import connection
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -170,22 +169,46 @@ def search_table(cursor, phrase, order='submission_time'):
                     question_id,
                     answer.message AS a_message,
                     answer.image AS a_image
-                    FROM question FULL OUTER JOIN answer ON question.id = answer.question_id
+                    FROM question RIGHT OUTER JOIN answer ON question.id = answer.question_id
                     WHERE 
-                        title LIKE '%{phrase}%'
-                        OR question.message LIKE '%{phrase}%'
-                        OR answer.message LIKE '%{phrase}%'
+                        title ILIKE '%{phrase}%'
+                        OR question.message ILIKE '%{phrase}%'
+                        OR answer.message ILIKE '%{phrase}%'
                     ORDER BY question.{order}
                     """)
     return cursor.fetchall()
 
 
-def highlight_search_phrase(datatable, phrase):
+def insert_tag(target_indices, datatable, entry_index, key, phrase, tag_type):
+    count = 0
+    for start in target_indices:
+        result = list(datatable[entry_index][key])
+        result.insert((start + count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))), f'<{tag_type}>')
+        result.insert((start + (count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))) + 1 + len(phrase)), f'</{tag_type}>')
+        result = ''.join(result)
+        datatable[entry_index][key] = result
+        count += 1
+
+
+def highlight_search_phrase(datatable, phrase, tag_type):
     for entry_index in range(len(datatable)):
-        datatable[entry_index]['title'] = datatable[entry_index]['title'].replace(phrase, f'<mark>{phrase}</mark>')
-        datatable[entry_index]['q_message'] = datatable[entry_index]['q_message'].replace(phrase, f'<mark>{phrase}</mark>')
+        title_lower = datatable[entry_index]['title'].lower()
+        q_message_lower = datatable[entry_index]['q_message'].lower()
+
+        title_iter = re.finditer(phrase, title_lower)
+        title_indices = [m.start(0) for m in title_iter]
+        insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
+
+        q_message_iter = re.finditer(phrase, q_message_lower)
+        q_message_indices = [m.start(0) for m in q_message_iter]
+        insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
+
         if datatable[entry_index]['a_message'] is not None:
-            datatable[entry_index]['a_message'] = datatable[entry_index]['a_message'].replace(phrase, f'<mark>{phrase}</mark>')
+            a_message_lower = datatable[entry_index]['a_message'].lower()
+            a_message_iter = re.finditer(phrase, a_message_lower)
+            a_message_indices = [m.start(0) for m in a_message_iter]
+            insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
+
     return datatable
 
 

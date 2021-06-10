@@ -20,30 +20,32 @@
     {% if results|length != 0 %}
         {% for result in results %}
             <table>
-                <tr>
-                    <td>
-                    <p><a href="/question/{{ result.q_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                    <p style="text-align: center">{{ result.q_vote_number }}</p>
-                    <p><a href="/question/{{ result.q_id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-                    </td>
+                {% if result.title %}
+                    <tr>
+                        <td>
+                        <p><a href="/question/{{ result.q_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                        <p style="text-align: center">{{ result.q_vote_number }}</p>
+                        <p><a href="/question/{{ result.q_id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                        </td>
 
-                    <td style="width: 100%">
-                        <h4> {{ result.title | safe }}</h4>
-                        {% if phrase in result.q_message %}
+                        <td style="width: 100%">
+                            <h4> {{ result.title | safe }}</h4>
+                        {% if tag_type in result.q_message %}
                             <p>{{ result.q_message | safe }}</p>
                         {% endif %}
                         <p style="text-align: right">
                             Views: {{ result.view_number }}</p>
-                    </td>
-                    <td style="width: 100%">
-                        {% if result.q_image  %}
-                                <img src="/static/pictures/question_pictures/{{ result.q_image }}" width="200" alt="some picture">
-                            {% endif %}
-                    </td>
-                </tr>
+                        </td>
+                        <td style="width: 100%">
+                            {% if result.q_image  %}
+                                    <img class="whysobig" src="/static/pictures/question_pictures/{{ result.q_image }}" width="200" alt="some picture">
+                                {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
 
                 {% if result.a_message %}
-                    {% if phrase in result.a_message %}
+                    {% if tag_type in result.a_message %}
                         <tr>
                             <td>
                             <p><a href="/answer/{{ result.a_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
@@ -53,7 +55,7 @@
                             <td ><p class="tab"><strong>{{ result.a_message | safe }}</strong></p></td>
                             <td style="text-align: center">
                             {% if result.a_image  %}
-                                <img src="/static/pictures/answer_pictures/{{ result.a_image }}" width="200" alt="some picture">
+                                <img class="whysobig" src="/static/pictures/answer_pictures/{{ result.a_image }}" width="200" alt="some picture">
                             {% endif %}
                             </td>
                         </tr>

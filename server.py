@@ -213,13 +213,14 @@ def answer_vote_down(answer_id):
 @app.route("/search")
 def search_page():
     search_phrase = request.args.get('q')
+    tag_type = 'mark'
+
     if search_phrase:
         result = data_handler.search_table(search_phrase)
         if len(result) != 0:
-            result = data_handler.highlight_search_phrase(result, search_phrase)
+            result = data_handler.highlight_search_phrase(result, search_phrase, tag_type)
 
-        return render_template('results.html', results=result, phrase=search_phrase)
-
+        return render_template('results.html', results=result, phrase=search_phrase, tag_type=tag_type)
     return redirect('/list')
 
 
