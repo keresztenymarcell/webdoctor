@@ -180,10 +180,16 @@ def edit_comment(comment_id):
 @app.route("/comment/<comment_id>/delete")
 def delete_comment(comment_id):
     comment = data_handler.get_data_by_id('comment', comment_id)
-    question_id = comment["question_id"]
-    data_handler.delete_data_by_id('comment', comment_id)
-
-    return redirect(url_for("display_question", question_id=question_id))
+    print(comment)
+    if comment["question_id"]:
+        question_id = comment['question_id']
+        data_handler.delete_data_by_id('comment', comment_id)
+        return redirect(url_for("display_question", question_id=question_id))
+    else:
+        answer_id = comment['answer_id']
+        question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
+        data_handler.delete_data_by_id('comment', comment_id)
+        return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/vote_up")
