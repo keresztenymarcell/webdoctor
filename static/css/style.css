@@ -182,3 +182,8 @@ label {color:white;}
 #comments-title{
     border-top: 5px black;
 }
+
+.whysobig {
+    max-height: 100px;
+    width: auto;
+}
