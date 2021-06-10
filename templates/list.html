@@ -46,7 +46,7 @@
         </div>
     </nav>
 
-    <h1>Ásóka helps!</h1>
+    <h1>WebDoctor</h1>
     <h3>Ask your question</h3>
     <br>
 
@@ -72,7 +72,7 @@
                     <a href="/question/{{ question.id }}">
                         <button>ANSWER</button></a>
                     <a href="/question/{{ question.id }}/new-comment">
-                        <button>QUESTION COMMENT</button></a>
+                        <button>COMMENT</button></a>
                     <p id="view_number">
                         Views: {{ question.view_number }}</p>
                 </td>
@@ -85,5 +85,4 @@
         </table>
 
     {% endfor %}
-    <p><a href="/add-question"><button>Add questions</button></a></p>
 {% endblock%}

@@ -1,8 +1,10 @@
-body {background-image: url('/static/bg.jpeg');
+
+body {
+    /*background-image: url('/static/bg2.jpeg');*/
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     background-size: cover;
-    background-color: #147CCEFF;
+    background-color: #2daecb;
     margin-left: 10%;
     margin-right: 10%;
     font-family: 'Dosis', sans-serif;
@@ -42,23 +44,24 @@ body {background-image: url('/static/bg.jpeg');
 h1 {color: #ffffff;
     font-size: 70px;
     text-align: center;
+
     }
 
 h2 {color: #ffffff;
     font-size: 50px;
-    text-align: center;}
+    text-align: left;}
 
 h3 {color: #ffffff;
     font-size: 30px;
-    text-align: center;}
+    text-align: left;}
 
 h4 {
     color: #ffffff;
-    font-size: 23px;
+    font-size: 35px;
 
 }
 p {
-    color: darkblue;
+    color: #ffffff;
     font-size: 18px;
 }
 
@@ -125,7 +128,7 @@ button:active {
 table {width:100%;}
 
 tr {width:100%;
-    background-color: lightgray;
+
     border: 2px solid black;}
 
 .table-width{width:100%;}
@@ -167,5 +170,8 @@ label {color:white;}
 
 #submission{
     text-align: right;
+}
 
+.comments #edit{
+    align-items: end;
 }

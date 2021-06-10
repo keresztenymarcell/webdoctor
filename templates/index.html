@@ -2,9 +2,49 @@
 {% block title %}Index Page{% endblock %}
 
 {% block content %}
+    <nav>
+        <div class="navbar">
+          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
+        <div>
+         <form class="search" action="/search" method="get">
+            <input type="text" name="q">
+             <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        <div>
+            <form class="sort" action="/list" method="get">
+            <div>
+                <label>Sort by:</label>
+                    <select name="order_by">
+                        {% for option_index in range(header|length) %}
+                            {% if header[option_index] != "Image" %}
+                                {% if keys[option_index] == orderby %}
+                                    <option value="{{ keys[option_index] }}" selected>{{ header[option_index] }}</option>
+                                {% else %}
+                                    <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
+                                {% endif %}
 
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select name="order_direction">
+                        {% if orderdir == "desc" %}
+                            <option value="desc" selected>Descending</option>
+                            <option value="asc">Ascending</option>
+                        {% else %}
+                            <option value="desc">Descending</option>
+                            <option value="asc" selected>Ascending</option>
+                        {% endif %}
+                    </select>
 
-    <h1>Ásóka Helps</h1>
+                    <button>Sort</button>
+            </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    </nav>
+
+    <h1>WebDoctor</h1>
     <p><a href="/list"><button>See all of the questions</button></a></p>
     {% for question in questions %}
 

@@ -12,11 +12,11 @@
         #buttons{text-align: center;}
     </style>
 
-    <h2>{{ question.title }}</h2><br>
+    <br>
     <table>
         <tr>
             <td>
-                <p>
+                <p> <h4>{{ question.title }}</h4>
                     <strong>{{ question.message }}</strong><br><br>
                     {% for tag in tags %}
                     <div class="tags">
@@ -38,6 +38,11 @@
                     <button>ADD TAG</button></a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <h3>Comments</h3>
+            </td>
+        </tr>
         <div class="comments">
             <tr>
                 <td>
@@ -46,6 +51,7 @@
 
                     <p>
                         <div id="message"><a href="/comment/{{ comment.id }}/edit">{{ comment.message }}</a>
+
                         <div id="submission">Submitted on: {{ comment.submission_time }}</div>
                         </div>
 
@@ -57,12 +63,13 @@
                 </td>
                 <td>
 
+
                 </td>
             </tr>
         </div>
     </table><br><br><br>
 
-    <h2>Answers</h2>
+    <h3>Answers</h3>
     <table>
         <tbody>
             {% for answer in answers %}
