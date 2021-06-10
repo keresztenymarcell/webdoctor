@@ -91,31 +91,35 @@ ALTER TABLE ONLY comment
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
 
-INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
-INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
-
-I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
-
-BUT in my theme i also using jquery via webpack so the loading order is now following:
-
-jquery
-booklet
-app.js (bundled file with webpack, including jquery)', 'images/image1.png');
-INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
-', NULL);
+INSERT INTO question VALUES (0, '2021-04-29 09:19:00', 32, 0, 'How to treat toenail fungus?', 'I''m looking for natural solutions!', 'toenail_fungus.jpeg');
+INSERT INTO question VALUES (1, '2021-05-09 21:24:00', 26, 2, 'I have acne, help!', 'I''ve been struggling with acne since my teens. I tried all the creams but nothing seems to help!', 'acne.jpeg');
+INSERT INTO question VALUES (2, '2021-05-12 18:04:04', 36, 2, 'How to treat warts?', 'I developed warts after swimming in a public pool. They cover the sole of my foot. :(', 'warts.jpeg');
+INSERT INTO question VALUES (3, '2021-05-21 12:01:34', 16, 4, 'I might have intestinal parasites?', 'I think something is moving inside of me, help!!!', 'tummyache.jpg');
 SELECT pg_catalog.setval('question_id_seq', 2, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
+INSERT INTO answer VALUES (0, '2021-06-01 09:19:00', 1, 0, 'I swear by Vicks VapoRub! I applied a small amount to the affected area at least once a day. It worked wonders.', 'wick.jpeg');
+INSERT INTO answer VALUES (1, '2021-06-02 10:19:00', 0, 0, 'Snakeroot extract worked for me. A 2008 study showed that snakeroot extract is as effective against toenail fungus as the prescription antifungal medicine ciclopirox. Apply it to the affected area every third day for the first month, twice a week for the second month, and once a week for the third month.', 'snakeroot.jpg');
+INSERT INTO answer VALUES (2, '2021-06-03 11:19:00', 1, 0, 'Try tea tree oil. Paint the tea tree oil directly onto the affected nail twice daily with a cotton swab.', 'teatreeoil.jpeg');
+INSERT INTO answer VALUES (3, '2021-06-04 12:19:00', 0, 0, 'Oregano oil contains thymol. According to a 2016 review, thymol has antifungal and antibacterial properties. Treatment: apply oregano oil to the nail twice daily with a cotton swab.', 'oreganooil.jpeg');
+INSERT INTO answer VALUES (4, '2021-06-05 13:19:00', 2, 0, 'My aunt used vinegar for her toenail fungus. She soaked her foot in one part vinegar to two parts warm water for 20 minutes daily and it worked for her.', 'vinegar.jpg');
+INSERT INTO answer VALUES (5, '2021-06-06 09:19:00', -2, 1, 'Try antibiotics, talk with a dermatologist.', NULL);
+INSERT INTO answer VALUES (6, '2021-06-06 10:19:00', 10, 1, 'DO NOT use antibiotics! It will ruin your gut flora. Talk with a holistic practitioner and heal your gut and gut flora. It will cure your acne.', NULL);
+INSERT INTO answer VALUES (7, '2021-06-06 11:19:00', 100, 1, 'Look for food allergens, do an elimination diet. For many people eating common allergens like dairy, soy or gluten causes their acne problems.', NULL);
+INSERT INTO answer VALUES (8, '2021-06-06 12:19:00', -1, 2, 'Stop going to swim!', NULL);
+INSERT INTO answer VALUES (9, '2021-06-06 13:19:00', 15, 2, 'Fürgyé'' le!', NULL);
+INSERT INTO answer VALUES (10, '2021-06-06 14:19:00', 1, 2, 'Better see a dermatologist.', NULL);
+INSERT INTO answer VALUES (11, '2021-06-06 15:19:00', 17, 2, 'Duct tape is one of the most popular home remedies for warts. It''s inexpensive and easy to find. Duct tape is said to remove the infected skin over time.', 'ducttape.jpeg');
+INSERT INTO answer VALUES (12, '2021-06-06 16:19:00', 0, 3, 'Call the ambulance!', 'gyorfipal.jpg');
+INSERT INTO answer VALUES (13, '2021-06-06 17:19:00', 1, 3, 'Take some laxatives. Maybe see a doctor?', 'toilet.jpeg');
 SELECT pg_catalog.setval('answer_id_seq', 2, true);
 
-INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
+INSERT INTO comment VALUES (0, 0, NULL, 'Please, upload a picture with a better resolution!', '2021-06-07 05:49:00');
+INSERT INTO comment VALUES (1, NULL, 1, 'I''m afraid of snakes! :OOO', '2021-06-07 16:55:00');
 SELECT pg_catalog.setval('comment_id_seq', 2, true);
 
 INSERT INTO tag VALUES (1, 'python');
-INSERT INTO tag VALUES (2, 'sql');
-INSERT INTO tag VALUES (3, 'css');
+INSERT INTO tag VALUES (2, 'health');
+INSERT INTO tag VALUES (3, 'skin');
 SELECT pg_catalog.setval('tag_id_seq', 3, true);
 
 INSERT INTO question_tag VALUES (0, 1);
