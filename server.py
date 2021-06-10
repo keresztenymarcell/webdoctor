@@ -66,7 +66,6 @@ def write_questions():
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    questions = data_handler.get_all_questions()
     if request.method == 'POST':
 
         edited_question = request.form.to_dict()
@@ -178,10 +177,10 @@ def edit_comment(comment_id):
 
 @app.route("/comment/<comment_id>/delete")
 def delete_comment(comment_id):
-    data_handler.delete_comment_by_id(comment_id)
     comment = data_handler.get_comment_by_id(comment_id)
     question_id = comment["question_id"]
-    # check if comment is passed as argument
+    data_handler.delete_comment_by_id(comment_id)
+
     return redirect(url_for("display_question", question_id=question_id))
 
 

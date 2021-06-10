@@ -20,17 +20,21 @@
                 {% for tag in tags %}
                 <a href="//question/{{ question.id }}/tag/{{ tag.id }}/delete">x {{tag.name}}</a>
                 {% endfor %}
-                <!--<div class="comments">
-                  <button class="dropdown">Comments</button>
-                  <div class="dropdown">
-                      {%for comment in comments%}
-                          -{{ comment.message }}
-                          <button style="font-size:20px">
-                            <i class="fa fa-trash-o"><a href="/comment/{{ comment.id }}/delete"></i></a>
-                            </button>
-                      {%endfor%}
+
+                <div class="dropdown">
+                  <span>Comments</span>
+                  <div class="dropdown-content">
+                    {%for comment in comments%}
+                      <p>{{ comment.message }}<p>
+                      <a href="/comment/{{ comment.id }}/delete">
+                        <button style="font-size:20px">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </a>
+                    {%endfor%}
                   </div>
-                </div>-->
+                </div>
+
             </td>
             <td id="buttons">
                 <a href="/question/{{ question.id }}/edit">
