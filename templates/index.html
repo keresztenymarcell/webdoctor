@@ -4,15 +4,17 @@
 {% block content %}
 
 
-<h1>Ásóka Helps</h1>
-    <p><a href="/list">See all of the questions</a></p>
+    <h1>Ásóka Helps</h1>
+    <p><a href="/list"><button>See all of the questions</button></a></p>
     {% for question in questions %}
 
         <table>
             <tr>
                 <td>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
                 <p style="text-align: center">{{ question.vote_number }}</p>
-
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                </td>
                 <td style="width: 100%">
                     <h4> {{ question.title }}</h4>
                     <p>{{ question.message }}</p>
