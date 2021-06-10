@@ -230,8 +230,8 @@ def add_tag(question_id):
             tags = data_handler.get_tags_by_question_id(question_id)
             return redirect(url_for("display_question", question_id=question_id, tags=tags))
 
-    tags = data_handler.get_tags_by_question_id(question_id)
-    return render_template('add_new_tag.html', question_id=question_id, tags=tags)
+    filtered_tags = data_handler.filter_tags(question_id)
+    return render_template('add_new_tag.html', question_id=question_id, tags=filtered_tags)
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])

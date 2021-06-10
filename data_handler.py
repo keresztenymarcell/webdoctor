@@ -329,6 +329,17 @@ def get_all_tag(cursor):
 
 
 @connection.connection_handler
+def filter_tags(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM tag
+                    FULL OUTER JOIN question_tag
+                    ON tag.id = question_tag.tag_id
+                    WHERE question_tag.question_id != %(question_id)s
+                    """, {'question_id': question_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def add_new_tag(cursor, tag_name):
     cursor.execute("""
                         INSERT INTO tag (name)
