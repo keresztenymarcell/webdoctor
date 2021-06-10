@@ -7,9 +7,9 @@
 
     <h1>Add a new comment</h1>
     {%if answer_id%}
-    <form action="/question/{{answer_id}}/new-comment" method="POST">
-        <label for="new-comment" id="new-comment2">Enter your comment here:</label><br>
-        <textarea name="new-comment"  rows="4" cols="50" placeholder="Your comment goes here..." required></textarea><br><br>
+    <form action="/answer/{{answer_id}}/new-comment" method="POST">
+        <label for="new-comment2" >Enter your comment here:</label><br>
+        <textarea name="new-comment2" id="new-comment2" rows="4" cols="50" placeholder="Your comment goes here..." required></textarea><br><br>
 
         <button type="submit">Post your comment</button><br><br>
 
