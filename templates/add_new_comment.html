@@ -13,9 +13,8 @@
 
         <button type="submit">Post your comment</button><br><br>
 
-        <a href="/list" onclick="return confirm('Are you sure?')">
-        <button style="text-align: center">Return to main page</button></a>
     </form>
+        {% include 'footer.html' %}
     {%else%}
    <form action="/question/{{question_id}}/new-comment" method="POST">
         <label for="new-comment" >Enter your comment here:</label><br>
@@ -23,9 +22,8 @@
 
         <button type="submit">Post your comment</button><br><br>
 
-        <a href="/list" onclick="return confirm('Are you sure?')">
-        <button style="text-align: center">Return to main page</button></a>
     </form>
+        {% include 'footer.html' %}
     {%endif%}
 
 

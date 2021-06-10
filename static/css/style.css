@@ -5,6 +5,7 @@ body {background-image: url('/static/bg.jpeg');
     background-color: #147CCEFF;
     margin-left: 10%;
     margin-right: 10%;
+    font-family: 'Dosis', sans-serif;
 }
 
 .navbar {
@@ -40,29 +41,30 @@ body {background-image: url('/static/bg.jpeg');
 
 h1 {color: #ffffff;
     font-size: 70px;
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     }
 
 h2 {color: #ffffff;
     font-size: 50px;
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;}
 
 h3 {color: #ffffff;
     font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;}
 
-h4{color:#ffffff;
-font-size: 23px;
-font-family: Arial, Helvetica, sans-serif;}
+h4 {
+    color: #ffffff;
+    font-size: 23px;
 
-p { color: darkblue;
+}
+p {
+    color: darkblue;
     font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;}
+}
 
+.back_button{
 
+}
 button {
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
 	background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
@@ -125,12 +127,13 @@ tr {width:100%;
     border: 2px solid black;}
 
 
-textarea{font-family: Arial, Helvetica, sans-serif;
+textarea{
 text-align: center;}
 
-form {color: white;
+form {
+    color: white;
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;}
+}
 
 label {color:white;}
 
