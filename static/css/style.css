@@ -14,7 +14,11 @@ body {
   overflow: hidden;
   background-color: white;
     border-radius: 20px;
-    opacity: 90%;
+    opacity: 100%;
+    position: fixed;
+    width:80%;
+    top: 0;
+
 }
 
 .navbar .search{float: right;
@@ -118,6 +122,7 @@ button:active {
 .up_arrow{
     transform: rotate(-90deg);
     color: green;
+
 }
 
 .down_arrow{
