@@ -216,6 +216,7 @@ def add_new_comment_to_question(cursor, comment_dict):
                         'submission_time': timestamp,
                         'edited_count': comment_dict['edited_count']})
 
+
 @connection.connection_handler
 def get_comment_by_question_id(cursor, question_id):
     cursor.execute("""
