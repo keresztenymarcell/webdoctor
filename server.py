@@ -158,6 +158,7 @@ def add_new_comment_to_question(question_id):
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id):
     comment = data_handler.get_data_by_id('comment', comment_id)
+    print(comment)
     question_id = comment["question_id"]
 
     if request.method == "POST":
