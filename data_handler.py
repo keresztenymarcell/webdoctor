@@ -104,12 +104,11 @@ def edit_answer(cursor, edited):
 
 
 @connection.connection_handler
-def delete_data_by_id(cursor, table, question_id):
-    cursor.execute("""
-                    DELETE from %(table)s
-                    WHERE id = %(id)s
-                   """,
-                   {'id': question_id, 'table': table})
+def delete_data_by_id(cursor, table, data_id):
+    cursor.execute(f"""
+                    DELETE from {table}
+                    WHERE id = {data_id}
+                   """)
 
 
 @connection.connection_handler
