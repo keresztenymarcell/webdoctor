@@ -67,9 +67,8 @@ def write_questions():
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
     if request.method == 'POST':
-
         edited_question = request.form.to_dict()
-        data_handler.edit_question(question_id, edited_question)
+        data_handler.edit_question(edited_question)
         return redirect(url_for("display_question", question_id=question_id))
 
     target_question = data_handler.get_question_by_id(question_id)
