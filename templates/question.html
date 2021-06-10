@@ -15,7 +15,7 @@
     {% endif %}
     <br>
     {% if question %}
-        <form action="/question/{{ question.id }}/edit" method="post">
+        <form action="/question/{{ question.id }}/edit" method="post" enctype="multipart/form-data">
     {% else %}
         <form action="/add-question" method="post" enctype="multipart/form-data">
     {% endif %}
@@ -38,9 +38,9 @@
         <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
     {% if question %}
-        <button type="submit">Done</button>
+        <button type="submit">Edit question</button>
     {% else %}
-        <a href="/question/{{ question_id }}"><button type="submit">Display a question</button></a>
+        <a href="/question/{{ question_id }}"><button type="submit">Submit this question</button></a>
     {% endif %}
 
     </form>
