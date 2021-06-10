@@ -332,9 +332,9 @@ def get_all_tag(cursor):
 def add_new_tag(cursor, tag_name):
     cursor.execute("""
                         INSERT INTO tag (name)
-                        VALUES(%(tag_name)s)
-                        """, {'tag_name':tag_name})
-
+                        VALUES(%(tag_name)s) RETURNING id;
+                        """, {'tag_name': tag_name})
+    return cursor.fetchone()
 
 @connection.connection_handler
 def delete_tag_by_question_id(cursor, question_id, tag_id):
@@ -386,19 +386,22 @@ def get_tags_by_tag_id(cursor, tag_id):
 
 
 @connection.connection_handler
-def add_tag_id_to_question_tag(cursor, question_id, tag_id):
+def add_tag_id_to_question_tag(cursor, tag_id, question_id):
     cursor.execute("""
                         INSERT INTO question_tag(question_id, tag_id)
                         VALUES(%(question_id)s, %(tag_id)s)
-                        """, {'question_id':question_id, 'tag_id':tag_id})
+                        """,
+                        {'question_id': question_id, 'tag_id': tag_id})
 
 
 @connection.connection_handler
 def get_tags_by_question_id(cursor, question_id):
     cursor.execute("""
-                    SELECT name FROM tag
-                    WHERE id = (SELECT tag_id FROM question_tag
-                       WHERE question_id = %(question_id)s)
-                        """, {'question_id':question_id})
+                    SELECT id, name FROM tag
+                    RIGHT OUTER JOIN question_tag
+                    ON tag.id = question_tag.tag_id
+                    WHERE question_id = %(question_id)s
+                    
+                    """, {'question_id': question_id})
     return cursor.fetchall()
 

@@ -221,14 +221,11 @@ def add_tag(question_id):
     exist_tag = request.form.get("existing-tag")
     if request.method == "POST":
         if new_tag:
-            new_tag = request.form.get("new-tag")
-            data_handler.add_new_tag(new_tag)
-            tag_id = data_handler.get_tag_id_by_name(new_tag)
+            tag_id = data_handler.add_new_tag(new_tag)['id']
             data_handler.add_tag_id_to_question_tag(tag_id, question_id)
-            tags = data_handler.get_tags_by_question_id(question_id)
-            return redirect(url_for("display_question", question_id=question_id, tags=tags))
+            return redirect(url_for("display_question", question_id=question_id))
         else:
-            tag_id = data_handler.get_tag_id_by_name(exist_tag)
+            tag_id = data_handler.get_tag_id_by_name(exist_tag)['id']
             data_handler.add_tag_id_to_question_tag(tag_id, question_id)
             tags = data_handler.get_tags_by_question_id(question_id)
             return redirect(url_for("display_question", question_id=question_id, tags=tags))
@@ -240,8 +237,7 @@ def add_tag(question_id):
 @app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
 def remove_tag(question_id, tag_id):
     data_handler.delete_tag_by_question_id(question_id, tag_id)
-    tags = data_handler.get_tags_by_question_id(question_id)
-    return redirect(url_for("display_question", question_id=question_id, tags=tags))
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 if __name__ == "__main__":
