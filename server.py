@@ -159,13 +159,25 @@ def add_new_comment_to_question(question_id):
 def edit_comment(comment_id):
     comment = data_handler.get_data_by_id('comment', comment_id)
     question_id = comment["question_id"]
-    if request.method == "POST":
-        edited_comment = request.form.to_dict()
-        data_handler.edit_comment(comment_id, edited_comment)
 
-        return redirect(url_for("display_question", question_id=question_id))
+    if request.method == "POST":
+        if comment['question_id']:
+            edited_comment = request.form.to_dict()
+            data_handler.edit_comment(comment_id, edited_comment)
+
+            return redirect(url_for("display_question", question_id=question_id))
+        else:
+            edited_comment = request.form.to_dict()
+            answer_id = comment['answer_id']
+            question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
+            data_handler.edit_comment(comment_id, edited_comment)
+
+            return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("edit_comment.html", comment=comment)
+
+
+
 
 
 @app.route("/comment/<comment_id>/delete")
