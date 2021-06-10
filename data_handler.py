@@ -25,11 +25,10 @@ def get_all_data(cursor, table, order_by, direction):
 
 @connection.connection_handler
 def get_data_by_id(cursor, table, data_id):
-    cursor.execute("""
-                    SELECT * FROM %(table)s
-                    WHERE id = %(id)s
-                    """,
-                   {'id': data_id, 'table': table})
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    WHERE id = {data_id}
+                    """)
     return cursor.fetchone()
 
 

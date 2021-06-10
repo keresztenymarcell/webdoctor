@@ -39,7 +39,7 @@ def list_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
 
-    question = data_handler.get_data_by_id('question', question_id)
+    question = data_handler.get_data_by_id("question", question_id)
     answers = data_handler.get_all_data("answer", "vote_number", "desc")
     data_handler.increment_view_number(question_id)
     tags = data_handler.get_tags_by_question_id(question_id)
