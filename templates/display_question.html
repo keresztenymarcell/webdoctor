@@ -42,7 +42,7 @@
                         <div id="message"><h4>{{ comment.message }}</h4> </div>
 
                         <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
-                        <div id="edit_button"> <a href="/comment/{{ comment.id }}/edit"></a><button>EDIT</button></div>
+                        <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button>EDIT</button></a></div>
                     </p>
                 {% endif %}
                 {% endfor %}
