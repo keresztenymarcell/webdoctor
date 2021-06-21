@@ -382,3 +382,17 @@ def register_user(cursor, user_email, user_password, user_name):
                 """
     cursor.execute(query, (user_name, hashed_password, user_email))
 
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@connection.connection_handler
+def get_user_password(cursor, user_info):
+    query = """
+            SELECT password FROM users
+            WHERE email = %(user_email)s
+            """
+    cursor.execute(query, {'user_email': user_info['email']})
+    return cursor.fetchone()

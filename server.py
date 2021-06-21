@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, flash, url_for
 import data_handler
 import os
 
@@ -9,6 +9,8 @@ UPLOAD_FOLDER_ANSWERS = DIRNAME + "/static/pictures/answer_pictures/"
 
 
 app = Flask(__name__)
+
+app.secret_key = b'_akJFh3sjfjbhsdjb/'
 
 
 @app.route("/")
@@ -260,8 +262,24 @@ def registration_page():
             data_handler.register_user(user_email, user_password, user_name)
             return redirect("/login")
         message = "This e-mail has already been used"
-        return redirect("/registration", message=message)
+        return render_template("registration.html", message=message)
     return render_template("registration.html")
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user_info = request.form.to_dict()      # email, psw
+        is_new_user = data_handler.check_if_new_user(user_info['email'])
+        if is_new_user:
+            return redirect(url_for('registration_page'))
+        hashed_user_password = data_handler.get_user_password(user_info)
+        if data_handler.verify_password(user_info['psw'], hashed_user_password):
+            session['username'] = user_info['email']
+            return redirect(url_for('index'))
+        flash("Invalid login attempt")
+        return render_template('login.html')
+    return render_template('login.html')
 
 
 if __name__ == "__main__":
