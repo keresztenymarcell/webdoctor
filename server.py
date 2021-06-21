@@ -249,6 +249,19 @@ def remove_tag(question_id, tag_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
+
+@app.route("/registration", methods=["GET", "POST"])
+def registration_page():
+    if request.method == "POST":
+        registration = request.form.to_dict()
+        is_new_user = data_handler.check_if_new_user(registration)
+        if is_new_user:
+            data_handler.register_user(registration)
+            return redirect("/login")
+        message = "This e-mail has already been used"
+        return redirect("/registration", message=message)
+    return render_template("registraion.html")
+
 if __name__ == "__main__":
     app.run(
         debug=True,
