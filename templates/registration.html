@@ -23,8 +23,8 @@
      <button type="submit" class="signupbtn">Sign Up</button>
 
 </form>
-        {% if message %}
-        <p class="error"><strong>Error:</strong> {{ error }}
+    {% if message %}
+        <p><strong>Error:</strong> {{ message }}
       {% endif %}
 
 {% endblock %}
