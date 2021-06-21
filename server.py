@@ -249,18 +249,20 @@ def remove_tag(question_id, tag_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-
 @app.route("/registration", methods=["GET", "POST"])
 def registration_page():
     if request.method == "POST":
-        registration = request.form.to_dict()
-        is_new_user = data_handler.check_if_new_user(registration)
+        user_email = request.form['email']
+        user_password = request.form['psw']
+        user_name = request.form['user_name']
+        is_new_user = data_handler.check_if_new_user(user_email)
         if is_new_user:
-            data_handler.register_user(registration)
+            data_handler.register_user(user_email, user_password, user_name)
             return redirect("/login")
         message = "This e-mail has already been used"
         return redirect("/registration", message=message)
     return render_template("registraion.html")
+
 
 if __name__ == "__main__":
     app.run(

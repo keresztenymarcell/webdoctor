@@ -1,5 +1,5 @@
 import re
-import connection
+import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
@@ -356,12 +356,29 @@ def get_image_name_by_id(cursor, table, id):
                     """)
     return cursor.fetchone()
 
+
 @connection.connection_handler
-def check_if_new_user(user_name):
+def check_if_new_user(cursor, user_name):
     query = """
-                SELECT * FROM users
-                WHERE email = %s
-                                """
-    cursor.execute(query,(user_name))
+            SELECT * FROM users
+            WHERE email = %s
+            """
+    cursor.execute(query, (user_name))
     user = cursor.fetchone()
-    return True if user is None
+    return True if user is None else False
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+@connection.connection_handler
+def register_user(cursor, user_email, user_password, user_name):
+    hashed_password = hash_password(user_password)
+    query = """
+                INSERT INTO users(user_name, password, email)
+                VALUES(%s, %s, %s)
+                """
+    cursor.execute(query, (user_name, hashed_password, user_email))
+
