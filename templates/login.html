@@ -4,15 +4,17 @@
 {% block content %}
       <h1>Please login</h1>
       <br>
-      <form action="" method="post">
+      <form action="{{ url_for('login') }}" method="post">
         <input type="email" placeholder="Username" name="email" value="{{
           request.form.email }}">
-         <input type="password" placeholder="Password" name="password" value="{{
+         <input type="password" placeholder="Password" name="psw" value="{{
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="Login">
     </form>
  {% if get_flashed_messages() %}
+     {% for message in get_flashed_messages() %}
         {{ message }}
-      {% endif %}
+     {%  endfor %}
+{% endif %}
 {% endblock %}
 

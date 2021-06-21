@@ -273,10 +273,10 @@ def login():
         is_new_user = data_handler.check_if_new_user(user_info['email'])
         if is_new_user:
             return redirect(url_for('registration_page'))
-        hashed_user_password = data_handler.get_user_password(user_info)
+        hashed_user_password = data_handler.get_user_password(user_info)['password']
         if data_handler.verify_password(user_info['psw'], hashed_user_password):
             session['username'] = user_info['email']
-            return redirect(url_for('index'))
+            return redirect(url_for('main_page'))
         flash("Invalid login attempt")
         return render_template('login.html')
     return render_template('login.html')
