@@ -11,6 +11,8 @@
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="Login">
     </form>
-
+ {% if get_flashed_messages() %}
+        {{ message }}
+      {% endif %}
 {% endblock %}
 
