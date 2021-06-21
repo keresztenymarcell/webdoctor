@@ -261,7 +261,7 @@ def registration_page():
             return redirect("/login")
         message = "This e-mail has already been used"
         return redirect("/registration", message=message)
-    return render_template("registraion.html")
+    return render_template("registration.html")
 
 
 if __name__ == "__main__":

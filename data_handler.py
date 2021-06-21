@@ -361,9 +361,9 @@ def get_image_name_by_id(cursor, table, id):
 def check_if_new_user(cursor, user_name):
     query = """
             SELECT * FROM users
-            WHERE email = %s
+            WHERE email = %(user_name)s
             """
-    cursor.execute(query, (user_name))
+    cursor.execute(query, {'user_name': user_name})
     user = cursor.fetchone()
     return True if user is None else False
 
