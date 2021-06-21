@@ -260,7 +260,7 @@ def registration_page():
             data_handler.register_user(user_email, user_password, user_name)
             return redirect("/login")
         message = "This e-mail has already been used"
-        return redirect("/registration", message=message)
+        return render_template("registration.html", message=message)
     return render_template("registration.html")
 
 
