@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Index Page{% endblock %}
+
+{% block content %}
+    <nav>
+        <div class="navbar">
+          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
+        <div>
+         <form class="search" action="/search" method="get">
+            <input type="text" name="q">
+             <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+
+        </div>
+        </div>
+    </nav>
+
+    <h1>WebDoctor</h1>
+    <p><a href="/list"><button>See all of the questions</button></a></p>
+    {% for question in questions %}
+
+        <table>
+            <tr>
+                <td>
+                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                <p style="text-align: center">{{ question.vote_number }}</p>
+                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                </td>
+                <td style="width: 100%">
+                    <h4> {{ question.title }}</h4>
+                    <p>{{ question.message }}</p>
+                    <p> Views: {{ question.view_number }}</p>
+                </td>
+                <td style="width: 100%">
+                    {% if question.image  %}
+                            <img src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+{% endblock %}
+
