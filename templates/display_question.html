@@ -69,16 +69,19 @@
                                 <p id="vote_number">{{ answer.vote_number }}</p>
                                 <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                             </td>
-                            {% if question.user_id == session.user_id %}
                                 <td>
-                                    <form action="{{ question.id }}/accept_answer/{{ answer.id }}">
-                                        <input type="checkbox" name="accepted" id="accepted" value="True">
-                                        <label for="accepted">Accepted</label>
-                                        <input type="submit" value="Submit">
-                                    </form>
+                                    {% if question.user_id == session.user_id %}
+                                        <form action="{{ question.id }}/accept_answer/{{ answer.id }}">
+                                            <input type="checkbox" name="accepted" id="accepted" value="True">
+                                            <label for="accepted">Accept</label>
+                                            <input type="submit" value="Submit">
+                                        </form>
+                                    {% endif %}
+                                    {% if answer.accepted %}
+                                        <p>Remove</p>
+                                    {% endif %}
                                     <h4>{{ answer.message }}</h4>
                                 </td>
-                            {% endif %}
                             <td>
                                 {% if answer.image  %}
                                     <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
