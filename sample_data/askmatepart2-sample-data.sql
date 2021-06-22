@@ -39,6 +39,8 @@ CREATE TABLE answer (
     user_id integer
 );
 
+
+
 DROP TABLE IF EXISTS public.comment;
 CREATE TABLE comment (
     id serial NOT NULL,
@@ -56,6 +58,7 @@ CREATE TABLE question_tag (
     question_id integer NOT NULL,
     tag_id integer NOT NULL
 );
+
 
 DROP TABLE IF EXISTS public.tag;
 CREATE TABLE tag (

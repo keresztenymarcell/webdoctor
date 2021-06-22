@@ -35,7 +35,6 @@ def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
         to_replace = {'-': '', ' ': '_', ':': ''}
         for key, value in to_replace.items():
             time = time.replace(key, value)
-        print(time)
         get_data["image"] = time + "_" + secure_filename(image_data.filename)
         folder_route = UPLOAD_FOLDER + get_data["image"]
         image_data.save(folder_route)
@@ -59,10 +58,10 @@ def get_last_five_questions_by_time(cursor):
 def add_new_question(cursor, question):
     timestamp = generate_timestamp()
     cursor.execute("""
-                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s) RETURNING id;
+                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
+                     VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s, %(user_id)s) RETURNING id;
                      """, {'timestamp': timestamp, 'title': question['title'], 'message': question['message'],
-                           'image': question['image']})
+                           'image': question['image'], 'user_id':question['user_id']})
     return cursor.fetchone()
 
 
@@ -70,11 +69,11 @@ def add_new_question(cursor, question):
 def add_new_answer(cursor, answer):
     timestamp = generate_timestamp()
     cursor.execute("""
-                     INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                     VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s);
+                     INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
+                     VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s);
                      """,
                    {'timestamp': timestamp, 'question_id': answer['question_id'], 'message': answer['message'],
-                    'image': answer['image']})
+                    'image': answer['image'], 'user_id': answer['user_id']})
 
 
 @connection.connection_handler
@@ -212,32 +211,23 @@ def highlight_search_phrase(datatable, phrase, tag_type):
     return datatable
 
 
-@connection.connection_handler
-def add_new_comment(cursor, comment):
-    timestamp = generate_timestamp()
-    cursor.execute(f"""
-                    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-                    VALUES ({None}, {comment['answer_id']},
-                            {comment['message']}, {timestamp}, {0})
-                    """)
-
-
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 @connection.connection_handler
-def add_new_comment_to_question(cursor, comment_dict):
+def add_new_comment(cursor, comment_dict):
     timestamp = generate_timestamp()
     cursor.execute("""
-                        INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count)
-                        VALUES(%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);
+                        INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count, user_id)
+                        VALUES(%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s, %(user_id)s);
                         """,
                        {'question_id': comment_dict['question_id'],
                         'answer_id': comment_dict['answer_id'],
                         'message': comment_dict['message'],
                         'submission_time': timestamp,
-                        'edited_count': comment_dict['edited_count']})
+                        'edited_count': comment_dict['edited_count'],
+                        'user_id': comment_dict['user_id']})
 
 
 @connection.connection_handler
@@ -395,4 +385,33 @@ def get_user_password(cursor, user_info):
             WHERE email = %(user_email)s
             """
     cursor.execute(query, {'user_email': user_info['email']})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_data(cursor):
+    query = """
+            SELECT *
+            FROM users
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_new_information_by_user(cursor, table, user_id, information):
+    cursor.execute = f"""
+                INSERT INTO {table} (user_id)
+                VALUES({user_id}),
+                WHERE id = {information['id']}),
+                 {'id':information['id']})
+                """
+
+@connection.connection_handler
+def get_user_id_by_mail(cursor, email):
+    query = """
+            SELECT id FROM users
+            WHERE email = %(email)s
+            """
+    cursor.execute(query, {'email': email})
     return cursor.fetchone()

@@ -19,6 +19,19 @@ def main_page():
     return render_template("index.html", questions=question_data)
 
 
+@app.route("/users")
+def list_users():
+    user_details = data_handler.get_user_data()
+    return render_template("users.html", user_details=user_details)
+
+
+@app.route("/user/<user_id>")
+def profile_page(user_id):
+    details = data_handler.get_data_by_id('users', user_id)
+    print(details)
+    return render_template("profile.html", details=details)
+
+
 @app.route("/list")
 def list_page():
     order_by = request.args.get('order_by', 'submission_time')
@@ -44,6 +57,7 @@ def write_questions():
     do_edit = False
     if request.method == "POST":
         get_data = request.form.to_dict()
+        get_data['user_id'] = session['user_id']
         data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         question_id = data_handler.add_new_question(get_data)['id']
 
@@ -58,6 +72,8 @@ def add_new_answer(question_id):
         get_data = request.form.to_dict()
         data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
+        get_data['user_id'] = session['user_id']
+        print(get_data)
         data_handler.add_new_answer(get_data)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -137,8 +153,9 @@ def add_comment_to_answer(answer_id):
         new_comment = {'question_id': None,
                        'answer_id': answer_id,
                        'message': request.form.get("new-comment2"),
-                       'edited_count': 0}
-        data_handler.add_new_comment_to_question(new_comment)
+                       'edited_count': 0,
+                       'user_id': session['user_id']}
+        data_handler.add_new_comment(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", answer_id=answer_id)
@@ -150,8 +167,9 @@ def add_new_comment_to_question(question_id):
         new_comment = {'question_id': question_id,
                        'answer_id': None,
                        'message': request.form.get("new-comment"),
-                       'edited_count': 0}
-        data_handler.add_new_comment_to_question(new_comment)
+                       'edited_count': 0,
+                       'user_id': session['user_id']}
+        data_handler.add_new_comment(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", question_id=question_id)
@@ -177,9 +195,6 @@ def edit_comment(comment_id):
             return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("edit_comment.html", comment=comment)
-
-
-
 
 
 @app.route("/comment/<comment_id>/delete")
@@ -275,11 +290,24 @@ def login():
             return redirect(url_for('registration_page'))
         hashed_user_password = data_handler.get_user_password(user_info)['password']
         if data_handler.verify_password(user_info['psw'], hashed_user_password):
-            session['username'] = user_info['email']
-            return redirect(url_for('main_page'))
+            session['mail'] = user_info['email']
+            user_id = data_handler.get_user_id_by_mail(user_info['email'])['id']
+            user_data = data_handler.get_data_by_id('users', user_id)
+            session['username'] = user_data['user_name']
+            session['logged_in'] = True
+            session['user_id'] = user_id
+            questions = data_handler.get_last_five_questions_by_time()
+            return render_template('index.html', questions=questions)
         flash("Invalid login attempt")
         return render_template('login.html')
     return render_template('login.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('user_name', None)
+    session.pop('logged_in', None)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":
