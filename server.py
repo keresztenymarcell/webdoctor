@@ -281,13 +281,15 @@ def login():
         return render_template('login.html')
     return render_template('login.html')
 
-@app.route("/<question_id>/remove_accept/<answer_id>/")
+
+@app.route("/<question_id>/remove_accept/<answer_id>")
 def remove_accept(question_id,answer_id):
     data_handler.remove_accept_status(answer_id)
     data_handler.reputation_manager('answer', answer_id, -15)
     return redirect(url_for('display_question', question_id=question_id))
 
-@app.route('/<question_id>/answer/<answer_id>')
+
+@app.route('/<question_id>/accept_answer/<answer_id>')
 def accept_answer(question_id, answer_id):
     data_handler.accept_answer(answer_id)
     data_handler.reputation_manager('answer', answer_id, 15)
