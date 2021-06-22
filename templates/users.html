@@ -2,12 +2,7 @@
 {% block title %}Index Page{% endblock %}
 
 {% block content %}
-    {%if session['logged_in'] == True%}
-        <h1>Welcome {{session['email']}}!</h1>
-        <h2>Let's see the question!</h2>
-    {%else%}
-        <h1>WELCOME HUMANOID</h1><br><br>
-    {%endif%}
+    <h1>Welcome {{session['username']}}!</h1><br><br>
 
         <table>
          <tr>
@@ -20,12 +15,7 @@
         </tr>
          <tr>
              {%  for data in user_details %}
-            <td><a href="{{ url_for('profile_page') }}">{{ data.user_name}}</a></td>
-            <td>{{ data.registration_date}}</td>
-            <td>{{ data.asked_questions}}</td>
-            <td>{{ data.answers}}</td>
-             <td>{{ data.comments}}</td>
-             <td>{{ data.reputation}}</td>
+            <td>{{data.user_name}}</td>
               {% endfor %}
         </tr>
         </table>

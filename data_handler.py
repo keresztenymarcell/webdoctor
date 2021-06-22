@@ -35,7 +35,6 @@ def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
         to_replace = {'-': '', ' ': '_', ':': ''}
         for key, value in to_replace.items():
             time = time.replace(key, value)
-        print(time)
         get_data["image"] = time + "_" + secure_filename(image_data.filename)
         folder_route = UPLOAD_FOLDER + get_data["image"]
         image_data.save(folder_route)
@@ -401,12 +400,8 @@ def get_user_password(cursor, user_info):
 @connection.connection_handler
 def get_user_data(cursor):
     query = """
-            SELECT user_name, registration_date, 
-            (SELECT COUNT(question.user_id) FROM question WHERE question.user_id = users.id),
-            (SELECT COUNT(answer.user_id) FROM answer WHERE answer.user_id = users.id),
-            reputation
+            SELECT *
             FROM users
-            ORDER by registration_date ASC
             """
     cursor.execute(query)
     return cursor.fetchall()

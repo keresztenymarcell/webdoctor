@@ -292,10 +292,11 @@ def login():
             session['logged_in'] = True
             session['user_id'] = user_id
             questions = data_handler.get_last_five_questions_by_time()
-            return render_template('index.html', user_id=user_id, questions=questions)
+            return render_template('index.html', questions=questions)
         flash("Invalid login attempt")
         return render_template('login.html')
     return render_template('login.html')
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
