@@ -28,6 +28,7 @@ def list_users():
 @app.route("/user/<user_id>")
 def profile_page(user_id):
     details = data_handler.get_data_by_id('users', user_id)
+    print(details)
     return render_template("profile.html", details=details)
 
 
@@ -288,13 +289,19 @@ def login():
             user_id = data_handler.get_user_id_by_mail(user_info['email'])['id']
             user_data = data_handler.get_data_by_id('users', user_id)
             session['username'] = user_data['user_name']
-            session['user_id'] = user_id
             session['logged_in'] = True
-
-            return redirect(url_for('profile_page', user_id=user_id))
+            session['user_id'] = user_id
+            questions = data_handler.get_last_five_questions_by_time()
+            return render_template('index.html', user_id=user_id, questions=questions)
         flash("Invalid login attempt")
         return render_template('login.html')
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('user_name', None)
+    session.pop('logged_in', None)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":
