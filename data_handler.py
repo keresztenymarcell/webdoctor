@@ -1,5 +1,5 @@
 import re
-import connection
+import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
@@ -356,3 +356,43 @@ def get_image_name_by_id(cursor, table, id):
                     """)
     return cursor.fetchone()
 
+
+@connection.connection_handler
+def check_if_new_user(cursor, user_name):
+    query = """
+            SELECT * FROM users
+            WHERE email = %(user_name)s
+            """
+    cursor.execute(query, {'user_name': user_name})
+    user = cursor.fetchone()
+    return True if user is None else False
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+@connection.connection_handler
+def register_user(cursor, user_email, user_password, user_name):
+    hashed_password = hash_password(user_password)
+    query = """
+                INSERT INTO users(user_name, password, email)
+                VALUES(%s, %s, %s)
+                """
+    cursor.execute(query, (user_name, hashed_password, user_email))
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@connection.connection_handler
+def get_user_password(cursor, user_info):
+    query = """
+            SELECT password FROM users
+            WHERE email = %(user_email)s
+            """
+    cursor.execute(query, {'user_email': user_info['email']})
+    return cursor.fetchone()
