@@ -71,7 +71,8 @@ CREATE TABLE public.users (
     id serial NOT NULL,
     user_name text,
     password text,
-    email text
+    email text,
+    reputation integer
 );
 
 ALTER TABLE ONLY users
@@ -119,10 +120,10 @@ ALTER TABLE ONLY question_tag
 ALTER TABLE answer
 	ADD accepted BOOL DEFAULT FALSE;
 
-INSERT INTO question VALUES (0, '2021-04-29 09:19:00', 32, 0, 'How to treat toenail fungus?', 'I''m looking for natural solutions!', 'toenail_fungus.jpeg');
-INSERT INTO question VALUES (1, '2021-05-09 21:24:00', 26, 2, 'I have acne, help!', 'I''ve been struggling with acne since my teens. I tried all the creams but nothing seems to help!', 'acne.jpeg');
-INSERT INTO question VALUES (2, '2021-05-12 18:04:04', 36, 2, 'How to treat warts?', 'I developed warts after swimming in a public pool. They cover the sole of my foot. :(', 'warts.jpeg');
-INSERT INTO question VALUES (3, '2021-05-21 12:01:34', 16, 4, 'I might have intestinal parasites?', 'I think something is moving inside of me, help!!!', 'tummyache.jpg');
+INSERT INTO question VALUES (0, '2021-04-29 09:19:00', 32, 0, 'How to treat toenail fungus?', 'I''m looking for natural solutions!', 'toenail_fungus.jpeg', 0);
+INSERT INTO question VALUES (1, '2021-05-09 21:24:00', 26, 2, 'I have acne, help!', 'I''ve been struggling with acne since my teens. I tried all the creams but nothing seems to help!', 'acne.jpeg', 0);
+INSERT INTO question VALUES (2, '2021-05-12 18:04:04', 36, 2, 'How to treat warts?', 'I developed warts after swimming in a public pool. They cover the sole of my foot. :(', 'warts.jpeg', 0);
+INSERT INTO question VALUES (3, '2021-05-21 12:01:34', 16, 4, 'I might have intestinal parasites?', 'I think something is moving inside of me, help!!!', 'tummyache.jpg', 0);
 SELECT pg_catalog.setval('question_id_seq', 3, true);
 
 INSERT INTO answer VALUES (0, '2021-06-01 09:19:00', 1, 0, 'I swear by Vicks VapoRub! I applied a small amount to the affected area at least once a day. It worked wonders.', 'wick.jpeg');
@@ -153,3 +154,7 @@ SELECT pg_catalog.setval('tag_id_seq', 3, true);
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);
 INSERT INTO question_tag VALUES (2, 3);
+
+INSERT INTO users VALUES (0, 'admin', '$2a$04$4pMsMYklId1fKiddEv5BA.mDfwb9uI/r85ukKDHlaMe.8jPn4vfjS', 'admin@uze.net', 0);
+INSERT INTO users VALUES (1, 'moderator', '$2a$04$3dfTrKKio3qXMhVZAE18h.0tEOSJi0vjHVXfyypnW8UnXnW828Tc6', 'moderator@uze.net', 0);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
