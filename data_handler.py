@@ -382,8 +382,8 @@ def hash_password(plain_text_password):
 def register_user(cursor, user_email, user_password, user_name):
     hashed_password = hash_password(user_password)
     query = """
-                INSERT INTO users(user_name, password, email)
-                VALUES(%s, %s, %s)
+                INSERT INTO users(user_name, password, email, reputation)
+                VALUES(%s, %s, %s, 0)
                 """
     cursor.execute(query, (user_name, hashed_password, user_email))
 
@@ -450,5 +450,5 @@ def remove_accept_status(cursor, answer_id):
             SET accepted = FALSE
             WHERE id = %(answer_id)s
             """
-    cursor.execute(query, { "answer_id":answer_id)
+    cursor.execute(query, { "answer_id":answer_id})
 
