@@ -198,5 +198,5 @@ label {color:white;}
 }
 
 #accepted {
-    border-color: greenyellow;
+    border: 3px solid greenyellow;
 }
