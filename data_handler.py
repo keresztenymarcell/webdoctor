@@ -396,3 +396,36 @@ def get_user_password(cursor, user_info):
             """
     cursor.execute(query, {'user_email': user_info['email']})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_data(cursor):
+    query = """
+            SELECT user_name, registration_date, 
+            (SELECT COUNT(question.user_id) FROM question WHERE question.user_id = users.id),
+            (SELECT COUNT(answer.user_id) FROM answer WHERE answer.user_id = users.id),
+            reputation
+            FROM users
+            ORDER by registration_date ASC
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_new_information_by_user(cursor, table, user_id, information):
+    cursor.execute = f"""
+                INSERT INTO {table} (user_id)
+                VALUES({user_id}),
+                WHERE id = {information['id']}),
+                 {'id':information['id']})
+                """
+
+@connection.connection_handler
+def get_user_id_by_mail(cursor, email):
+    query = """
+            SELECT id FROM users
+            WHERE email = %(email)s
+            """
+    cursor.execute(query, {'email': email})
+    return cursor.fetchone()

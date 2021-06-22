@@ -16,7 +16,22 @@ app.secret_key = b'_akJFh3sjfjbhsdjb/'
 @app.route("/")
 def main_page():
     question_data = data_handler.get_last_five_questions_by_time()
+    if session['logged_in']:
+        user_id = session['user_id']
+        return render_template("index.html", questions=question_data, user_id=user_id)
     return render_template("index.html", questions=question_data)
+
+
+@app.route("/users")
+def list_users():
+    user_details = data_handler.get_user_data()
+    return render_template("users.html", user_details=user_details)
+
+
+@app.route("/user/<user_id>")
+def profile_page(user_id):
+    details = data_handler.get_data_by_id('users', user_id)
+    return render_template("profile.html", details=details)
 
 
 @app.route("/list")
@@ -179,9 +194,6 @@ def edit_comment(comment_id):
     return render_template("edit_comment.html", comment=comment)
 
 
-
-
-
 @app.route("/comment/<comment_id>/delete")
 def delete_comment(comment_id):
     comment = data_handler.get_data_by_id('comment', comment_id)
@@ -273,10 +285,16 @@ def login():
         is_new_user = data_handler.check_if_new_user(user_info['email'])
         if is_new_user:
             return redirect(url_for('registration_page'))
-        hashed_user_password = data_handler.get_user_password(user_info)
+        hashed_user_password = data_handler.get_user_password(user_info)['password']
         if data_handler.verify_password(user_info['psw'], hashed_user_password):
-            session['username'] = user_info['email']
-            return redirect(url_for('index'))
+            session['mail'] = user_info['email']
+            user_id = data_handler.get_user_id_by_mail(user_info['email'])['id']
+            user_data = data_handler.get_data_by_id('users', user_id)
+            session['username'] = user_data['user_name']
+            session['user_id'] = user_id
+            session['logged_in'] = True
+
+            return redirect(url_for('profile_page', user_id=user_id))
         flash("Invalid login attempt")
         return render_template('login.html')
     return render_template('login.html')

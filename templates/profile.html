@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Profile page{% endblock %}
+
+{% block content %}
+    {%if session['logged_in'] == True%}
+        <h1>Welcome {{session['username']}}!</h1>
+    {%else%}
+        <h1>WELCOME HUMANOID</h1><br><br>
+    {%endif%}
+
+        <table>
+         <tr>
+            <td>Username</td>
+            <td>Registration date</td>
+            <td>Asked questions</td>
+            <td>Answers</td>
+             <td>Comments</td>
+             <td>Reputation</td>
+        </tr>
+         <tr>
+             <td>{{ session['username'] }}</td>
+        </tr>
+        </table>
+
+
+{% endblock %}
+
