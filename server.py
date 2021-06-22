@@ -282,6 +282,12 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/<question_id>/answer/<answer_id>')
+def accept_answer(question_id, answer_id):
+    data_handler.accept_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,

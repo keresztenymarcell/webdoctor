@@ -113,6 +113,9 @@ ALTER TABLE ONLY comment
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
 
+ALTER TABLE answer
+	ADD accepted BOOL DEFAULT FALSE;
+
 INSERT INTO question VALUES (0, '2021-04-29 09:19:00', 32, 0, 'How to treat toenail fungus?', 'I''m looking for natural solutions!', 'toenail_fungus.jpeg');
 INSERT INTO question VALUES (1, '2021-05-09 21:24:00', 26, 2, 'I have acne, help!', 'I''ve been struggling with acne since my teens. I tried all the creams but nothing seems to help!', 'acne.jpeg');
 INSERT INTO question VALUES (2, '2021-05-12 18:04:04', 36, 2, 'How to treat warts?', 'I developed warts after swimming in a public pool. They cover the sole of my foot. :(', 'warts.jpeg');

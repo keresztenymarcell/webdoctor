@@ -396,3 +396,13 @@ def get_user_password(cursor, user_info):
             """
     cursor.execute(query, {'user_email': user_info['email']})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def accept_answer(cursor, answer_id):
+    query = """
+            UPDATE answer
+            SET accepted = TRUE
+            WHERE id = %(answer_id)s
+            """
+    cursor.execute(query, {'answer_id': answer_id})
