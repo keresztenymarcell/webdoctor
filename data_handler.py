@@ -431,3 +431,24 @@ def get_user_id_by_mail(cursor, email):
             """
     cursor.execute(query, {'email': email})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def accept_answer(cursor, answer_id):
+    query = """
+            UPDATE answer
+            SET accepted = TRUE
+            WHERE id = %(answer_id)s
+            """
+    cursor.execute(query, {'answer_id': answer_id})
+
+
+@connection.connection_handler
+def remove_accept_status(cursor, answer_id):
+    query = """
+            UPDATE answer
+            SET accepted = FALSE
+            WHERE id = %(answer_id)s
+            """
+    cursor.execute(query, { "answer_id":answer_id)
+

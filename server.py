@@ -314,6 +314,20 @@ def logout():
     return redirect(url_for('main_page'))
 
 
+@app.route("/<question_id>/remove_accept/<answer_id>")
+def remove_accept(question_id,answer_id):
+    data_handler.remove_accept_status(answer_id)
+    data_handler.reputation_manager('answer', answer_id, -15)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route('/<question_id>/accept_answer/<answer_id>')
+def accept_answer(question_id, answer_id):
+    data_handler.accept_answer(answer_id)
+    data_handler.reputation_manager('answer', answer_id, 15)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,

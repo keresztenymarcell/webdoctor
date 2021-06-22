@@ -196,3 +196,7 @@ label {color:white;}
     max-height: 100px;
     width: auto;
 }
+
+#accepted {
+    border-color: greenyellow;
+}
