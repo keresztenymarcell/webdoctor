@@ -51,8 +51,9 @@
     <br>
 
 
-
+    {% if session['logged_in'] %}
     <p><a href="/add-question"><button>Add questions</button></a></p>
+    {% endif %}
     {% for question in questions %}
 
 
@@ -67,12 +68,15 @@
                 <td class="table-width">
                     <h4> {{ question.title }}</h4>
                     <p>{{ question.message }}</p>
+                    {%  if session['logged_in'] %}
                     <a href="/question/{{ question.id }}/edit">
                         <button>EDIT</button></a>
                     <a href="/question/{{ question.id }}">
                         <button>ANSWER</button></a>
                     <a href="/question/{{ question.id }}/new-comment">
                         <button>COMMENT</button></a>
+                    {% endif %}
+
                     <p id="view_number">
                         Views: {{ question.view_number }}</p>
                 </td>
