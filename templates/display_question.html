@@ -67,6 +67,11 @@
                         <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                     </td>
                     <td>
+                        <form action="/question/{{ question.id }}">
+                            <input type="checkbox" name="accepted" id="accepted" value="True">
+                            <label for="accepted">Accepted</label>
+                            <input type="submit" value="Submit">
+                        </form>
                         <h4>{{ answer.message }}</h4>
                     </td>
                     <td>
