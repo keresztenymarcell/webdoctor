@@ -328,6 +328,13 @@ def accept_answer(question_id, answer_id):
     return redirect(url_for('display_question', question_id=question_id))
 
 
+@app.route('/tags')
+def tag_page():
+    all_tags = data_handler.get_marked_questions()
+    return render_template('tag.html', tags=all_tags)
+
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,

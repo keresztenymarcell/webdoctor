@@ -255,6 +255,18 @@ def get_comment_by_question_id(cursor, question_id):
 
 
 @connection.connection_handler
+def get_marked_questions(cursor):
+    cursor.execute("""
+                    SELECT name AS Tagname,
+                    COUNT(question_id) AS Marked_questions
+                    FROM question_tag
+                    Join tag t on question_tag.tag_id = t.id
+                    GROUP BY name;
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_all_tag(cursor):
     cursor.execute("""
                     SELECT * FROM tag

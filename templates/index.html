@@ -5,6 +5,7 @@
     <nav>
         <div class="navbar">
         <a href="{{ url_for('main_page') }}"><button><i class="fa fa-home"></i></button></a>
+        <a href="{{ url_for('tag_page') }}">Tags</a>
             {% if session['logged_in']%}
                 <a href="{{ url_for('list_users') }}">User Details</a>
                 <a href="/user/{{ session['user_id'] }}">Profile</a>
