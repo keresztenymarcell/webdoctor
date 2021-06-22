@@ -277,6 +277,7 @@ def add_new_tag(cursor, tag_name):
                         """, {'tag_name': tag_name})
     return cursor.fetchone()
 
+
 @connection.connection_handler
 def delete_tag_by_question_id(cursor, question_id, tag_id):
     cursor.execute("""
@@ -382,3 +383,6 @@ def register_user(cursor, user_email, user_password, user_name):
                 """
     cursor.execute(query, (user_name, hashed_password, user_email))
 
+
+def vote_system():
+    pass
