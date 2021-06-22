@@ -32,9 +32,9 @@
             <input type="file" id="question" name="image" accept="image/png, image/jpeg">Current image: {{ answer.image if answer }}<br><br>
 
             {% if answer %}
-                <a href="/question/{{ question_id }}"><button type="submit">Edit answer</button></a>
+                <a href="/question/{{ question_id }}"><button class="btn btn-outline-success" type="submit">Edit answer</button></a>
             {% else %}
-                <button type="submit">Done</button>
+                <button class="btn btn-outline-success" type="submit">Done</button>
             {% endif %}
             <br><br>
 

@@ -2,10 +2,25 @@
 {% block title %}Profile page{% endblock %}
 
 {% block content %}
-        <h1>Welcome {{session['username']}}!</h1><br><br>
-        <a href="{{ url_for('main_page') }}"><button><i class="fa fa-home"></i></button></a>
-        <a href="{{ url_for('logout') }}">Logout</a>
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
+            <ul class="nav navbar-nav">
+                  <li><a href="{{ url_for('list_users') }}">User Details</a></li>
+                  <li><a href="{{ url_for('logout') }}">Logout</a></li></ul>
+            </div>
+            <ul class="nav navbar-nav me-auto">
+                <li>
+                <form class="search" action="/search" method="get">
+                <input type="search" name="q">
+                 <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                </form></li>
+            </ul>
+        </div>
+    </nav>
 
+        <h1>Welcome {{session['username']}}!</h1><br><br>
 
         <table>
          <tr>
