@@ -406,3 +406,14 @@ def accept_answer(cursor, answer_id):
             WHERE id = %(answer_id)s
             """
     cursor.execute(query, {'answer_id': answer_id})
+
+
+@connection.connection_handler
+def remove_accept_status(cursor, answer_id):
+    query = """
+            UPDATE answer
+            SET accepted = FALSE
+            WHERE id = %(answer_id)s
+            """
+    cursor.execute(query, { "answer_id":answer_id)
+

@@ -78,7 +78,10 @@
                                         </form>
                                     {% endif %}
                                     {% if answer.accepted %}
-                                        <p>Remove</p>
+                                       <p><a href="/question/{{ question.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
+                        {% else: %}
+                            <p><a href="/question/{{ question.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
+                        {% endif %}
                                     {% endif %}
                                     <h4>{{ answer.message }}</h4>
                                 </td>
