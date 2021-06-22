@@ -119,13 +119,33 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
     data_handler.increment_vote_number('question', question_id, 1)
+    data_handler.reputation_manager('question', question_id, 5)
     return redirect("/list")
 
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
     data_handler.increment_vote_number('question', question_id, -1)
+    data_handler.reputation_manager('question', question_id, -2)
     return redirect("/list")
+
+
+@app.route("/answer/<answer_id>/vote_up")
+def answer_vote_up(answer_id):
+    data_handler.increment_vote_number('answer', answer_id, 1)
+    data_handler.reputation_manager('answer', answer_id, 10)
+    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = question_id["question_id"]
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/answer/<answer_id>/vote_down")
+def answer_vote_down(answer_id):
+    data_handler.increment_vote_number('answer', answer_id, -1)
+    data_handler.reputation_manager('answer', answer_id, -2)
+    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = question_id["question_id"]
+    return redirect(f'/question/{question_id}')
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
@@ -192,22 +212,6 @@ def delete_comment(comment_id):
         question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
         data_handler.delete_data_by_id('comment', comment_id)
         return redirect(url_for("display_question", question_id=question_id))
-
-
-@app.route("/answer/<answer_id>/vote_up")
-def answer_vote_up(answer_id):
-    data_handler.increment_vote_number('answer', answer_id, 1)
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
-    question_id = question_id["question_id"]
-    return redirect(f'/question/{question_id}')
-
-
-@app.route("/answer/<answer_id>/vote_down")
-def answer_vote_down(answer_id):
-    data_handler.increment_vote_number('answer', answer_id, -1)
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
-    question_id = question_id["question_id"]
-    return redirect(f'/question/{question_id}')
 
 
 @app.route("/search")

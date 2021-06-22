@@ -137,10 +137,25 @@ def increment_view_number(cursor, question_id):
 @connection.connection_handler
 def increment_vote_number(cursor, table, specific_id, increment):  # table: question, answer; increment: 1, -1
     cursor.execute(f"""
-                   UPDATE {table}
-                   SET vote_number = vote_number + {increment}
-                   WHERE id = {specific_id}
-                   """)
+                       UPDATE {table}
+                       SET vote_number = vote_number + {increment}
+                       WHERE id = {specific_id}
+                       """)
+
+
+@connection.connection_handler
+def reputation_manager(cursor, input_type, identifier, increment):
+    cursor.execute("""
+                    UPDATE users
+                    SET reputation = reputation + %(increment)s
+                    FROM %(target_table)s
+                    WHERE %(target_table)s.user_id = users.id AND %(target_table)s.id = %(identifier)s
+                       """,
+                   {
+                       'identifier': identifier,
+                       'increment': increment,
+                       'target_table': input_type}
+                   )
 
 
 @connection.connection_handler
