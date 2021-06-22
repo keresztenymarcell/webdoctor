@@ -16,9 +16,6 @@ app.secret_key = b'_akJFh3sjfjbhsdjb/'
 @app.route("/")
 def main_page():
     question_data = data_handler.get_last_five_questions_by_time()
-    if session['logged_in']:
-        user_id = session['user_id']
-        return render_template("index.html", questions=question_data, user_id=user_id)
     return render_template("index.html", questions=question_data)
 
 
