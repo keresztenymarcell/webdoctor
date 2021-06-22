@@ -136,10 +136,24 @@ def increment_view_number(cursor, question_id):
 @connection.connection_handler
 def increment_vote_number(cursor, table, specific_id, increment):  # table: question, answer; increment: 1, -1
     cursor.execute(f"""
-                   UPDATE {table}
-                   SET vote_number = vote_number + {increment}
-                   WHERE id = {specific_id}
-                   """)
+                       UPDATE {table}
+                       SET vote_number = vote_number + {increment}
+                       WHERE id = {specific_id}
+                       """)
+
+
+@connection.connection_handler
+def reputation_manager(cursor, target_table, identifier, increment):  # támadási felület kérdés?
+    cursor.execute(f"""
+                    UPDATE users
+                    SET reputation = reputation + %(increment)s
+                    FROM {target_table}
+                    WHERE {target_table}.user_id = users.id AND {target_table}.id = %(identifier)s
+                       """,
+                   {
+                       'identifier': identifier,
+                       'increment': increment,}
+                   )
 
 
 @connection.connection_handler
@@ -266,6 +280,7 @@ def add_new_tag(cursor, tag_name):
                         VALUES(%(tag_name)s) RETURNING id;
                         """, {'tag_name': tag_name})
     return cursor.fetchone()
+
 
 @connection.connection_handler
 def delete_tag_by_question_id(cursor, question_id, tag_id):
@@ -406,6 +421,7 @@ def add_new_information_by_user(cursor, table, user_id, information):
                 WHERE id = {information['id']}),
                  {'id':information['id']})
                 """
+
 
 @connection.connection_handler
 def get_user_id_by_mail(cursor, email):
