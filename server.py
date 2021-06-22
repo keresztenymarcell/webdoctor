@@ -285,6 +285,7 @@ def login():
 @app.route('/<question_id>/answer/<answer_id>')
 def accept_answer(question_id, answer_id):
     data_handler.accept_answer(answer_id)
+    data_handler.reputation_manager('answer', answer_id, 15)
     return redirect(url_for('display_question', question_id=question_id))
 
 
