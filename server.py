@@ -57,6 +57,7 @@ def write_questions():
     do_edit = False
     if request.method == "POST":
         get_data = request.form.to_dict()
+        get_data['user_id'] = session['user_id']
         data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         question_id = data_handler.add_new_question(get_data)['id']
 
@@ -71,6 +72,8 @@ def add_new_answer(question_id):
         get_data = request.form.to_dict()
         data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
+        get_data['user_id'] = session['user_id']
+        print(get_data)
         data_handler.add_new_answer(get_data)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -150,8 +153,9 @@ def add_comment_to_answer(answer_id):
         new_comment = {'question_id': None,
                        'answer_id': answer_id,
                        'message': request.form.get("new-comment2"),
-                       'edited_count': 0}
-        data_handler.add_new_comment_to_question(new_comment)
+                       'edited_count': 0,
+                       'user_id': session['user_id']}
+        data_handler.add_new_comment(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", answer_id=answer_id)
@@ -163,8 +167,9 @@ def add_new_comment_to_question(question_id):
         new_comment = {'question_id': question_id,
                        'answer_id': None,
                        'message': request.form.get("new-comment"),
-                       'edited_count': 0}
-        data_handler.add_new_comment_to_question(new_comment)
+                       'edited_count': 0,
+                       'user_id': session['user_id']}
+        data_handler.add_new_comment(new_comment)
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", question_id=question_id)
