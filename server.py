@@ -119,7 +119,7 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
     data_handler.increment_vote_number('question', question_id, 1)
-    data_handler.reputation_manager('question', question_id, 5)
+    data_handler.reputation_manager("question", question_id, 5)
     return redirect("/list")
 
 

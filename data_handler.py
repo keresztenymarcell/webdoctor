@@ -144,17 +144,16 @@ def increment_vote_number(cursor, table, specific_id, increment):  # table: ques
 
 
 @connection.connection_handler
-def reputation_manager(cursor, input_type, identifier, increment):
-    cursor.execute("""
+def reputation_manager(cursor, target_table, identifier, increment):  # támadási felület kérdés?
+    cursor.execute(f"""
                     UPDATE users
                     SET reputation = reputation + %(increment)s
-                    FROM %(target_table)s
-                    WHERE %(target_table)s.user_id = users.id AND %(target_table)s.id = %(identifier)s
+                    FROM {target_table}
+                    WHERE {target_table}.user_id = users.id AND {target_table}.id = %(identifier)s
                        """,
                    {
                        'identifier': identifier,
-                       'increment': increment,
-                       'target_table': input_type}
+                       'increment': increment,}
                    )
 
 
