@@ -71,17 +71,10 @@
                             </td>
                                 <td>
                                     {% if question.user_id == session.user_id %}
-                                        <form action="{{ question.id }}/accept_answer/{{ answer.id }}">
-                                            <input type="checkbox" name="accepted" id="accepted" value="True">
-                                            <label for="accepted">Accept</label>
-                                            <input type="submit" value="Submit">
-                                        </form>
+                                        <p><a href="{{ question.id }}/accept_answer/{{ answer.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
                                     {% endif %}
                                     {% if answer.accepted %}
-                                       <p><a href="/question/{{ question.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
-                        {% else: %}
-                            <p><a href="/question/{{ question.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
-                        {% endif %}
+                                       <p><a href="{{ question.id }}/remove_accept/{{ answer.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
                                     {% endif %}
                                     <h4>{{ answer.message }}</h4>
                                 </td>
