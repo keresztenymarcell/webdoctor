@@ -123,7 +123,7 @@ INSERT INTO question VALUES (0, '2021-04-29 09:19:00', 32, 0, 'How to treat toen
 INSERT INTO question VALUES (1, '2021-05-09 21:24:00', 26, 2, 'I have acne, help!', 'I''ve been struggling with acne since my teens. I tried all the creams but nothing seems to help!', 'acne.jpeg');
 INSERT INTO question VALUES (2, '2021-05-12 18:04:04', 36, 2, 'How to treat warts?', 'I developed warts after swimming in a public pool. They cover the sole of my foot. :(', 'warts.jpeg');
 INSERT INTO question VALUES (3, '2021-05-21 12:01:34', 16, 4, 'I might have intestinal parasites?', 'I think something is moving inside of me, help!!!', 'tummyache.jpg');
-SELECT pg_catalog.setval('question_id_seq', 2, true);
+SELECT pg_catalog.setval('question_id_seq', 3, true);
 
 INSERT INTO answer VALUES (0, '2021-06-01 09:19:00', 1, 0, 'I swear by Vicks VapoRub! I applied a small amount to the affected area at least once a day. It worked wonders.', 'wick.jpeg');
 INSERT INTO answer VALUES (1, '2021-06-02 10:19:00', 0, 0, 'Snakeroot extract worked for me. A 2008 study showed that snakeroot extract is as effective against toenail fungus as the prescription antifungal medicine ciclopirox. Apply it to the affected area every third day for the first month, twice a week for the second month, and once a week for the third month.', 'snakeroot.jpg');
@@ -139,11 +139,11 @@ INSERT INTO answer VALUES (10, '2021-06-06 14:19:00', 1, 2, 'Better see a dermat
 INSERT INTO answer VALUES (11, '2021-06-06 15:19:00', 17, 2, 'Duct tape is one of the most popular home remedies for warts. It''s inexpensive and easy to find. Duct tape is said to remove the infected skin over time.', 'ducttape.jpeg');
 INSERT INTO answer VALUES (12, '2021-06-06 16:19:00', 0, 3, 'Call the ambulance!', 'gyorfipal.jpg');
 INSERT INTO answer VALUES (13, '2021-06-06 17:19:00', 1, 3, 'Take some laxatives. Maybe see a doctor?', 'toilet.jpeg');
-SELECT pg_catalog.setval('answer_id_seq', 2, true);
+SELECT pg_catalog.setval('answer_id_seq', 13, true);
 
 INSERT INTO comment VALUES (0, 0, NULL, 'Please, upload a picture with a better resolution!', '2021-06-07 05:49:00');
 INSERT INTO comment VALUES (1, NULL, 1, 'I''m afraid of snakes! :OOO', '2021-06-07 16:55:00');
-SELECT pg_catalog.setval('comment_id_seq', 2, true);
+SELECT pg_catalog.setval('comment_id_seq', 1, true);
 
 INSERT INTO tag VALUES (1, 'python');
 INSERT INTO tag VALUES (2, 'health');
