@@ -22,19 +22,48 @@
 
         <h1>Welcome {{session['username']}}!</h1><br><br>
 
-        <table>
+ <table>
+        <tbody>
+
          <tr>
-            <td>Username</td>
-            <td>Registration date</td>
-            <td>Asked questions</td>
-            <td>Answers</td>
-             <td>Comments</td>
-             <td>Reputation</td>
+                <th>Username</th>
+             {%  for data in details %}
+                <td>{{data.user_name}}</td>
+             {% endfor %}
+         </tr>
+        <tr>
+                <th>Registration date</th>
+            {%  for data in details %}
+                <td>{{data.registration_date}}</td>
+            {% endfor %}
         </tr>
-         <tr>
-             <td>{{ session['username'] }}</td>
+                <tr>
+                <th>Asked questions</th>
+            {%  for data in details %}
+                <td>{{data.registration_date}}</td>
+            {% endfor %}
         </tr>
-        </table>
+                <tr>
+                <th>Answers</th>
+            {%  for data in details %}
+                <td>{{data.registration_date}}</td>
+            {% endfor %}
+        </tr>
+                <tr>
+                <th>Comments</th>
+            {%  for data in details %}
+                <td>{{data.registration_date}}</td>
+            {% endfor %}
+        </tr>
+                    <tr>
+                <th>Reputation</th>
+            {%  for data in details %}
+                <td>-{{data.registration_date}}</td>
+            {% endfor %}
+        </tr>
+
+    </tbody>
+    </table>
 
 
 {% endblock %}

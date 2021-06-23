@@ -21,7 +21,8 @@
     </nav>
     <h1>Welcome {{session['username']}}!</h1><br><br>
 
-        <table>
+    <table class="table table-striped table-hover" >
+        <thead class="table-dark">
          <tr>
             <td>Username</td>
             <td>Registration date</td>
@@ -30,12 +31,20 @@
              <td>Comments</td>
              <td>Reputation</td>
         </tr>
-         <tr>
-             {%  for data in user_details %}
+         </thead>
+        <tbody>
+        {%  for data in user_details %}
+             <tr class="warning">
                 <td>{{data.user_name}}</td>
-              {% endfor %}
-        </tr>
-        </table>
+                 <td>{{data.registration_date}}</td>
+                 <td>{{data.questions_count}}</td>
+                 <td>{{data.answers_count}}</td>
+                 <td>{{data.comments_count}}</td>
+                 <td>{{data.reputation}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
 
 
 {% endblock %}
