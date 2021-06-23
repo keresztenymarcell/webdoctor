@@ -90,7 +90,7 @@
                     <tr id="not_accepted">
                 {% endif %}
                         <td>
-                            <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40" ></a></p>
+                            <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40" ></a> {{ answer.message }}</p>
                             <p>{{ answer.vote_number }} </p>
                             <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
 
@@ -111,14 +111,9 @@
 
                         </td>
                         <td>
-                            <h4>{{ answer.message }}</h4>
-
-
                             {% if answer.image  %}
-                                <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
+                                <img src="/static/pictures/answer_pictures/{{ answer.image }}" style="float: right" width="200" alt="some picture">
                             {% endif %}
-
-
                         </td>
                     </tr>
                     {% for comment in comments %}
