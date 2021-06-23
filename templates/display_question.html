@@ -11,9 +11,10 @@
               <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
                 {% if session['logged_in']%}
                   <li><a href="{{ url_for('list_users') }}">User Details</a></li>
-                  <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
-                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="/user/{{ session['user_id'] }}">Profile: {{session['username']}}</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
+                    <li><p>User not logged in</p></li>
                     <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
@@ -136,7 +137,7 @@
                                     {% endif %}
                                 {% endif %}
                             <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
-                                </p>
+                            </p>
                         </td>
                     </tr>
                         {% endif %}

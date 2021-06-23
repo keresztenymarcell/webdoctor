@@ -7,17 +7,19 @@
             <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
             <ul class="nav navbar-nav">
-              <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
+                <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
                 {% if session['logged_in']%}
-                  <li><a href="{{ url_for('list_users') }}">User Details</a></li>
-                  <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
-                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('list_users') }}">User Details</a></li>
+                    <li><a href="/user/{{ session['user_id'] }}">Profile: {{session['username']}}</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
+                    <li><p>User not logged in</p></li>
                     <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
-                  </ul>
+            </ul>
             </div>
+        </div>
             <ul class="nav navbar-nav me-auto">
                 <li>
                 <form class="search" action="/search" method="get">
@@ -25,7 +27,6 @@
                  <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
                 </form></li>
             </ul>
-        </div>
     </nav>
 
     <h1>WebDoctor</h1>
