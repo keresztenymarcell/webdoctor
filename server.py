@@ -241,11 +241,19 @@ def search_page():
     tag_type = 'mark'
 
     if search_phrase:
-        result = dh_general.search_table(search_phrase)
-        if len(result) != 0:
-            result = dh_python_files.highlight_search_phrase(result, search_phrase, tag_type)
-
-        return render_template('results.html', results=result, phrase=search_phrase, tag_type=tag_type)
+        found_q = dh_general.search_question_table(search_phrase)
+        found_a = dh_general.search_answer_table(search_phrase)
+        if len(found_q) != 0:
+            found_q = dh_python_files.highlight_search_phrase(found_q, search_phrase, tag_type)
+            found_q_ids = dh_python_files.make_id_list(found_q)
+        if len(found_a) != 0:
+            found_a = dh_python_files.highlight_search_phrase(found_a, search_phrase, tag_type)
+            found_a_ids = dh_python_files.make_id_list(found_q)
+        if len(found_q) == 0 and len(found_a) == 0:
+            flash('No results found.')
+        all_q = dh_data.get_all_data('question', 'submission_time', 'desc')
+        all_q_ids = dh_python_files.make_id_list(found_q)
+        return render_template('results.html', questions=all_q, found_questions=found_q, found_answers=found_a, tag_type=tag_type, q_ids=found_q_ids, a_ids=found_a_ids, all_q_ids=all_q_ids)
     return redirect('/list')
 
 

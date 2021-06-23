@@ -26,58 +26,105 @@
 
     </p>
     </form>
-    {% if results|length != 0 %}
-        {% for result in results %}
-            <table>
-                {% if result.title %}
-                    <tr>
-                        <td>
-                        <p><a href="/question/{{ result.q_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                        <p style="text-align: center">{{ result.q_vote_number }}</p>
-                        <p><a href="/question/{{ result.q_id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-                        </td>
+    {% if get_flashed_messages() %}
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <div>
+           {% for message in get_flashed_messages() %}
+                {{ message }}
+             {%  endfor %}
+        </div>
 
-                        <td style="width: 100%">
-                            <h4> {{ result.title | safe }}</h4>
-                        {% if tag_type in result.q_message %}
-                            <p>{{ result.q_message | safe }}</p>
-                        {% endif %}
-                        <p style="text-align: right">
-                            Views: {{ result.view_number }}</p>
-                        </td>
-                        <td style="width: 100%">
-                            {% if result.q_image  %}
-                                    <img class="whysobig" src="/static/pictures/question_pictures/{{ result.q_image }}" width="200" alt="some picture">
-                                {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
+    {% else %}
+        <table>
+            {% for question in found_questions %}
+                <tr>
+                    <td>
+                    <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                    <p style="text-align: center">{{ question.vote_number }}</p>
+                    <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                    </td>
 
-                {% if result.a_message %}
-                    {% if tag_type in result.a_message %}
+                    <td style="width: 100%">
+                        <h4> {{ question.title | safe }}</h4>
+                    {% if tag_type in question.message %}
+                        <p>{{ question.message | safe }}</p>
+                    {% endif %}
+                    <p style="text-align: right">
+                        Views: {{ question.view_number }}</p>
+                    </td>
+                    <td style="width: 100%">
+                        {% if question.image  %}
+                                <img class="whysobig" src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
+                            {% endif %}
+                    </td>
+                </tr>
+
+                {% for answer in found_answers %}
+                    {% if answer.question_id == question.id %}
                         <tr>
                             <td>
-                            <p><a href="/answer/{{ result.a_id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
-                            <p>{{ result.a_vote_number }}</p>
-                            <p><a href="/answer/{{ result.a_id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                            <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                            <p>{{ answer.vote_number }}</p>
+                            <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
                             </td>
-                            <td ><p class="tab"><strong>{{ result.a_message | safe }}</strong></p></td>
+                            <td ><p class="tab"><strong>{{ answer.message | safe }}</strong></p></td>
                             <td style="text-align: center">
-                            {% if result.a_image  %}
-                                <img class="whysobig" src="/static/pictures/answer_pictures/{{ result.a_image }}" width="200" alt="some picture">
+                            {% if answer.image %}
+                                <img class="whysobig" src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
                             {% endif %}
                             </td>
                         </tr>
                     {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            {% for answer in found_answers %}
+                {% if answer.question_id not in q_ids %}
+                    {% for question in questions %}
+                        {% if answer.question_id == question.id %}
+                            <tr>
+                                <td>
+                                <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                                <p style="text-align: center">{{ question.vote_number }}</p>
+                                <p><a href="/question/{{ question.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                                </td>
+
+                                <td style="width: 100%">
+                                    <h4> {{ question.title | safe }}</h4>
+
+                                <p style="text-align: right">
+                                    Views: {{ question.view_number }}</p>
+                                </td>
+                                <td style="width: 100%">
+                                    {% if question.image  %}
+                                            <img class="whysobig" src="/static/pictures/question_pictures/{{ question.image }}" width="200" alt="some picture">
+                                        {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
+                                <p>{{ answer.vote_number }}</p>
+                                <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                                </td>
+                                <td ><p class="tab"><strong>{{ answer.message | safe }}</strong></p></td>
+                                <td style="text-align: center">
+                                {% if answer.image %}
+                                    <img class="whysobig" src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
-            </table>
-        {% endfor %}
-    {% else %}
-        <tr>
-            <td>
-                <p>No results found.</p>
-            </td>
-        </tr>
+            {% endfor %}
+        </table>
     {% endif %}
+
+
+
+
+
+
 
 {% endblock%}
