@@ -66,8 +66,10 @@
                     <a style="text-decoration: none" href="/question/{{ question.id }}"><h4> {{ question.title }}</h4></a>
                     <p>{{ question.message }}</p>
                     {%  if session['logged_in'] %}
-                    <a href="/question/{{ question.id }}/edit">
-                        <button class="btn btn-outline-dark">EDIT</button></a>
+                        {% if session['user_id'] == question.user_id %}
+                            <a href="/question/{{ question.id }}/edit">  <!-- csak az owner látja az edit gombot -->
+                                <button class="btn btn-outline-dark">EDIT</button></a>
+                        {%  endif %}
                     <a href="/question/{{ question.id }}/new-comment">
                         <button class="btn btn-outline-dark">COMMENT</button></a>
                     {% endif %}
