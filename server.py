@@ -28,6 +28,7 @@ def list_users():
 @app.route("/user/<user_id>")
 def profile_page(user_id):
     details = data_handler.get_data_by_id('users', user_id)
+
     print(details)
     return render_template("profile.html", details=details)
 
