@@ -6,11 +6,14 @@
 -- Dumped by pg_dump version 9.5.6
 
 ALTER TABLE IF EXISTS ONLY public.question DROP CONSTRAINT IF EXISTS pk_question_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.question DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.answer DROP CONSTRAINT IF EXISTS pk_answer_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.answer DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.answer DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS pk_comment_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS fk_answer_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS pk_question_tag_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCADE;
@@ -75,6 +78,7 @@ CREATE TABLE public.users (
     reputation integer
 );
 
+
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pk_id PRIMARY KEY (id);
 
@@ -92,6 +96,7 @@ ALTER TABLE ONLY question_tag
 
 ALTER TABLE ONLY tag
     ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
+
 
 ALTER TABLE ONLY answer
     ADD CONSTRAINT answer___fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
@@ -170,4 +175,20 @@ INSERT INTO question_tag VALUES (2, 3);
 
 INSERT INTO users VALUES (0, 'admin', '$2a$04$4pMsMYklId1fKiddEv5BA.mDfwb9uI/r85ukKDHlaMe.8jPn4vfjS', 'admin@uze.net', 0);
 INSERT INTO users VALUES (1, 'moderator', '$2a$04$3dfTrKKio3qXMhVZAE18h.0tEOSJi0vjHVXfyypnW8UnXnW828Tc6', 'moderator@uze.net', 0);
-SELECT pg_catalog.setval('users_id_seq', 1, true);
+INSERT INTO users VALUES (2, 'plague', '$2b$12$WEa3VmU4wfSwHh5BRqZ.C.iVZaPG7nA.Urn2NY9l58DjvKq76nDWm', 'plague@pestis.com', 0, '2021-06-23 13:57:25.000000', 0, 0, 0);
+INSERT INTO users VALUES (3, 'jolan', '$2b$12$kVSdhMyIXRI6oatIW2eZRus7ycpe95nrHpY1sOPBAsvGsy2XdvMni', 'joli@neni.com', 0, '2021-06-23 14:04:14.000000', 0, 0, 0);
+INSERT INTO users VALUES (4, 'Ásóka', '$2b$12$pJtryG6xkk0sQ/AFh6o07eAS9RezhYDFXojjvJ4ej3LNbOcolicgK', 'asoka@boss.com', 0, '2021-06-23 14:12:02.000000', 0, 0, 0);
+SELECT pg_catalog.setval('users_id_seq', 4, true);
+
+UPDATE question SET user_id = 2 WHERE id = 3;
+UPDATE question SET user_id = 3 WHERE id = 0;
+UPDATE question SET user_id = 0 WHERE id = 2;
+UPDATE question SET user_id = 1 WHERE id = 1;
+
+UPDATE answer SET user_id = 2 WHERE id = 1 OR id = 11;
+UPDATE answer SET user_id = 3 WHERE id = 2;
+UPDATE answer SET user_id = 4 WHERE id = 5 OR id = 9 OR id = 12;
+
+UPDATE comment SET user_id = 0 WHERE id = 0;
+UPDATE comment SET user_id = 1 WHERE id = 1;
+
