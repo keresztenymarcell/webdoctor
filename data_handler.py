@@ -474,3 +474,14 @@ def update_user(cursor, column, user_id):
             WHERE id = %(user_id)s
             """
     cursor.execute(query, {"user_id": user_id})
+
+
+@connection.connection_handler
+def get_answer_by_question_id(cursor, question_id, order_criteria, order_direction):
+    cursor.execute(f"""
+                        SELECT * FROM answer
+                        WHERE question_id = %(question_id)s
+                        ORDER BY {order_criteria} {order_direction}
+                        """,
+                       {'question_id': question_id})
+    return cursor.fetchall()

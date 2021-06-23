@@ -192,6 +192,17 @@ label {color:white;}
     width: auto;
 }
 
+
+.accepted {
+    border-collapse:collapse;
+}
+
+
 #accepted {
     border: 3px solid greenyellow;
+}
+
+
+.accepted #not_accepted {
+    border: 0;
 }
