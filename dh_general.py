@@ -32,34 +32,6 @@ def search_table(cursor, phrase, order='submission_time'):
     return cursor.fetchall()
 
 
-
-def highlight_search_phrase(datatable, phrase, tag_type):
-    for entry_index in range(len(datatable)):
-        title_lower = datatable[entry_index]['title'].lower()
-        q_message_lower = datatable[entry_index]['q_message'].lower()
-
-        title_iter = re.finditer(phrase, title_lower)
-        title_indices = [m.start(0) for m in title_iter]
-        dh_tags.insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
-
-        q_message_iter = re.finditer(phrase, q_message_lower)
-        q_message_indices = [m.start(0) for m in q_message_iter]
-        dh_tags.insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
-
-        if datatable[entry_index]['a_message'] is not None:
-            a_message_lower = datatable[entry_index]['a_message'].lower()
-            a_message_iter = re.finditer(phrase, a_message_lower)
-            a_message_indices = [m.start(0) for m in a_message_iter]
-            dh_tags.insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
-
-    return datatable
-
-
-def generate_timestamp():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-
 @connection.connection_handler
 def get_image_name_by_id(cursor, table, id):
     cursor.execute(f"""

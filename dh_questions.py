@@ -1,17 +1,11 @@
 
-import re
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
+import connection
+import dh_python_files
 
-import dh_general
-
-QUESTIONS_HEADER = ['Id', 'Submission Time', 'View Number', 'Vote Number', 'Title', 'Message', 'Image']
-QUESTION_KEYS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 @connection.connection_handler
 def add_new_question(cursor, question):
-    timestamp = dh_general.generate_timestamp()
+    timestamp = dh_python_files.generate_timestamp()
     cursor.execute("""
                      INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
                      VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s, %(user_id)s) RETURNING id;

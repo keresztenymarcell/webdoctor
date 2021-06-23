@@ -1,17 +1,10 @@
-
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
-import dh_general
-
-ANSWERS_HEADER = ['Id', 'Submission Time', 'Vote Number', 'Question Id', 'Message', 'Image']
-ANSWER_KEYS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-
+import connection
+import dh_python_files
 
 
 @connection.connection_handler
 def add_new_answer(cursor, answer):
-    timestamp = dh_general.generate_timestamp()
+    timestamp = dh_python_files.generate_timestamp()
     cursor.execute("""
                      INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
                      VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s);

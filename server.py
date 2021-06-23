@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, flash, url_for
-import dh_data, dh_questions, dh_user, dh_tags, dh_answer, dh_general, dh_comment
+import dh_data, dh_questions, dh_user, dh_tags, dh_answer, dh_general, dh_comment, dh_python_files, dh_headers
 import os
 
 
@@ -39,7 +39,7 @@ def list_page():
     order_direction = request.args.get('order_direction', 'desc')
     questions = dh_data.get_all_data('question', order_by, order_direction)
     comments = dh_data.get_all_data('comment', 'submission_time', 'desc') #***
-    return render_template('list.html', header=dh_questions.QUESTIONS_HEADER, keys=dh_questions.QUESTION_KEYS,
+    return render_template('list.html', header=dh_headers.QUESTIONS_HEADER, keys=dh_headers.QUESTION_KEYS,
                            questions=questions, orderby=order_by, orderdir=order_direction, comments=comments)
 
 
@@ -59,7 +59,7 @@ def write_questions():
     if request.method == "POST":
         get_data = request.form.to_dict()
         get_data['user_id'] = session['user_id']
-        dh_data.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
+        dh_python_files.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         question_id = dh_questions.add_new_question(get_data)['id']
         dh_user.update_user('questions_count', get_data['user_id'])
 
@@ -72,7 +72,7 @@ def add_new_answer(question_id):
     do_edit = False
     if request.method == "POST":
         get_data = request.form.to_dict()
-        dh_data.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
+        dh_python_files.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
         get_data['user_id'] = session['user_id']
         dh_answer.add_new_answer(get_data)
@@ -87,7 +87,7 @@ def edit_question(question_id):
     do_edit = True
     if request.method == 'POST':
         edited_question = request.form.to_dict()
-        dh_data.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], edited_question, do_edit)
+        dh_python_files.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], edited_question, do_edit)
         dh_questions.edit_question(edited_question)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -100,7 +100,7 @@ def edit_answer(answer_id):
     do_edit = True
     if request.method == 'POST':
         edited_answer = request.form.to_dict()
-        dh_data.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], edited_answer, do_edit)
+        dh_python_files.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], edited_answer, do_edit)
         dh_answer.edit_answer(edited_answer)
         question_id = edited_answer['question_id']
         return redirect(url_for("display_question", question_id=question_id))
@@ -243,7 +243,7 @@ def search_page():
     if search_phrase:
         result = dh_general.search_table(search_phrase)
         if len(result) != 0:
-            result = dh_general.highlight_search_phrase(result, search_phrase, tag_type)
+            result = dh_python_files.highlight_search_phrase(result, search_phrase, tag_type)
 
         return render_template('results.html', results=result, phrase=search_phrase, tag_type=tag_type)
     return redirect('/list')
@@ -284,7 +284,7 @@ def registration_page():
         if is_new_user:
             dh_user.register_user(user_email, user_password, user_name)
             return redirect("/login")
-        flash ("This e-mail has already been used")
+        flash("This e-mail has already been used")
         return render_template("registration.html")
     return render_template("registration.html")
 
