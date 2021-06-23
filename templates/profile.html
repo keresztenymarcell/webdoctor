@@ -20,50 +20,29 @@
         </div>
     </nav>
 
-        <h1>Welcome {{session['username']}}!</h1><br><br>
+        <h1>Welcome {{session['username']}}!</h1><br><br><br>
 
- <table>
-        <tbody>
-
-         <tr>
-                <th>Username</th>
-             {%  for data in details %}
-                <td>{{data.user_name}}</td>
-             {% endfor %}
-         </tr>
-        <tr>
-                <th>Registration date</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
-        </tr>
-                <tr>
-                <th>Asked questions</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
-        </tr>
-                <tr>
-                <th>Answers</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
-        </tr>
-                <tr>
-                <th>Comments</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
-        </tr>
-                    <tr>
-                <th>Reputation</th>
-            {%  for data in details %}
-                <td>-{{data.registration_date}}</td>
-            {% endfor %}
-        </tr>
-
-    </tbody>
-    </table>
+        <div class="container col-4">
+          <div class="row justify-content-center">
+            <div class="col"><p>Username</p></div>
+            <div class="col"><p>{{ details.user_name }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Registration date</p></div>
+            <div class="col"><p>{{ details.registration_date }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Asked questions</p></div>
+            <div class="col"><p>{{ details.questions_count }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Answers</p></div>
+            <div class="col"><p>{{ details.answers_count }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Comments</p></div>
+            <div class="col"><p>{{ details.comments_count}}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Reputation</p></div>
+            <div class="col"><p>{{ details.reputation}}</p></div>
+          </div>
+        </div>
 
 
 {% endblock %}

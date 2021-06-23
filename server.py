@@ -29,6 +29,7 @@ def list_users():
 def profile_page(user_id):
     details = dh_data.get_data_by_id('users', user_id)
     print(details)
+
     return render_template("profile.html", details=details)
 
 

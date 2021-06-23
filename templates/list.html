@@ -49,12 +49,12 @@
 
 
     {% if session['logged_in'] %}
-    <p><a href="/add-question"><button class="btn btn-outline-dark">Add questions</button></a></p>
+    <p><a href="/add-question"><button class="btn btn-outline-dark">Add questions</button></a></p><br><br>
     {% endif %}
     {% for question in questions %}
 
-
-        <table>
+ <div class="container-fluid">
+        <table class="table table-hover text-centered">
             <tr>
                 <td>
                 <p><a href="/question/{{ question.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40"  ></a></p>
@@ -63,13 +63,11 @@
                 </td>
 
                 <td class="table-width">
-                    <h4> {{ question.title }}</h4>
+                    <a style="text-decoration: none" href="/question/{{ question.id }}"><h4> {{ question.title }}</h4></a>
                     <p>{{ question.message }}</p>
                     {%  if session['logged_in'] %}
                     <a href="/question/{{ question.id }}/edit">
                         <button class="btn btn-outline-dark">EDIT</button></a>
-                    <a href="/question/{{ question.id }}">
-                        <button class="btn btn-outline-dark">ANSWER</button></a>
                     <a href="/question/{{ question.id }}/new-comment">
                         <button class="btn btn-outline-dark">COMMENT</button></a>
                     {% endif %}
@@ -84,6 +82,7 @@
                 </td>
             </tr>
         </table>
+ </div>
 
     {% endfor %}
 {% endblock%}
