@@ -28,7 +28,6 @@ def list_users():
 @app.route("/user/<user_id>")
 def profile_page(user_id):
     details = data_handler.get_data_by_id('users', user_id)
-    print(details)
     return render_template("profile.html", details=details)
 
 
@@ -283,8 +282,8 @@ def registration_page():
         if is_new_user:
             data_handler.register_user(user_email, user_password, user_name)
             return redirect("/login")
-        message = "This e-mail has already been used"
-        return render_template("registration.html", message=message)
+        flash ("This e-mail has already been used")
+        return render_template("registration.html")
     return render_template("registration.html")
 
 

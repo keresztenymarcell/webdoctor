@@ -2,30 +2,34 @@
 {% block title %}Index Page{% endblock %}
 
 {% block content %}
-    <nav>
-        <div class="navbar">
-        <a href="{{ url_for('main_page') }}"><button><i class="fa fa-home"></i></button></a>
-        <a href="{{ url_for('tag_page') }}">Tags</a>
-            {% if session['logged_in']%}
-                <a href="{{ url_for('list_users') }}">User Details</a>
-                <a href="/user/{{ session['user_id'] }}">Profile</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('registration_page') }}">Registration</a>
-                <a href="{{ url_for('login') }}">Login</a>
-            {% endif %}
-        <div>
-         <form class="search" action="/search" method="get">
-            <input type="text" name="q">
-             <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-
-        </div>
+   <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
+                {% if session['logged_in']%}
+                  <li><a href="{{ url_for('list_users') }}">User Details</a></li>
+                  <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
+                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+                  </ul>
+            </div>
+            <ul class="nav navbar-nav me-auto">
+                <li>
+                <form class="search" action="/search" method="get">
+                <input type="search" name="q">
+                 <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                </form></li>
+            </ul>
         </div>
     </nav>
 
     <h1>WebDoctor</h1>
-    <p><a href="/list"><button>See all of the questions</button></a></p>
+    <p><a href="/list"><button type="button" class="btn btn-outline-primary">See all of the questions</button></a></p>
     {% for question in questions %}
 
         <table>

@@ -3,20 +3,18 @@
 {% block title %}List of Questions{% endblock %}
 
 {% block content %}
-
-    <nav>
-        <div class="navbar">
-          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
-          <a href="{{ url_for('tag_page') }}">Tags</a>
-        <div>
-         <form class="search" action="/search" method="get">
-            <input type="text" name="q">
-             <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        <div>
-            <form class="sort" action="/list" method="get">
-            <div>
-                <label>Sort by:</label>
+   <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
+            <a href="{{ url_for('tag_page') }}">Tags</a>
+            </div>
+        <ul class="nav navbar-nav align-items-center">
+          <li><form class="search" action="/search" method="get">
+            <input type="search" name="q">
+             <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+            </form></li>
+          <li><form class="sort" action="/list" method="get">
                     <select name="order_by">
                         {% for option_index in range(header|length) %}
                             {% if header[option_index] != "Image" %}
@@ -25,7 +23,6 @@
                                 {% else %}
                                     <option value="{{ keys[option_index] }}">{{ header[option_index] }}</option>
                                 {% endif %}
-
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -38,14 +35,13 @@
                             <option value="asc" selected>Ascending</option>
                         {% endif %}
                     </select>
+                    <button class="btn btn-outline-success">Sort</button>
+            </form></li>
 
-                    <button>Sort</button>
-            </div>
-            </form>
-        </div>
-        </div>
+        </ul>
         </div>
     </nav>
+
 
     <h1>WebDoctor</h1>
     <h3>Ask your question</h3>
@@ -53,7 +49,7 @@
 
 
     {% if session['logged_in'] %}
-    <p><a href="/add-question"><button>Add questions</button></a></p>
+    <p><a href="/add-question"><button class="btn btn-outline-dark">Add questions</button></a></p>
     {% endif %}
     {% for question in questions %}
 
@@ -71,11 +67,11 @@
                     <p>{{ question.message }}</p>
                     {%  if session['logged_in'] %}
                     <a href="/question/{{ question.id }}/edit">
-                        <button>EDIT</button></a>
+                        <button class="btn btn-outline-dark">EDIT</button></a>
                     <a href="/question/{{ question.id }}">
-                        <button>ANSWER</button></a>
+                        <button class="btn btn-outline-dark">ANSWER</button></a>
                     <a href="/question/{{ question.id }}/new-comment">
-                        <button>COMMENT</button></a>
+                        <button class="btn btn-outline-dark">COMMENT</button></a>
                     {% endif %}
 
                     <p id="view_number">
