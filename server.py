@@ -45,7 +45,7 @@ def list_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
     question = data_handler.get_data_by_id("question", question_id)
-    answers = data_handler.get_all_data("answer", "vote_number", "desc")
+    answers = data_handler.get_answer_by_question_id(question_id, "vote_number", "DESC")    #
     data_handler.increment_view_number(question_id)
     tags = data_handler.get_tags_by_question_id(question_id)
     comments = data_handler.get_all_data('comment', 'submission_time', 'desc')
@@ -177,6 +177,7 @@ def add_comment_to_answer(answer_id):
                        'edited_count': 0,
                        'user_id': session['user_id']}
         data_handler.add_new_comment(new_comment)
+        data_handler.update_user('comments_count', session['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", answer_id=answer_id)

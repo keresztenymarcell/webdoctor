@@ -55,58 +55,54 @@
 
     <h3>Answers</h3>
 
-    <table>
+    <table class="accepted">
         <tbody>
             {% for answer in answers %}
-                {% if question.id == answer.question_id  %}
-                    {% if answer.accepted %}
-                        <div style="border: 30px solid greenyellow">
-                    {% else %}
-                        <div>
-                    {% endif %}
-                            <tr>
-                                <td>
-                                    <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40" ></a></p>
-                                    <p id="vote_number">{{ answer.vote_number }}</p>
-                                    <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-                                </td>
-                                    <td>
-                                        {% if question.user_id == session['user_id'] %}
-                                            {% if answer.accepted == False %}
-                                                <p><a href="{{ question.id }}/accept_answer/{{ answer.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
-                                            {% else %}
-                                                <p><a href="{{ question.id }}/remove_accept/{{ answer.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
-                                            {% endif %}
-                                        {% endif %}
-                                        <h4>{{ answer.message }}</h4>
-                                    </td>
-                                <td>
-                                    {% if answer.image  %}
-                                        <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <p><a href="/answer/{{ answer.id }}/edit"><button>EDIT THIS ANSWER</button></a></p>
-                                    <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
-                                    <p><a href="/answer/{{ answer.id }}/new-comment"><button>COMMENT</button></a></p>
-                                </td>
-                            </tr>
-                        </div>
-                        {% for comment in comments %}
-                            {% if comment.answer_id == answer.id %}
-                        <tr>
-                            <td>
-                                <p>
-                                <div id="message"><h4>{{ comment.message }}</h4> </div>
-
-                                <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
-                                <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button>EDIT</button></a></div>
-                                </p>
-                            </td>
-                        </tr>
-                            {% endif %}
-                        {% endfor %}
+                {% if answer.accepted %}
+                    <tr id="accepted">
+                {% else %}
+                    <tr id="not_accepted">
                 {% endif %}
+                        <td>
+                            <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40" ></a></p>
+                            <p id="vote_number">{{ answer.vote_number }}</p>
+                            <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
+                        </td>
+                            <td>
+                                {% if question.user_id == session['user_id'] %}
+                                    {% if answer.accepted == False %}
+                                        <p><a href="{{ question.id }}/accept_answer/{{ answer.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
+                                    {% else %}
+                                        <p><a href="{{ question.id }}/remove_accept/{{ answer.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
+                                    {% endif %}
+                                {% endif %}
+                                <h4>{{ answer.message }}</h4>
+                            </td>
+                        <td>
+                            {% if answer.image  %}
+                                <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <p><a href="/answer/{{ answer.id }}/edit"><button>EDIT THIS ANSWER</button></a></p>
+                            <p><a href="/answer/{{ answer.id }}/delete"><button>DELETE</button></a></p>
+                            <p><a href="/answer/{{ answer.id }}/new-comment"><button>COMMENT</button></a></p>
+                        </td>
+                    </tr>
+                    {% for comment in comments %}
+                        {% if comment.answer_id == answer.id %}
+                    <tr>
+                        <td>
+                            <p>
+                            <div id="message"><h4>{{ comment.message }}</h4> </div>
+
+                            <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
+                            <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button>EDIT</button></a></div>
+                            </p>
+                        </td>
+                    </tr>
+                        {% endif %}
+                    {% endfor %}
             {% endfor %}
 
         </tbody>
