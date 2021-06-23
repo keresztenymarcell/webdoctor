@@ -20,43 +20,29 @@
         </div>
     </nav>
 
-        <h1>Welcome {{session['username']}}!</h1><br><br>
+        <h1>Welcome {{session['username']}}!</h1><br><br><br>
 
-    <table>
-    <tbody>
-
-         <tr>
-             <th>Username:</th>
-             <td>{{details.user_name}}</td>
-         </tr>
-
-        <tr>
-            <th>Registration date:</th>
-            <td>{{details.registration_date}}</td>
-        </tr>
-
-        <tr>
-            <th>Asked questions:</th>
-            <td>{{details.questions_count}}</td>
-        </tr>
-
-        <tr>
-            <th>Answers:</th>
-            <td>{{details.answers_count}}</td>
-        </tr>
-
-        <tr>
-            <th>Comments:</th>
-            <td>{{details.comments_count}}</td>
-        </tr>
-
-        <tr>
-            <th>Reputation:</th>
-            <td>{{details.reputation}}</td>
-        </tr>
-
-    </tbody>
-    </table>
+        <div class="container col-4">
+          <div class="row justify-content-center">
+            <div class="col"><p>Username</p></div>
+            <div class="col"><p>{{ details.user_name }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Registration date</p></div>
+            <div class="col"><p>{{ details.registration_date }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Asked questions</p></div>
+            <div class="col"><p>{{ details.questions_count }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Answers</p></div>
+            <div class="col"><p>{{ details.answers_count }}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Comments</p></div>
+            <div class="col"><p>{{ details.comments_count}}</p></div>
+            <div class="w-100"></div>
+            <div class="col"><p>Reputation</p></div>
+            <div class="col"><p>{{ details.reputation}}</p></div>
+          </div>
+        </div>
 
 
 {% endblock %}
