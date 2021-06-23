@@ -45,6 +45,17 @@ body {
   text-decoration: none;
 }
 
+.navbar p {
+            float: left;
+            font-size: 20px;
+            color: darkblue;
+            text-align: center;
+            padding: 18px 16px;
+            text-decoration: none;
+            margin-top: 0;
+            margin-bottom: 0;
+            }
+
 h1 {color: #ffffff;
     font-size: 70px;
     text-align: center;
