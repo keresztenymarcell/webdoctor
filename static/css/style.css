@@ -4,9 +4,10 @@ body {
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
-    background-color: #2daecb;
+    background-color: #2daecb !important;
     margin-left: 10%;
     margin-right: 10%;
+     padding-top: 120px;
     font-family: 'Dosis', sans-serif;
 }
 
@@ -15,8 +16,7 @@ body {
   background-color: white;
     border-radius: 20px;
     opacity: 100%;
-    position: fixed;
-    width:80%;
+    width:100%;
     top: 0;
 
 }
@@ -29,7 +29,7 @@ body {
               text-decoration: none;}
 
 
-.navbar .sort{float: center;
+.navbar .sort{
               font-size: 20px;
               color: darkblue;
               text-align: right;
@@ -41,13 +41,14 @@ body {
   font-size: 20px;
   color: darkblue;
   text-align: center;
-  padding: 14px 16px;
+  padding: 18px 16px;
   text-decoration: none;
 }
 
 h1 {color: #ffffff;
     font-size: 70px;
     text-align: center;
+    top:20px;
 
     }
 
@@ -77,9 +78,8 @@ p {
 }
 button {
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
-	background-color:#ededed;
-	border-radius:6px;
+    background: #ededed linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    border-radius:6px;
 	border:1px solid #dcdcdc;
 	display:inline-block;
 	cursor:pointer;
@@ -141,11 +141,6 @@ tr {width:100%;
 
 .table-width{width:100%;}
 
-
-
-
-
-
 #view_number{text-align: right;}
 
 
@@ -198,5 +193,5 @@ label {color:white;}
 }
 
 #accepted {
-    border-color: greenyellow;
+    border: 3px solid greenyellow;
 }

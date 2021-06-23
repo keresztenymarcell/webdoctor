@@ -28,8 +28,6 @@ def list_users():
 @app.route("/user/<user_id>")
 def profile_page(user_id):
     details = data_handler.get_data_by_id('users', user_id)
-
-    print(details)
     return render_template("profile.html", details=details)
 
 
@@ -61,6 +59,7 @@ def write_questions():
         get_data['user_id'] = session['user_id']
         data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
         question_id = data_handler.add_new_question(get_data)['id']
+        data_handler.update_user('questions_count', get_data['user_id'])
 
         return redirect(url_for("display_question", question_id=question_id))
     return render_template('question.html')
@@ -74,8 +73,8 @@ def add_new_answer(question_id):
         data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
         get_data['user_id'] = session['user_id']
-        print(get_data)
         data_handler.add_new_answer(get_data)
+        data_handler.update_user('answers_count', get_data['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_answer.html', question_id=question_id)
@@ -191,6 +190,7 @@ def add_new_comment_to_question(question_id):
                        'edited_count': 0,
                        'user_id': session['user_id']}
         data_handler.add_new_comment(new_comment)
+        data_handler.update_user('comments_count', session['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", question_id=question_id)
@@ -281,8 +281,8 @@ def registration_page():
         if is_new_user:
             data_handler.register_user(user_email, user_password, user_name)
             return redirect("/login")
-        message = "This e-mail has already been used"
-        return render_template("registration.html", message=message)
+        flash ("This e-mail has already been used")
+        return render_template("registration.html")
     return render_template("registration.html")
 
 
@@ -315,18 +315,25 @@ def logout():
     return redirect(url_for('main_page'))
 
 
-@app.route("/<question_id>/remove_accept/<answer_id>")
+@app.route("/question/<question_id>/remove_accept/<answer_id>")
 def remove_accept(question_id,answer_id):
     data_handler.remove_accept_status(answer_id)
     data_handler.reputation_manager('answer', answer_id, -15)
     return redirect(url_for('display_question', question_id=question_id))
 
 
-@app.route('/<question_id>/accept_answer/<answer_id>')
+@app.route('/question/<question_id>/accept_answer/<answer_id>')
 def accept_answer(question_id, answer_id):
     data_handler.accept_answer(answer_id)
     data_handler.reputation_manager('answer', answer_id, 15)
     return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route('/tags')
+def tag_page():
+    all_tags = data_handler.get_marked_questions()
+    return render_template('tag.html', tags=all_tags)
+
 
 
 if __name__ == "__main__":

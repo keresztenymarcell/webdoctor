@@ -9,8 +9,9 @@
 
         <form action=/comment/{{ comment.id }}/edit method="post">
         <label for="message">Your comment:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required>{{ comment.message }}</textarea><br>
-        <button type="submit">Accept</button>
+        <textarea id="message" name="message" rows="4" cols="50" required>{{ comment.message }}</textarea><br><br>
+        <button class="btn btn-outline-success" type="submit">Accept</button>
+            <br><br>
         </form>
 
     </div>

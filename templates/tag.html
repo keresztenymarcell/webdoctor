@@ -1,14 +1,23 @@
-{% extends 'base.html' %}
-{% block title %}Profile page{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Tag page{% endblock %}
 
 {% block content %}
+
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
             <ul class="nav navbar-nav">
+                {% if session['logged_in']%}
                   <li><a href="{{ url_for('list_users') }}">User Details</a></li>
-                  <li><a href="{{ url_for('logout') }}">Logout</a></li></ul>
+                  <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
+                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+                  </ul>
             </div>
             <ul class="nav navbar-nav me-auto">
                 <li>
@@ -20,22 +29,12 @@
         </div>
     </nav>
 
-        <h1>Welcome {{session['username']}}!</h1><br><br>
-
-        <table>
-         <tr>
-            <td>Username</td>
-            <td>Registration date</td>
-            <td>Asked questions</td>
-            <td>Answers</td>
-             <td>Comments</td>
-             <td>Reputation</td>
+    <table>
+        <tr>
+            <td>
+                {% for tag in tags %}
+                <button type="button" class="btn btn-outline-primary"><i class="fa fa-trash"></i>{{ tag['tagname'] }}   {{ tag['marked_questions'] }}</button>
+                {% endfor %}</td>
         </tr>
-         <tr>
-             <td>{{ session['username'] }}</td>
-        </tr>
-        </table>
-
-
-{% endblock %}
-
+    </table>
+{% endblock%}

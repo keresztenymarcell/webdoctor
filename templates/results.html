@@ -4,18 +4,20 @@
 
 {% block content %}
 
-     <nav>
-        <div class="navbar">
-          <a href="{{ url_for('main_page')}}"><button><i class="fa fa-home"></i></button></a>
-        <div>
-         <form class="search" action="/search" method="get">
-            <input type="text" name="q">
-             <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-
-        </div>
+      <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
+            </div>
+        <ul class="nav navbar-nav align-items-center">
+          <li><form class="search" action="/search" method="get">
+            <input type="search" name="q">
+             <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+            </form></li>
+        </ul>
         </div>
     </nav>
+
 
 
     <h1>WebDoctor</h1>

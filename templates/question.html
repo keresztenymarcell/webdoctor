@@ -28,19 +28,19 @@
         <input type="hidden" name="image" value="{{ question.image }}" >
     {% endif %}
 
-        <label for="title">Question title:<br></label>
+        <label for="title">Question title:</label><br>
         <textarea name="title" rows="4" cols="50">{{ question.title if question }}</textarea><br><br>
 
-        <label for="message">Question message:<br></label>
+        <label for="message">Question message:</label><br>
         <textarea name="message" rows="4" cols="50">{{ question.message if question }}</textarea><br><br>
 
         <label for="image">Image:</label><br>
         <input type="file" id="question" name="image" accept="image/png, image/jpeg"><br><br>
 
     {% if question %}
-        <button type="submit">Edit question</button>
+        <button class="btn btn-outline-success" type="submit">Edit question</button>
     {% else %}
-        <a href="/question/{{ question_id }}"><button type="submit">Submit this question</button></a>
+        <a href="/question/{{ question_id }}"><button class="btn btn-outline-success" type="submit" >Submit this question</button></a>
     {% endif %}
 
     </form>

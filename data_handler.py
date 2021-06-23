@@ -255,6 +255,18 @@ def get_comment_by_question_id(cursor, question_id):
 
 
 @connection.connection_handler
+def get_marked_questions(cursor):
+    cursor.execute("""
+                    SELECT name AS Tagname,
+                    COUNT(question_id) AS Marked_questions
+                    FROM question_tag
+                    Join tag t on question_tag.tag_id = t.id
+                    GROUP BY name;
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_all_tag(cursor):
     cursor.execute("""
                     SELECT * FROM tag
@@ -380,12 +392,13 @@ def hash_password(plain_text_password):
 
 @connection.connection_handler
 def register_user(cursor, user_email, user_password, user_name):
+    timestamp = generate_timestamp()
     hashed_password = hash_password(user_password)
     query = """
-                INSERT INTO users(user_name, password, email)
-                VALUES(%s, %s, %s)
+                INSERT INTO users(user_name, password, email, reputation, registration_date, questions_count, answers_count, comments_count)
+                VALUES(%s, %s, %s, 0, %s, 0, 0, 0)
                 """
-    cursor.execute(query, (user_name, hashed_password, user_email))
+    cursor.execute(query, (user_name, hashed_password, user_email, timestamp))
 
 
 def verify_password(plain_text_password, hashed_password):
@@ -450,5 +463,14 @@ def remove_accept_status(cursor, answer_id):
             SET accepted = FALSE
             WHERE id = %(answer_id)s
             """
-    cursor.execute(query, { "answer_id":answer_id)
+    cursor.execute(query, {"answer_id": answer_id})
 
+
+@connection.connection_handler
+def update_user(cursor, column, user_id):
+    query = f"""
+            UPDATE users
+            SET {column} = {column} + 1
+            WHERE id = %(user_id)s
+            """
+    cursor.execute(query, {"user_id": user_id})
