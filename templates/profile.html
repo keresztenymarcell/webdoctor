@@ -22,44 +22,37 @@
 
         <h1>Welcome {{session['username']}}!</h1><br><br>
 
- <table>
-        <tbody>
+    <table>
+    <tbody>
 
          <tr>
-                <th>Username</th>
-             {%  for data in details %}
-                <td>{{data.user_name}}</td>
-             {% endfor %}
+             <th>Username:</th>
+             <td>{{details.user_name}}</td>
          </tr>
+
         <tr>
-                <th>Registration date</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
+            <th>Registration date:</th>
+            <td>{{details.registration_date}}</td>
         </tr>
-                <tr>
-                <th>Asked questions</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
+
+        <tr>
+            <th>Asked questions:</th>
+            <td>{{details.questions_count}}</td>
         </tr>
-                <tr>
-                <th>Answers</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
+
+        <tr>
+            <th>Answers:</th>
+            <td>{{details.answers_count}}</td>
         </tr>
-                <tr>
-                <th>Comments</th>
-            {%  for data in details %}
-                <td>{{data.registration_date}}</td>
-            {% endfor %}
+
+        <tr>
+            <th>Comments:</th>
+            <td>{{details.comments_count}}</td>
         </tr>
-                    <tr>
-                <th>Reputation</th>
-            {%  for data in details %}
-                <td>-{{data.registration_date}}</td>
-            {% endfor %}
+
+        <tr>
+            <th>Reputation:</th>
+            <td>{{details.reputation}}</td>
         </tr>
 
     </tbody>
