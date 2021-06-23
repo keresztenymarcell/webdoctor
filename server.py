@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, flash, url_for
-import data_handler
+import dh_data, dh_questions, dh_user, dh_tags, dh_answer, dh_general, dh_comment
 import os
 
 
@@ -15,19 +15,19 @@ app.secret_key = b'_akJFh3sjfjbhsdjb/'
 
 @app.route("/")
 def main_page():
-    question_data = data_handler.get_last_five_questions_by_time()
+    question_data = dh_questions.get_last_five_questions_by_time()
     return render_template("index.html", questions=question_data)
 
 
 @app.route("/users")
 def list_users():
-    user_details = data_handler.get_all_data('users', 'reputation', 'desc')
+    user_details = dh_data.get_all_data('users', 'reputation', 'desc')
     return render_template("users.html", user_details=user_details)
 
 
 @app.route("/user/<user_id>")
 def profile_page(user_id):
-    details = data_handler.get_data_by_id('users', user_id)
+    details = dh_data.get_data_by_id('users', user_id)
     print(details)
     return render_template("profile.html", details=details)
 
@@ -36,19 +36,19 @@ def profile_page(user_id):
 def list_page():
     order_by = request.args.get('order_by', 'submission_time')
     order_direction = request.args.get('order_direction', 'desc')
-    questions = data_handler.get_all_data('question', order_by, order_direction)
-    comments = data_handler.get_all_data('comment', 'submission_time', 'desc')
-    return render_template('list.html', header=data_handler.QUESTIONS_HEADER, keys=data_handler.QUESTION_KEYS,
+    questions = dh_data.get_all_data('question', order_by, order_direction)
+    comments = dh_data.get_all_data('comment', 'submission_time', 'desc') #***
+    return render_template('list.html', header=dh_questions.QUESTIONS_HEADER, keys=dh_questions.QUESTION_KEYS,
                            questions=questions, orderby=order_by, orderdir=order_direction, comments=comments)
 
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
-    question = data_handler.get_data_by_id("question", question_id)
-    answers = data_handler.get_answer_by_question_id(question_id, "vote_number", "DESC")    #
-    data_handler.increment_view_number(question_id)
-    tags = data_handler.get_tags_by_question_id(question_id)
-    comments = data_handler.get_all_data('comment', 'submission_time', 'desc')
+    question = dh_data.get_data_by_id("question", question_id)
+    answers = dh_answer.get_answer_by_question_id(question_id, "vote_number", "DESC")    #
+    dh_general.increment_view_number(question_id)
+    tags = dh_tags.get_tags_by_question_id(question_id)
+    comments = dh_data.get_all_data('comment', 'submission_time', 'desc')
     return render_template('display_question.html', question=question, answers=answers, tags=tags, comments=comments)
 
 
@@ -58,9 +58,9 @@ def write_questions():
     if request.method == "POST":
         get_data = request.form.to_dict()
         get_data['user_id'] = session['user_id']
-        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
-        question_id = data_handler.add_new_question(get_data)['id']
-        data_handler.update_user('questions_count', get_data['user_id'])
+        dh_data.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], get_data, do_edit)
+        question_id = dh_questions.add_new_question(get_data)['id']
+        dh_user.update_user('questions_count', get_data['user_id'])
 
         return redirect(url_for("display_question", question_id=question_id))
     return render_template('question.html')
@@ -71,11 +71,11 @@ def add_new_answer(question_id):
     do_edit = False
     if request.method == "POST":
         get_data = request.form.to_dict()
-        data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
+        dh_data.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], get_data, do_edit)
         get_data["question_id"] = question_id
         get_data['user_id'] = session['user_id']
-        data_handler.add_new_answer(get_data)
-        data_handler.update_user('answers_count', get_data['user_id'])
+        dh_answer.add_new_answer(get_data)
+        dh_user.update_user('answers_count', get_data['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template('add_new_answer.html', question_id=question_id)
@@ -86,11 +86,11 @@ def edit_question(question_id):
     do_edit = True
     if request.method == 'POST':
         edited_question = request.form.to_dict()
-        data_handler.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], edited_question, do_edit)
-        data_handler.edit_question(edited_question)
+        dh_data.image_data_handling(UPLOAD_FOLDER_QUESTIONS, request.files['image'], edited_question, do_edit)
+        dh_questions.edit_question(edited_question)
         return redirect(url_for("display_question", question_id=question_id))
 
-    target_question = data_handler.get_data_by_id('question', question_id)
+    target_question = dh_data.get_data_by_id('question', question_id)
     return render_template("question.html", question=target_question)
 
 
