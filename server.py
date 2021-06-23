@@ -279,6 +279,10 @@ def registration_page():
     if request.method == "POST":
         user_email = request.form['email']
         user_password = request.form['psw']
+        user_password_repeat = request.form['psw-repeat']
+        if user_password != user_password_repeat:
+            flash('The two passwords do not match!')
+            return render_template("registration.html")
         user_name = request.form['user_name']
         is_new_user = dh_user.check_if_new_user(user_email)
         if is_new_user:
