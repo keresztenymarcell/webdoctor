@@ -21,13 +21,14 @@ def main_page():
 
 @app.route("/users")
 def list_users():
-    user_details = data_handler.get_user_data()
+    user_details = data_handler.get_all_data('users', 'reputation', 'desc')
     return render_template("users.html", user_details=user_details)
 
 
 @app.route("/user/<user_id>")
 def profile_page(user_id):
     details = data_handler.get_data_by_id('users', user_id)
+    print(details)
     return render_template("profile.html", details=details)
 
 
