@@ -2,7 +2,7 @@ import re
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import dh_general
-import dh_tags
+
 
 
 def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
@@ -20,6 +20,16 @@ def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
         get_data["image"] = ''
 
 
+def insert_tag(target_indices, datatable, entry_index, key, phrase, tag_type):
+    count = 0
+    for start in target_indices:
+        result = list(datatable[entry_index][key])
+        result.insert((start + count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))), f'<{tag_type}>')
+        result.insert((start + (count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))) + 1 + len(phrase)), f'</{tag_type}>')
+        result = ''.join(result)
+        datatable[entry_index][key] = result
+        count += 1
+
 
 def highlight_search_phrase(datatable, phrase, tag_type):
     for entry_index in range(len(datatable)):
@@ -28,17 +38,17 @@ def highlight_search_phrase(datatable, phrase, tag_type):
 
         title_iter = re.finditer(phrase, title_lower)
         title_indices = [m.start(0) for m in title_iter]
-        dh_tags.insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
+        insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
 
         q_message_iter = re.finditer(phrase, q_message_lower)
         q_message_indices = [m.start(0) for m in q_message_iter]
-        dh_tags.insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
+        insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
 
         if datatable[entry_index]['a_message'] is not None:
             a_message_lower = datatable[entry_index]['a_message'].lower()
             a_message_iter = re.finditer(phrase, a_message_lower)
             a_message_indices = [m.start(0) for m in a_message_iter]
-            dh_tags.insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
+            insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
 
     return datatable
 

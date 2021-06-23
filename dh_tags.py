@@ -3,17 +3,6 @@ import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
-@connection.connection_handler
-def insert_tag(target_indices, datatable, entry_index, key, phrase, tag_type):
-    count = 0
-    for start in target_indices:
-        result = list(datatable[entry_index][key])
-        result.insert((start + count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))), f'<{tag_type}>')
-        result.insert((start + (count * (len(f'<{tag_type}>') + len(f'</{tag_type}>'))) + 1 + len(phrase)), f'</{tag_type}>')
-        result = ''.join(result)
-        datatable[entry_index][key] = result
-        count += 1
-
 
 @connection.connection_handler
 def get_all_tag(cursor):

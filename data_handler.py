@@ -300,7 +300,7 @@ def delete_tag_by_question_id(cursor, question_id, tag_id):
                     DELETE from question_tag
                     WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s
                     """,
-                   {'question_id': question_id, 'tag_id':tag_id})
+                   {'question_id': question_id, 'tag_id': tag_id})
 
 
 @connection.connection_handler
