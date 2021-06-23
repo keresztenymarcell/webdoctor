@@ -1,14 +1,13 @@
-import re
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
 
-import dh_general
+import connection
+
+
+import dh_python_files
 
 
 @connection.connection_handler
 def edit_comment(cursor, comment_id, edited):
-    timestamp = dh_general.generate_timestamp()
+    timestamp = dh_python_files.generate_timestamp()
     cursor.execute("""
                     UPDATE comment
                     SET message = %(message)s,
@@ -21,7 +20,7 @@ def edit_comment(cursor, comment_id, edited):
 
 @connection.connection_handler
 def add_new_comment(cursor, comment_dict):
-    timestamp = dh_general.generate_timestamp()
+    timestamp = dh_python_files.generate_timestamp()
     cursor.execute("""
                         INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count, user_id)
                         VALUES(%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s, %(user_id)s);

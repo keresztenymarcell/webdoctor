@@ -1,9 +1,6 @@
-import re
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
 
-import dh_general
+import connection
+
 
 
 @connection.connection_handler
@@ -23,21 +20,6 @@ def get_data_by_id(cursor, table, data_id):
                     WHERE id = {data_id}
                     """)
     return cursor.fetchone()
-
-
-def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
-    if secure_filename(image_data.filename) != "":
-        time = dh_general.generate_timestamp()
-        to_replace = {'-': '', ' ': '_', ':': ''}
-        for key, value in to_replace.items():
-            time = time.replace(key, value)
-        get_data["image"] = time + "_" + secure_filename(image_data.filename)
-        folder_route = UPLOAD_FOLDER + get_data["image"]
-        image_data.save(folder_route)
-    elif do_edit:
-        pass
-    else:
-        get_data["image"] = ''
 
 
 @connection.connection_handler
