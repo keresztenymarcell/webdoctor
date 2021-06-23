@@ -3,6 +3,9 @@ import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+import dh_tags
+
+
 @connection.connection_handler
 def search_table(cursor, phrase, order='submission_time'):
     cursor.execute(f"""
@@ -37,17 +40,17 @@ def highlight_search_phrase(datatable, phrase, tag_type):
 
         title_iter = re.finditer(phrase, title_lower)
         title_indices = [m.start(0) for m in title_iter]
-        insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
+        dh_tags.insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
 
         q_message_iter = re.finditer(phrase, q_message_lower)
         q_message_indices = [m.start(0) for m in q_message_iter]
-        insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
+        dh_tags.insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
 
         if datatable[entry_index]['a_message'] is not None:
             a_message_lower = datatable[entry_index]['a_message'].lower()
             a_message_iter = re.finditer(phrase, a_message_lower)
             a_message_indices = [m.start(0) for m in a_message_iter]
-            insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
+            dh_tags.insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
 
     return datatable
 

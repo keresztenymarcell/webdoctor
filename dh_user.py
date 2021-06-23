@@ -3,6 +3,9 @@ import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+import dh_general
+
+
 @connection.connection_handler
 def check_if_new_user(cursor, user_name):
     query = """
@@ -21,7 +24,7 @@ def hash_password(plain_text_password):
 
 @connection.connection_handler
 def register_user(cursor, user_email, user_password, user_name):
-    timestamp = generate_timestamp()
+    timestamp = dh_general.generate_timestamp()
     hashed_password = hash_password(user_password)
     query = """
                 INSERT INTO users(user_name, password, email, reputation, registration_date, questions_count, answers_count, comments_count)

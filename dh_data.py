@@ -3,6 +3,9 @@ import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+import dh_general
+
+
 @connection.connection_handler
 def get_all_data(cursor, table, order_by, direction):
     cursor.execute(f"""
@@ -24,7 +27,7 @@ def get_data_by_id(cursor, table, data_id):
 
 def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
     if secure_filename(image_data.filename) != "":
-        time = generate_timestamp()
+        time = dh_general.generate_timestamp()
         to_replace = {'-': '', ' ': '_', ':': ''}
         for key, value in to_replace.items():
             time = time.replace(key, value)

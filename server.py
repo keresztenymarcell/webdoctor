@@ -99,85 +99,85 @@ def edit_answer(answer_id):
     do_edit = True
     if request.method == 'POST':
         edited_answer = request.form.to_dict()
-        data_handler.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], edited_answer, do_edit)
-        data_handler.edit_answer(edited_answer)
+        dh_data.image_data_handling(UPLOAD_FOLDER_ANSWERS, request.files['image'], edited_answer, do_edit)
+        dh_answer.edit_answer(edited_answer)
         question_id = edited_answer['question_id']
         return redirect(url_for("display_question", question_id=question_id))
 
-    target_answer = data_handler.get_data_by_id('answer', answer_id)
+    target_answer = dh_data.get_data_by_id('answer', answer_id)
     return render_template("add_new_answer.html", answer=target_answer)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    image_name = data_handler.get_image_name_by_id('question', question_id)['image']
+    image_name = dh_general.get_image_name_by_id('question', question_id)['image']
     image_list = os.listdir(UPLOAD_FOLDER_QUESTIONS)
     if image_name in image_list:
         file_path = UPLOAD_FOLDER_QUESTIONS + image_name
         os.remove(file_path)
-    data_handler.delete_data_by_id('question', question_id)
+    dh_data.delete_data_by_id('question', question_id)
 
     return redirect("/list")
 
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    target_answer = data_handler.get_data_by_id('answer', answer_id)
+    target_answer = dh_data.get_data_by_id('answer', answer_id)
     question_id = target_answer["question_id"]
 
-    image_name = data_handler.get_image_name_by_id('answer', answer_id)['image']
+    image_name = dh_general.get_image_name_by_id('answer', answer_id)['image']
     image_list = os.listdir(UPLOAD_FOLDER_ANSWERS)
     if image_name in image_list:
         file_path = UPLOAD_FOLDER_ANSWERS + image_name
         os.remove(file_path)
-        data_handler.delete_data_by_id('answer', answer_id)
+        dh_data.delete_data_by_id('answer', answer_id)
 
     return redirect(f'/question/{question_id}')
 
 
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
-    data_handler.increment_vote_number('question', question_id, 1)
-    data_handler.reputation_manager("question", question_id, 5)
+    dh_general.increment_vote_number('question', question_id, 1)
+    dh_user.reputation_manager("question", question_id, 5)
     return redirect("/list")
 
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
-    data_handler.increment_vote_number('question', question_id, -1)
-    data_handler.reputation_manager('question', question_id, -2)
+    dh_general.increment_vote_number('question', question_id, -1)
+    dh_user.reputation_manager('question', question_id, -2)
     return redirect("/list")
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
-    data_handler.increment_vote_number('answer', answer_id, 1)
-    data_handler.reputation_manager('answer', answer_id, 10)
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    dh_general.increment_vote_number('answer', answer_id, 1)
+    dh_user.reputation_manager('answer', answer_id, 10)
+    question_id = dh_questions.get_question_id_by_answer_id(answer_id)
     question_id = question_id["question_id"]
     return redirect(f'/question/{question_id}')
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
-    data_handler.increment_vote_number('answer', answer_id, -1)
-    data_handler.reputation_manager('answer', answer_id, -2)
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    dh_general.increment_vote_number('answer', answer_id, -1)
+    dh_user.reputation_manager('answer', answer_id, -2)
+    question_id = dh_questions.get_question_id_by_answer_id(answer_id)
     question_id = question_id["question_id"]
     return redirect(f'/question/{question_id}')
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
+    question_id = dh_questions.get_question_id_by_answer_id(answer_id)['question_id']
     if request.method == "POST":
         new_comment = {'question_id': None,
                        'answer_id': answer_id,
                        'message': request.form.get("new-comment2"),
                        'edited_count': 0,
                        'user_id': session['user_id']}
-        data_handler.add_new_comment(new_comment)
-        data_handler.update_user('comments_count', session['user_id'])
+        dh_comment.add_new_comment(new_comment)
+        dh_user.update_user('comments_count', session['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", answer_id=answer_id)
@@ -191,8 +191,8 @@ def add_new_comment_to_question(question_id):
                        'message': request.form.get("new-comment"),
                        'edited_count': 0,
                        'user_id': session['user_id']}
-        data_handler.add_new_comment(new_comment)
-        data_handler.update_user('comments_count', session['user_id'])
+        dh_comment.add_new_comment(new_comment)
+        dh_user.update_user('comments_count', session['user_id'])
         return redirect(url_for("display_question", question_id=question_id))
 
     return render_template("add_new_comment.html", question_id=question_id)
@@ -200,20 +200,20 @@ def add_new_comment_to_question(question_id):
 
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id):
-    comment = data_handler.get_data_by_id('comment', comment_id)
+    comment = dh_data.get_data_by_id('comment', comment_id)
     question_id = comment["question_id"]
 
     if request.method == "POST":
         if comment['question_id']:
             edited_comment = request.form.to_dict()
-            data_handler.edit_comment(comment_id, edited_comment)
+            dh_comment.edit_comment(comment_id, edited_comment)
 
             return redirect(url_for("display_question", question_id=question_id))
         else:
             edited_comment = request.form.to_dict()
             answer_id = comment['answer_id']
-            question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
-            data_handler.edit_comment(comment_id, edited_comment)
+            question_id = dh_questions.get_question_id_by_answer_id(answer_id)['question_id']
+            dh_comment.edit_comment(comment_id, edited_comment)
 
             return redirect(url_for("display_question", question_id=question_id))
 
@@ -222,15 +222,15 @@ def edit_comment(comment_id):
 
 @app.route("/comment/<comment_id>/delete")
 def delete_comment(comment_id):
-    comment = data_handler.get_data_by_id('comment', comment_id)
+    comment = dh_data.get_data_by_id('comment', comment_id)
     if comment["question_id"]:
         question_id = comment['question_id']
-        data_handler.delete_data_by_id('comment', comment_id)
+        dh_data.delete_data_by_id('comment', comment_id)
         return redirect(url_for("display_question", question_id=question_id))
     else:
         answer_id = comment['answer_id']
-        question_id = data_handler.get_question_id_by_answer_id(answer_id)['question_id']
-        data_handler.delete_data_by_id('comment', comment_id)
+        question_id = dh_questions.get_question_id_by_answer_id(answer_id)['question_id']
+        dh_data.delete_data_by_id('comment', comment_id)
         return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -240,9 +240,9 @@ def search_page():
     tag_type = 'mark'
 
     if search_phrase:
-        result = data_handler.search_table(search_phrase)
+        result = dh_general.search_table(search_phrase)
         if len(result) != 0:
-            result = data_handler.highlight_search_phrase(result, search_phrase, tag_type)
+            result = dh_general.highlight_search_phrase(result, search_phrase, tag_type)
 
         return render_template('results.html', results=result, phrase=search_phrase, tag_type=tag_type)
     return redirect('/list')
@@ -254,22 +254,22 @@ def add_tag(question_id):
     exist_tag = request.form.get("existing-tag")
     if request.method == "POST":
         if new_tag:
-            tag_id = data_handler.add_new_tag(new_tag)['id']
-            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
+            tag_id = dh_tags.add_new_tag(new_tag)['id']
+            dh_tags.add_tag_id_to_question_tag(tag_id, question_id)
             return redirect(url_for("display_question", question_id=question_id))
         else:
-            tag_id = data_handler.get_tag_id_by_name(exist_tag)['id']
-            data_handler.add_tag_id_to_question_tag(tag_id, question_id)
-            tags = data_handler.get_tags_by_question_id(question_id)
+            tag_id = dh_tags.get_tag_id_by_name(exist_tag)['id']
+            dh_tags.add_tag_id_to_question_tag(tag_id, question_id)
+            tags = dh_tags.get_tags_by_question_id(question_id)
             return redirect(url_for("display_question", question_id=question_id, tags=tags))
 
-    filtered_tags = data_handler.filter_tags(question_id)
+    filtered_tags = dh_tags.filter_tags(question_id)
     return render_template('add_new_tag.html', question_id=question_id, tags=filtered_tags)
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
 def remove_tag(question_id, tag_id):
-    data_handler.delete_tag_by_question_id(question_id, tag_id)
+    dh_tags.delete_tag_by_question_id(question_id, tag_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -279,9 +279,9 @@ def registration_page():
         user_email = request.form['email']
         user_password = request.form['psw']
         user_name = request.form['user_name']
-        is_new_user = data_handler.check_if_new_user(user_email)
+        is_new_user = dh_user.check_if_new_user(user_email)
         if is_new_user:
-            data_handler.register_user(user_email, user_password, user_name)
+            dh_user.register_user(user_email, user_password, user_name)
             return redirect("/login")
         flash ("This e-mail has already been used")
         return render_template("registration.html")
@@ -291,19 +291,19 @@ def registration_page():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user_info = request.form.to_dict()      # email, psw
-        is_new_user = data_handler.check_if_new_user(user_info['email'])
+        user_info = request.form.to_dict()
+        is_new_user = dh_user.check_if_new_user(user_info['email'])
         if is_new_user:
             return redirect(url_for('registration_page'))
-        hashed_user_password = data_handler.get_user_password(user_info)['password']
-        if data_handler.verify_password(user_info['psw'], hashed_user_password):
+        hashed_user_password = dh_user.get_user_password(user_info)['password']
+        if dh_user.verify_password(user_info['psw'], hashed_user_password):
             session['mail'] = user_info['email']
-            user_id = data_handler.get_user_id_by_mail(user_info['email'])['id']
-            user_data = data_handler.get_data_by_id('users', user_id)
+            user_id = dh_user.get_user_id_by_mail(user_info['email'])['id']
+            user_data = dh_data.get_data_by_id('users', user_id)
             session['username'] = user_data['user_name']
             session['logged_in'] = True
             session['user_id'] = user_id
-            questions = data_handler.get_last_five_questions_by_time()
+            questions = dh_questions.get_last_five_questions_by_time()
             return render_template('index.html', questions=questions)
         flash("Invalid login attempt")
         return render_template('login.html')
@@ -319,21 +319,21 @@ def logout():
 
 @app.route("/question/<question_id>/remove_accept/<answer_id>")
 def remove_accept(question_id,answer_id):
-    data_handler.remove_accept_status(answer_id)
-    data_handler.reputation_manager('answer', answer_id, -15)
+    dh_answer.remove_accept_status(answer_id)
+    dh_user.reputation_manager('answer', answer_id, -15)
     return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route('/question/<question_id>/accept_answer/<answer_id>')
 def accept_answer(question_id, answer_id):
-    data_handler.accept_answer(answer_id)
-    data_handler.reputation_manager('answer', answer_id, 15)
+    dh_answer.accept_answer(answer_id)
+    dh_user.reputation_manager('answer', answer_id, 15)
     return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route('/tags')
 def tag_page():
-    all_tags = data_handler.get_marked_questions()
+    all_tags = dh_questions.get_marked_questions()
     return render_template('tag.html', tags=all_tags)
 
 

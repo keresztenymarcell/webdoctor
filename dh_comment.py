@@ -3,9 +3,12 @@ import connection, bcrypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+import dh_general
+
+
 @connection.connection_handler
 def edit_comment(cursor, comment_id, edited):
-    timestamp = generate_timestamp()
+    timestamp = dh_general.generate_timestamp()
     cursor.execute("""
                     UPDATE comment
                     SET message = %(message)s,
