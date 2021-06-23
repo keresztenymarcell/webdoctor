@@ -42,7 +42,7 @@
                     </div>
                     {% endfor %}
                 </p>
-            <div id="buttons">
+            <div>
                 {% if session['logged_in'] %}
                 <a href="/question/{{ question.id }}/edit">
                     <button class="btn btn-outline-dark">EDIT</button></a>
@@ -54,16 +54,18 @@
                     <button class="btn btn-outline-dark">ADD TAG</button></a>
                 {% endif %}
             </div>
+            <div id="submission"><p>Submitted on: {{ question.submission_time }}</p></div>
+            </div>
                 <h3>Comments</h3>
                     {% for comment in comments %}
                     {% if comment.question_id == question.id %}
 
                     <p>
-                        <div id="message"><h4>{{ comment.message }}</h4> </div>
-                        <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
+                        <div id="message"><h4>{{ comment.message }}</h4> </div><br><br><br>
                         {% if session['logged_in'] %}
                         <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
                         {% endif %}
+                        <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
                         </p>
                 {% endif %}
                 {% endfor %}
@@ -89,30 +91,34 @@
                 {% endif %}
                         <td>
                             <p><a href="/answer/{{ answer.id }}/vote_up"><img class="up_arrow" src="/static/icons/arrow.png" alt="up-vote" width="40" height="40" ></a></p>
-                            <p>{{ answer.vote_number }}</p>
+                            <p>{{ answer.vote_number }} </p>
                             <p><a href="/answer/{{ answer.id }}/vote_down"><img class="down_arrow" src="/static/icons/arrow.png" alt="down-vote" width="40" height="40"></a></p>
-                        </td>
-                        <td>
+
+
                             {% if question.user_id == session['user_id'] %}
                                 {% if answer.accepted == False %}
-                                    <p><a href="{{ question.id }}/accept_answer/{{ answer.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a></p>
+                                    <a href="{{ question.id }}/accept_answer/{{ answer.id }}"><img class="accept" src="/static/icons/check.png" alt="accept" width="40"></a>
                                 {% else %}
-                                    <p><a href="{{ question.id }}/remove_accept/{{ answer.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a></p>
+                                    <a href="{{ question.id }}/remove_accept/{{ answer.id }}"><img class="accept" src="/static/icons/no.png" alt="accept" width="40" height="40"></a>
                                 {% endif %}
                             {% endif %}
-                            <h4>{{ answer.message }}</h4>
+
+                            {% if session['logged_in'] %}
+                            <a href="/answer/{{ answer.id }}/edit"><button class="btn btn-outline-dark">EDIT THIS ANSWER</button></a>
+                            <a href="/answer/{{ answer.id }}/delete"><button class="btn btn-outline-dark">DELETE</button></a>
+                            <a href="/answer/{{ answer.id }}/new-comment"><button class="btn btn-outline-dark">COMMENT</button></a>
+                            {% endif %}
+
                         </td>
                         <td>
+                            <h4>{{ answer.message }}</h4>
+
+
                             {% if answer.image  %}
                                 <img src="/static/pictures/answer_pictures/{{ answer.image }}" width="200" alt="some picture">
                             {% endif %}
-                        </td>
-                        <td>
-                            {% if session['logged_in'] %}
-                            <p><a href="/answer/{{ answer.id }}/edit"><button class="btn btn-outline-dark">EDIT THIS ANSWER</button></a></p>
-                            <p><a href="/answer/{{ answer.id }}/delete"><button class="btn btn-outline-dark">DELETE</button></a></p>
-                            <p><a href="/answer/{{ answer.id }}/new-comment"><button class="btn btn-outline-dark">COMMENT</button></a></p>
-                            {% endif %}
+
+
                         </td>
                     </tr>
                     {% for comment in comments %}
@@ -121,8 +127,9 @@
                         <td>
                             <p>
                             <div id="message"><h4>{{ comment.message }}</h4> </div>
-                            <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
+                            <br><br>
                             <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
+                            <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
                                 </p>
                         </td>
                     </tr>

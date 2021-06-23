@@ -21,7 +21,7 @@ def edit_comment(cursor, comment_id, edited):
 
 @connection.connection_handler
 def add_new_comment(cursor, comment_dict):
-    timestamp = generate_timestamp()
+    timestamp = dh_general.generate_timestamp()
     cursor.execute("""
                         INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count, user_id)
                         VALUES(%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s, %(user_id)s);
