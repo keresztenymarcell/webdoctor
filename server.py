@@ -244,10 +244,10 @@ def search_page():
         found_a = dh_general.search_answer_table(search_phrase)
         if len(found_q) != 0:
             found_q = dh_python_files.highlight_search_phrase(found_q, search_phrase, tag_type)
-            found_q_ids = dh_python_files.make_id_list(found_q)
+        found_q_ids = dh_python_files.make_id_list(found_q)
         if len(found_a) != 0:
             found_a = dh_python_files.highlight_search_phrase(found_a, search_phrase, tag_type)
-            found_a_ids = dh_python_files.make_id_list(found_q)
+        found_a_ids = dh_python_files.make_id_list(found_q)
         if len(found_q) == 0 and len(found_a) == 0:
             flash('No results found.')
         all_q = dh_data.get_all_data('question', 'submission_time', 'desc')

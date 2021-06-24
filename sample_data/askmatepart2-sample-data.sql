@@ -186,7 +186,7 @@ UPDATE question SET user_id = 0 WHERE id = 2;
 UPDATE question SET user_id = 1 WHERE id = 1;
 
 UPDATE answer SET user_id = 2 WHERE id = 1 OR id = 11;
-UPDATE answer SET user_id = 3 WHERE id = 2;
+UPDATE answer SET user_id = 3 WHERE id = 6;
 UPDATE answer SET user_id = 4 WHERE id = 5 OR id = 9 OR id = 12;
 
 UPDATE comment SET user_id = 0 WHERE id = 0;
