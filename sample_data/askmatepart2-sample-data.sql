@@ -175,9 +175,9 @@ INSERT INTO question_tag VALUES (2, 3);
 
 INSERT INTO users VALUES (0, 'admin', '$2a$04$4pMsMYklId1fKiddEv5BA.mDfwb9uI/r85ukKDHlaMe.8jPn4vfjS', 'admin@uze.net', 0);
 INSERT INTO users VALUES (1, 'moderator', '$2a$04$3dfTrKKio3qXMhVZAE18h.0tEOSJi0vjHVXfyypnW8UnXnW828Tc6', 'moderator@uze.net', 0);
-INSERT INTO users VALUES (2, 'plague', '$2b$12$WEa3VmU4wfSwHh5BRqZ.C.iVZaPG7nA.Urn2NY9l58DjvKq76nDWm', 'plague@pestis.com', 0, '2021-06-23 13:57:25.000000', 0, 0, 0);
-INSERT INTO users VALUES (3, 'jolan', '$2b$12$kVSdhMyIXRI6oatIW2eZRus7ycpe95nrHpY1sOPBAsvGsy2XdvMni', 'joli@neni.com', 0, '2021-06-23 14:04:14.000000', 0, 0, 0);
-INSERT INTO users VALUES (4, 'Ásóka', '$2b$12$pJtryG6xkk0sQ/AFh6o07eAS9RezhYDFXojjvJ4ej3LNbOcolicgK', 'asoka@boss.com', 0, '2021-06-23 14:12:02.000000', 0, 0, 0);
+INSERT INTO users VALUES (2, 'plague', '$2b$12$WEa3VmU4wfSwHh5BRqZ.C.iVZaPG7nA.Urn2NY9l58DjvKq76nDWm', 'plague@pestis.com', 0, '2021-06-23 13:57:25.000000', 1, 2, 0);
+INSERT INTO users VALUES (3, 'jolan', '$2b$12$kVSdhMyIXRI6oatIW2eZRus7ycpe95nrHpY1sOPBAsvGsy2XdvMni', 'joli@neni.com', 0, '2021-06-23 14:04:14.000000', 1, 1, 0);
+INSERT INTO users VALUES (4, 'Ásóka', '$2b$12$pJtryG6xkk0sQ/AFh6o07eAS9RezhYDFXojjvJ4ej3LNbOcolicgK', 'asoka@boss.com', 0, '2021-06-23 14:12:02.000000', 0, 3, 0);
 SELECT pg_catalog.setval('users_id_seq', 4, true);
 
 UPDATE question SET user_id = 2 WHERE id = 3;
