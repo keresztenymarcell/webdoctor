@@ -4,7 +4,6 @@ from datetime import datetime
 import dh_general
 
 
-
 def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):
     if secure_filename(image_data.filename) != "":
         time = generate_timestamp()
@@ -33,24 +32,26 @@ def insert_tag(target_indices, datatable, entry_index, key, phrase, tag_type):
 
 def highlight_search_phrase(datatable, phrase, tag_type):
     for entry_index in range(len(datatable)):
-        title_lower = datatable[entry_index]['title'].lower()
-        q_message_lower = datatable[entry_index]['q_message'].lower()
+        message = datatable[entry_index]['message'].lower()
+        if 'title' in datatable[entry_index]:
+            title_lower = datatable[entry_index]['title'].lower()
 
-        title_iter = re.finditer(phrase, title_lower)
-        title_indices = [m.start(0) for m in title_iter]
-        insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
+            title_iter = re.finditer(phrase, title_lower)
+            title_indices = [m.start(0) for m in title_iter]
+            insert_tag(title_indices, datatable, entry_index, 'title', phrase, tag_type)
 
-        q_message_iter = re.finditer(phrase, q_message_lower)
-        q_message_indices = [m.start(0) for m in q_message_iter]
-        insert_tag(q_message_indices, datatable, entry_index, 'q_message', phrase, tag_type)
-
-        if datatable[entry_index]['a_message'] is not None:
-            a_message_lower = datatable[entry_index]['a_message'].lower()
-            a_message_iter = re.finditer(phrase, a_message_lower)
-            a_message_indices = [m.start(0) for m in a_message_iter]
-            insert_tag(a_message_indices, datatable, entry_index, 'a_message', phrase, tag_type)
+        message_iter = re.finditer(phrase, message)
+        message_indices = [m.start(0) for m in message_iter]
+        insert_tag(message_indices, datatable, entry_index, 'message', phrase, tag_type)
 
     return datatable
+
+
+def make_id_list(list_of_dict):
+    ids_list = []
+    for dictionary in list_of_dict:
+        ids_list.append(dictionary['id'])
+    return ids_list
 
 
 def generate_timestamp():
