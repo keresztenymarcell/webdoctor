@@ -1,7 +1,6 @@
 import re
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import dh_general
 
 
 def image_data_handling(UPLOAD_FOLDER, image_data, get_data, do_edit):

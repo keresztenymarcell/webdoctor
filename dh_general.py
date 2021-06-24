@@ -1,9 +1,4 @@
-import re
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
-
-import dh_tags
+import connection
 
 
 @connection.connection_handler

@@ -1,7 +1,4 @@
-import re
-import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
+import connection
 
 
 @connection.connection_handler
@@ -21,8 +18,7 @@ def filter_tags(cursor, question_id):
                     WHERE question_tag.question_id != %(question_id)s
                     """, {'question_id': question_id})
     return cursor.fetchall()
-    
-    
+
     
 @connection.connection_handler
 def add_new_tag(cursor, tag_name):
@@ -33,7 +29,6 @@ def add_new_tag(cursor, tag_name):
     return cursor.fetchone()
 
 
-
 @connection.connection_handler
 def delete_tag_by_question_id(cursor, question_id, tag_id):
     cursor.execute("""
@@ -41,9 +36,7 @@ def delete_tag_by_question_id(cursor, question_id, tag_id):
                     WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s
                     """,
                    {'question_id': question_id, 'tag_id':tag_id})
-                   
-                   
-                   
+
 
 @connection.connection_handler
 def get_tag_id_by_name(cursor, tag_name):

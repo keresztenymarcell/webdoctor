@@ -1,9 +1,4 @@
-import re
 import connection, bcrypt
-from werkzeug.utils import secure_filename
-from datetime import datetime
-
-import dh_general
 import dh_python_files
 
 
@@ -100,49 +95,4 @@ def reputation_manager(cursor, target_table, identifier, increment):
                    {
                        'identifier': identifier,
                        'increment': increment,}
-                   )    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+                   )
