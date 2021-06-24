@@ -11,9 +11,10 @@
               <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
                 {% if session['logged_in']%}
                   <li><a href="{{ url_for('list_users') }}">User Details</a></li>
-                  <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
-                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="/user/{{ session['user_id'] }}">Profile: {{session['username']}}</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
+                    <li><p>User not logged in</p></li>
                     <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
@@ -44,18 +45,21 @@
                 </p>
             <div>
                 {% if session['logged_in'] %}
-                <a href="/question/{{ question.id }}/edit">
-                    <button class="btn btn-outline-dark">EDIT</button></a>
+                    {% if session['user_id'] == question.user_id %}
+                        <a href="/question/{{ question.id }}/edit">
+                            <button class="btn btn-outline-dark">EDIT</button></a>
+                    {% endif %}
                 <a href="/question/{{ question.id }}/new_answer">
                     <button class="btn btn-outline-dark">POST A NEW ANSWER</button></a>
-                <a href="/question/{{ question.id }}/delete">
-                    <button class="btn btn-outline-dark">DELETE</button></a>
+                {% if session['user_id'] == question.user_id %}
+                    <a href="/question/{{ question.id }}/delete">
+                        <button class="btn btn-outline-dark">DELETE</button></a>
+                {% endif %}
                 <a href="/question/{{ question.id }}/new-tag">
                     <button class="btn btn-outline-dark">ADD TAG</button></a>
                 {% endif %}
             </div>
             <div id="submission"><p>Submitted on: {{ question.submission_time }}</p></div>
-            </div>
                 <h3>Comments</h3>
                     {% for comment in comments %}
                     {% if comment.question_id == question.id %}
@@ -63,7 +67,9 @@
                     <p>
                         <div id="message"><h4>{{ comment.message }}</h4> </div><br><br><br>
                         {% if session['logged_in'] %}
-                        <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
+                            {% if session['user_id'] == comment.user_id %}
+                                <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
+                            {% endif %}
                         {% endif %}
                         <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
                         </p>
@@ -104,8 +110,10 @@
                             {% endif %}
 
                             {% if session['logged_in'] %}
-                            <a href="/answer/{{ answer.id }}/edit"><button class="btn btn-outline-dark">EDIT THIS ANSWER</button></a>
-                            <a href="/answer/{{ answer.id }}/delete"><button class="btn btn-outline-dark">DELETE</button></a>
+                                {% if session['user_id'] == answer.user_id %}
+                                    <a href="/answer/{{ answer.id }}/edit"><button class="btn btn-outline-dark">EDIT THIS ANSWER</button></a>
+                                    <a href="/answer/{{ answer.id }}/delete"><button class="btn btn-outline-dark">DELETE</button></a>
+                                {% endif %}
                             <a href="/answer/{{ answer.id }}/new-comment"><button class="btn btn-outline-dark">COMMENT</button></a>
                             {% endif %}
 
@@ -123,9 +131,13 @@
                             <p>
                             <div id="message"><h4>{{ comment.message }}</h4> </div>
                             <br><br>
-                            <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
+                                {% if session['logged_in'] %}
+                                    {% if session['user_id'] == question.user_id %}
+                                        <div id="edit_button"><a href="/comment/{{ comment.id }}/edit"><button class="btn btn-outline-dark">EDIT</button></a></div>
+                                    {% endif %}
+                                {% endif %}
                             <div id="submission"><p>Submitted on: {{ comment.submission_time }}</p></div>
-                                </p>
+                            </p>
                         </td>
                     </tr>
                         {% endif %}

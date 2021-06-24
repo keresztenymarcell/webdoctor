@@ -12,38 +12,54 @@ body {
 }
 
 .navbar {
-  overflow: hidden;
-  background-color: white;
-    border-radius: 20px;
-    opacity: 100%;
-    width:100%;
-    top: 0;
-
+            overflow: hidden;
+            background-color: white;
+            border-radius: 20px;
+            opacity: 100%;
+            width:100%;
+            top: 0;
 }
 
-.navbar .search{float: right;
-              font-size: 20px;
-              color: darkblue;
-              text-align: center;
-              padding: 14px 16px;
-              text-decoration: none;}
+.navbar .search{
+            float: left;
+            font-size: 20px;
+            color: darkblue;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;}
+
+.navbar .button {
+            float: right;
+}
 
 
 .navbar .sort{
-              font-size: 20px;
-              color: darkblue;
-              text-align: right;
-              padding: 14px 16px;
-              text-decoration: none;}
+            font-size: 20px;
+            color: darkblue;
+            text-align: right;
+            padding: 14px 16px;
+            text-decoration: none;
+}
 
 .navbar a {
-  float: left;
-  font-size: 20px;
-  color: darkblue;
-  text-align: center;
-  padding: 18px 16px;
-  text-decoration: none;
+            float: left;
+            font-size: 20px;
+            color: darkblue;
+            text-align: center;
+            padding: 18px 16px;
+            text-decoration: none;
 }
+
+.navbar p {
+            float: left;
+            font-size: 20px;
+            color: darkblue;
+            text-align: center;
+            padding: 18px 16px;
+            text-decoration: none;
+            margin-top: 0;
+            margin-bottom: 0;
+            }
 
 h1 {color: #ffffff;
     font-size: 70px;

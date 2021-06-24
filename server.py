@@ -131,8 +131,7 @@ def delete_answer(answer_id):
     if image_name in image_list:
         file_path = UPLOAD_FOLDER_ANSWERS + image_name
         os.remove(file_path)
-        dh_data.delete_data_by_id('answer', answer_id)
-
+    dh_data.delete_data_by_id('answer', answer_id)
     return redirect(f'/question/{question_id}')
 
 

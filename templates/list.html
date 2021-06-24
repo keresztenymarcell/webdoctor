@@ -7,7 +7,18 @@
         <div class="container-fluid">
             <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('main_page') }}"><button class="btn btn-outline-success"><i class="fa fa-home"></i></button></a>
-            <a href="{{ url_for('tag_page') }}">Tags</a>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ url_for('tag_page') }}">Tags</a></li>
+                    {% if session['logged_in']%}
+                        <li><a href="{{ url_for('list_users') }}">User Details</a></li>
+                        <li><a href="/user/{{ session['user_id'] }}">Profile: {{session['username']}}</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><p>User not logged in</p></li>
+                        <li><a href="{{ url_for('registration_page') }}">Registration</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
         <ul class="nav navbar-nav align-items-center">
           <li><form class="search" action="/search" method="get">
@@ -66,8 +77,10 @@
                     <a style="text-decoration: none" href="/question/{{ question.id }}"><h4> {{ question.title }}</h4></a>
                     <p>{{ question.message }}</p>
                     {%  if session['logged_in'] %}
-                    <a href="/question/{{ question.id }}/edit">
-                        <button class="btn btn-outline-dark">EDIT</button></a>
+                        {% if session['user_id'] == question.user_id %}
+                            <a href="/question/{{ question.id }}/edit">  <!-- csak az owner látja az edit gombot -->
+                                <button class="btn btn-outline-dark">EDIT</button></a>
+                        {%  endif %}
                     <a href="/question/{{ question.id }}/new-comment">
                         <button class="btn btn-outline-dark">COMMENT</button></a>
                     {% endif %}
